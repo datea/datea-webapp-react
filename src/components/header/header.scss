@@ -1,0 +1,22 @@
+@import '../../scss/vars';
+
+.header {
+  .d-icon.icon-datea-logo {
+    position: absolute;
+    left: 0px;
+    top: 3px;
+  }
+  &.mobile {
+    .d-icon.icon-datea-logo {
+      top: 0;
+    }
+  }
+
+  .title {
+    .title-text {
+      margin-left: 42px;
+      font-family: $oldSansBlack;
+      font-size: 32px;
+    }
+  }
+}
