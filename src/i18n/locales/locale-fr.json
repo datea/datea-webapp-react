@@ -30,7 +30,9 @@
 	"MENU_FOOTER" : {
 		"CONTACT" : "Contact",
 		"TERMS" : "Conditions d'utilisation",
-		"PRIVACY" : "Confidentialité"
+		"TERMS_MOBILE" : "Consitions",
+		"PRIVACY" : "Confidentialité",
+		"PRIVACY_MOBILE": "Confidentialité"
 	},
 
 	"USER_MENU" : {
@@ -408,7 +410,7 @@
 	},
 
 	"LOGIN_PAGE" : {
-		"WELCOME" : "Bienvenue",
+		"WELCOME" : "Bienvenue!",
 		"WELCOME_SUBTITLE" : "Partagez des infos avec votre communauté",
 		"PAGE_DESC" : "Se connecter.",
 		"LOGIN" : "SE CONNECTER",
@@ -420,11 +422,12 @@
 		"RECOVER_PASS_LINK" : "Mot de passe oublié ?",
 		"RECOVER_PASS_TITLE" : "Récupérer mot de passe",
 		"CONGRATS" : "Félicitations !",
-		"EMAIL_PH" : "Vérifiez vos nouveaux courriels"
+		"EMAIL_PH" : "Vérifiez vos nouveaux courriels",
+		"USER_PH" : "Error HTTP 503 Service unavailable"
 	},
 
 	"REGISTER_PAGE" : {
-		"WELCOME" : "Rejoindre la plateforme",
+		"WELCOME" : "Bienvenue à Datea!",
 		"WELCOME_SUBTITLE" : "Commencez à partager des informations utiles parmi votre communauté",
 		"PAGE_DESC" : "Enregistrez-vous sur Datea",
 		"REGISTER_DATEA_BTN" : "Création d'un compte sur Datea",
@@ -439,7 +442,7 @@
 
 	"REGISTER_FORM_PAGE" : {
 		"TITLE" : "Créer un compte",
-		"PAGE_DESC" : "Registra tu cuenta en Datea.",
+		"PAGE_DESC" : "Registra tu cuenta en Datea",
 		"USERNAME_LABEL" : "Nom d'utilisateur",
 		"USERNAME_ALPHANUM" : "Sont seulement acceptés les caractères alphanumériques et le tiret, sans accent, ni espace etc.",
 		"USERNAME_LENGTH" : "Minimum 2 caractères. Maximum 30 .",

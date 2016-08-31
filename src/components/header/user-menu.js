@@ -30,7 +30,10 @@ export default class UserMenu extends React.Component {
 
   toggleUserDrawer = () => this.setState({openDrawer: !this.state.openDrawer});
   closeDrawer =() => this.setState({openDrawer: false});
-  goToLogin = () => this.context.router.push('/signin');
+  goToLogin = () => {
+    UI.setLastLoggedOutURL();
+    this.context.router.push('/signin');
+  }
   goToSettings = () => {
     this.closeDrawer();
     this.context.router.push('/settings');

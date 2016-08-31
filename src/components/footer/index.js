@@ -4,6 +4,7 @@ import {t, translatable} from '../../i18n';
 import {observer} from 'mobx-react';
 import moment from 'moment';
 import DIcon from '../../icons';
+import UI from '../../stores/ui';
 
 @translatable
 @observer
@@ -17,8 +18,8 @@ export default class Footer extends React.Component {
             <div className="box">
           		<ul className="footer-menu">
           			<li><a href="http://ayuda.datea.pe/contacto">{t('MENU_FOOTER.CONTACT')}</a></li>
-          			<li><a href="/acerca/terminos">{t('MENU_FOOTER.TERMS')}</a></li>
-          			<li><a href="/acerca/privacidad">{t('MENU_FOOTER.PRIVACY')}</a></li>
+          			<li><a href="/acerca/terminos">{t('MENU_FOOTER.TERMS'+(UI.isMobile ? '_MOBILE' : ''))}</a></li>
+          			<li><a href="/acerca/privacidad">{t('MENU_FOOTER.PRIVACY'+(UI.isMobile ? '_MOBILE' : ''))}</a></li>
           		</ul>
             </div>
           </div>

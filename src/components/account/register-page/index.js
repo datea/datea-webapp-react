@@ -1,5 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import {Link} from 'react-router';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import {observer} from 'mobx-react';
@@ -8,7 +9,9 @@ import USER from '../../../stores/user';
 import FbIcon from 'material-ui-community-icons/icons/facebook';
 import TwIcon from 'material-ui-community-icons/icons/twitter';
 import DateroIcon from '../../../theme/datero-caminando';
+import DIcon from '../../../icons';
 import AccountFormContainer from '../account-form-container';
+import './register-page.scss';
 
 @translatable
 @observer
@@ -18,22 +21,29 @@ export default class RegisterPage extends React.Component {
     router: React.PropTypes.object
   };
 
-  loginWithFB = () => USER.socialSignIn('facebook');
-  loginWithTW = () => USER.socialSignIn('twitter');
+  socialLogin = (party) => USER.socialSignIn(party)
+    .then(res => this.context.router.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL))
+    .catch(err => console.log('err'))
+
   goToRegister = () => {
     this.context.router.push('/register');
   }
 
   render() {
     return (
-      <AccountFormContainer>
+      <AccountFormContainer className="register-page">
+        <div className="account-form-header with-icon">
+          <DIcon name="daterito1" />
+          <h3 className="title">{t('REGISTER_PAGE.WELCOME')}</h3>
+          <div className="subtitle">{t('REGISTER_PAGE.PAGE_DESC')}</div>
+        </div>
         <div className="register-page-content">
           <div className="btn-row">
             <RaisedButton
               label={t('LOGIN_PAGE.LOGIN_FB_BTN')}
               icon={<FbIcon />}
               className="social-login-btn"
-              onTouchTap={this.loginWithFB}
+              onTouchTap={() => this.socialLogin('facebook')}
             />
           </div>
           <div className="btn-row">
@@ -41,7 +51,7 @@ export default class RegisterPage extends React.Component {
               label={t('LOGIN_PAGE.LOGIN_TW_BTN')}
               icon={<TwIcon />}
               className="social-login-btn"
-              onTouchTap={this.loginWithTW}
+              onTouchTap={() => this.socialLogin('twitter')}
             />
           </div>
           <div className="btn-row">
@@ -51,6 +61,10 @@ export default class RegisterPage extends React.Component {
               className="social-login-btn"
               onTouchTap={this.goToRegister}
             />
+          </div>
+          <div className="bottom-info">
+            <div className="info-line">{t('REGISTER_PAGE.NOT_WITHOUT_CONSENT')}</div>
+            <div className="info-line"><Link to="/privacidad">{(t('MENU_FOOTER.PRIVACY'))}</Link></div>
           </div>
         </div>
       </AccountFormContainer>

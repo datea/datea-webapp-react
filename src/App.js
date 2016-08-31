@@ -27,6 +27,7 @@ ReactDom.render((
         <Route path="signin" component={LoginPage} />
         <Route path="signup" component={RegisterPage} />
         <Route path="register" component={RegisterFormPage} />
+        <Route path="settings" component={Home} />
         <Route path="*" errorId='NOT_FOUND' component={Error404}/>
       </Route>
     </Router>

@@ -1,6 +1,5 @@
 import {observable, action, computed} from 'mobx';
 import {rem2px, getBreakpoint} from '../utils';
-import config from '../config';
 
 class UiStore {
 
@@ -11,6 +10,7 @@ class UiStore {
     docHeightMode : 'auto' // or 'window' -> for same as the window.
   };
   @observable loading = false;
+  @observable lastLoggedOutURL = '/';
 
   @computed get isMobile() {
     return this.activeBreakpoint == 'xs'
@@ -39,6 +39,10 @@ class UiStore {
 
   @action setLoading(bool) {
     this.loading = bool;
+  }
+
+  @action setLastLoggedOutURL(url = null) {
+    this.lastLoggedOutURL = url || window.location.pathname + window.location.search
   }
 }
 

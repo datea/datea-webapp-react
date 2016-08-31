@@ -7,6 +7,7 @@ html, body {
   box-sizing: border-box;
   height: 100%;
   font-family: 'Roboto';
+  font-size: 16px;
   font-weight: 300;
   background-color: $greyLightBg;
 
@@ -19,6 +20,7 @@ html, body {
 }
 
 a {
+  color: $green;
   text-decoration: none;
   &:hover {
     text-decoration: underline;

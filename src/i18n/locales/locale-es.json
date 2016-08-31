@@ -29,7 +29,9 @@
 	"MENU_FOOTER" : {
 		"CONTACT" : "Contacto",
 		"TERMS" : "Términos y condiciones de uso",
-		"PRIVACY" : "Política de privacidad"
+		"TERMS_MOBILE": "Términos",
+		"PRIVACY" : "Política de privacidad",
+		"PRIVACY_MOBILE":  "Privacidad"
 	},
 
 	"USER_MENU" : {
@@ -408,9 +410,9 @@
 	},
 
 	"LOGIN_PAGE" : {
-		"WELCOME" : "¡Bienvenido a Datea!",
+		"WELCOME" : "¡Bienvenido!",
 		"WELCOME_SUBTITLE" : "Comparte datos útiles con tu comunidad",
-		"PAGE_DESC" : "Ingresa a tu cuenta en Datea.",
+		"PAGE_DESC" : "Ingresa a tu cuenta en Datea",
 		"LOGIN" : "INGRESAR",
 		"LOGIN_FB_BTN" : "Ingresa con Facebook",
 		"LOGIN_TW_BTN" : "Ingresa con Twitter",
@@ -420,13 +422,14 @@
 		"RECOVER_PASS_LINK" : "recuperar contraseña",
 		"RECOVER_PASS_TITLE" : "Recuperar contraseña",
 		"CONGRATS" : "¡Felicidades!",
-		"EMAIL_PH" : "ingresa tu correo electrónico"
+		"EMAIL_PH" : "ingresa tu correo electrónico",
+		"USER_PH" : "usuario o correo electrónico"
 	},
 
 	"REGISTER_PAGE" : {
-		"WELCOME" : "¡Únete a Datea!",
+		"WELCOME" : "¡Bienvenido a Datea!",
 		"WELCOME_SUBTITLE" : "Comienza a compartir datos útiles con tu comunidad",
-		"PAGE_DESC" : "Registra tu cuenta en Datea.",
+		"PAGE_DESC" : "Registra tu cuenta en Datea",
 		"REGISTER_DATEA_BTN" : "Registrate en Datea",
 		"LOGIN_FB_BTN" : "@:LOGIN_PAGE.LOGIN_FB_BTN",
 		"LOGIN_TW_BTN" : "@:LOGIN_PAGE.LOGIN_TW_BTN",

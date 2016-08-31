@@ -7,6 +7,8 @@ class UserStore {
 
   @observable data = {};
   @observable apiKey = '';
+  @observable isNew = false;
+
   @computed get isSignedIn() {
     return !!this.apiKey && !!this.data.id;
   }
@@ -38,35 +40,58 @@ class UserStore {
   ***************/
 
   @action socialSignIn(party) {
-    UI.setLoading(true);
-    OAuth.popup(party)
-    .done(result => {
-      let params = {party};
-      if (party == 'facebook') {
-        params.access_token = result.access_token;
-      } else if (party == 'twitter') {
-        params.oauth_token = result.oauth_token;
-        params.oauth_token_secret = result.oauth_token_secret;
-      }
+    return new Promise((resolve, reject) => {
+      UI.setLoading(true);
+      OAuth.popup(party)
+      .done(result => {
+        let params = {party};
+        if (party == 'facebook') {
+          params.access_token = result.access_token;
+        } else if (party == 'twitter') {
+          params.oauth_token = result.oauth_token;
+          params.oauth_token_secret = result.oauth_token_secret;
+        }
 
-			const url = config.api.url + 'account/socialauth/'+party+'/';
-      fetch.post(url, params)
-      .then(result => runInAction(() => {
+  			const url = config.api.url + 'account/socialauth/'+party+'/';
+        fetch.post(url, params)
+        .then(result => runInAction(() => {
+          UI.setLoading(false);
+          this.loadUser(result.body.user, result.body.token, result.body.is_new);
+          resolve(result.body.user);
+        }))
+        .catch(err => runInAction(() => {
+          UI.setLoading(false);
+          reject(err);
+        }));
+  		})
+      .fail(err => {
         UI.setLoading(false);
-        this.loadUser(result.body.user, result.body.token);
-      }))
-      .catch(err => runInAction(() => {
-        UI.setLoading(false);
-        console.log(err)
-      }));
-
-		})
-    .fail(err => console.log('oauthio err', err));
+        reject(err);
+      });
+    });
   }
 
-  @action loadUser(user, apiKey) {
+  @action login(data) {
+    return new Promise((resolve, reject) => {
+      UI.setLoading(true);
+      fetch.post(config.api.url+'account/signin/', data)
+      .then( res => runInAction(() => {
+        UI.setLoading(false);
+        this.loadUser(res.body.user, res.body.token, false);
+        console.log('res', res);
+        resolve(res.body.user);
+      }))
+      .catch(err => {
+        UI.setLoading(false);
+        reject(err);
+      })
+    });
+  }
+
+  @action loadUser(user, apiKey, isNew) {
     this.data   = user;
     this.apiKey = apiKey;
+    this.isNew  = isNew;
   }
 
   @action getFromLocal() {

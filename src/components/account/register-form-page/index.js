@@ -10,7 +10,8 @@ import AccountFormContainer from '../account-form-container';
 import {emailExists, usernameExists} from '../../../utils';
 import validations from 'formsy-react/src/validationRules';
 import config from '../../../config';
-
+import DIcon from '../../../icons';
+import './register-form-page.scss';
 
 const minUnameL = config.validation.username.minLength;
 const maxUnameL = config.validation.username.maxLength;
@@ -74,6 +75,10 @@ export default class RegisterFormPage extends React.Component {
   render() {
     return (
       <AccountFormContainer>
+        <div className="account-form-header with-icon">
+          <DIcon name="daterito1" />
+          <h3 className="title">{t('REGISTER_FORM_PAGE.TITLE')}</h3>
+        </div>
         <div className="register-form-page">
           <Formsy.Form ref="registerForm"
             onValid={this.onFormValid}

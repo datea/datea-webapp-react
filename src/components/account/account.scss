@@ -2,12 +2,26 @@
 .account-form-container {
     padding: 30px 15px;
 
+    .account-form-header {
+      padding-top: 8px;
+      &.with-icon {
+        position: relative;
+        left: -10px;
+        .d-icon, .title {display: inline-block; vertical-align: top}
+        .title { margin-top: 10px; margin-left: 5px;}
+      }
+      .subtitle {
+        padding-top: 10px;
+        font-size: 0.95rem;
+      }
+    }
+
     .account-paper {
       padding: 15px;
     }
 
     .btn-row {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       .social-login-btn {
         width: 100%;
         max-width: 350px;
@@ -16,18 +30,6 @@
         margin-bottom: 0;
       }
     }
-}
-
-.login-form {
-  padding-bottom: 20px;
-
-  .input-row {
-    margin-top: -10px;
-  }
-}
-
-.register-form-page {
-  padding-bottom: 20px;
 }
 
 .form-btns {

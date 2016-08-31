@@ -1,0 +1,15 @@
+@import '../../../scss/vars';
+
+.register-page {
+  .register-page-content {
+    padding-top: 35px;
+
+    .bottom-info {
+      padding-top: 30px;
+      .info-line {
+        font-size: 0.8375rem;
+        padding-bottom: 10px;
+      }
+    }
+  }
+}
