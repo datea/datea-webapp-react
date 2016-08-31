@@ -6,10 +6,17 @@
     left: 0px;
     top: 3px;
   }
+
   &.mobile {
     .d-icon.icon-datea-logo {
       top: 0;
+      width: 34px;
+      height: 34px;
     }
+  }
+
+  .user-menu {
+    display: inline-block;
   }
 
   .title {
@@ -18,5 +25,12 @@
       font-family: $oldSansBlack;
       font-size: 32px;
     }
+  }
+}
+
+.user-drawer {
+  .profile-menu-avatar {
+    text-align: center;
+    padding: 15px;
   }
 }

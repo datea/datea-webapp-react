@@ -1,5 +1,6 @@
 import {observable, action, computed} from 'mobx';
 import {rem2px, getBreakpoint} from '../utils';
+import config from '../config';
 
 class UiStore {
 
@@ -9,6 +10,7 @@ class UiStore {
     showFooter    : true,
     docHeightMode : 'auto' // or 'window' -> for same as the window.
   };
+  @observable loading = false;
 
   @computed get isMobile() {
     return this.activeBreakpoint == 'xs'
@@ -33,6 +35,10 @@ class UiStore {
 
   @action showFooter(bool) {
     this.layout.showFooter = bool;
+  }
+
+  @action setLoading(bool) {
+    this.loading = bool;
   }
 }
 

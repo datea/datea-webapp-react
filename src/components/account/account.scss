@@ -1,0 +1,35 @@
+
+.account-form-container {
+    padding: 30px 15px;
+
+    .account-paper {
+      padding: 15px;
+    }
+
+    .btn-row {
+      margin-bottom: 15px;
+      .social-login-btn {
+        width: 100%;
+        max-width: 350px;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+}
+
+.login-form {
+  padding-bottom: 20px;
+
+  .input-row {
+    margin-top: -10px;
+  }
+}
+
+.register-form-page {
+  padding-bottom: 20px;
+}
+
+.form-btns {
+  padding-top: 15px;
+}

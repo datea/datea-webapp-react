@@ -5,6 +5,9 @@ var fs                = require('fs');
 var SvgStore          = require('webpack-svgstore-plugin');
 
 var config = {
+  devServer: {
+      historyApiFallback: true,
+  },
   entry: ['babel-polyfill', 'webpack/hot/dev-server', path.resolve(__dirname, './src/App.js')],
   output: {
     path: path.resolve(__dirname, './dev'),

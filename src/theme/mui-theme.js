@@ -11,4 +11,6 @@ const theme = {
   }
 };
 
+console.log(getMuiTheme(theme));
+
 export default getMuiTheme(theme);

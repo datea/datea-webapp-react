@@ -4,10 +4,9 @@ import Header from '../header';
 import UI from '../../stores/ui';
 import {observer} from 'mobx-react';
 import cn from 'classnames';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import './main-layout.scss';
-
-console.log('UI',UI);
 
 @observer
 export default class MainLayout extends React.Component {
@@ -24,7 +23,17 @@ export default class MainLayout extends React.Component {
       <div className="main-wrap">
         <div className={pWrapClasses}>
           <Header />
-    		  <div className="page-content">{this.props.children}</div>
+          {UI.loading &&
+            <div className="loading-wrap">
+              <div className="loading-bg"></div>
+              <div className="progress">
+                <CircularProgress color={'#999999'} />
+              </div>
+            </div>
+          }
+    		  <div className="page-content">
+            {this.props.children}
+          </div>
     		  <div className="footer-push"></div>
     	  </div>
         {!!UI.layout.showFooter && <Footer />}

@@ -11,19 +11,22 @@
   "scripts": {
     "watch": "webpack --progress --colors --watch",
     "build": "webpack --optimize-dedupe --progress --profile --config webpack.config.js",
-    "dev": "webpack-dev-server --inline --port 8000 --progress --colors --hot --content-base dev --config webpack.config.dev.js",
+    "dev": "webpack-dev-server --inline --port 9000 --progress --colors --hot --content-base dev --config webpack.config.dev.js",
     "test": "later"
   },
   "dependencies": {
     "classnames": "^2.2.0",
     "d3": "^4.2.2",
     "flexboxgrid-with-hide": "^6.3.1",
+    "formsy-material-ui": "^0.5.0",
+    "formsy-react": "^0.18.1",
     "leaflet": "^0.7.7",
     "leaflet-draw": "^0.3.2",
     "leaflet-markercluster": "^0.2.0",
     "leaflet-pip": "^0.1.1",
     "lodash": "^4.15.0",
     "material-ui": "^0.15.4",
+    "material-ui-community-icons": "^0.15.0",
     "mobx": "^2.4.4",
     "mobx-react": "^3.5.5",
     "moment": "^2.14.1",

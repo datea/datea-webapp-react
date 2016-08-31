@@ -8,6 +8,9 @@ import MainLayout from './components/main-layout';
 import Home from './components/home';
 import Landing from './components/landing';
 import Error404 from './components/error/error-404';
+import LoginPage from './components/account/login-page';
+import RegisterPage from './components/account/register-page';
+import RegisterFormPage from './components/account/register-form-page';
 
 import muiTheme from './theme/mui-theme.js';
 
@@ -21,6 +24,9 @@ ReactDom.render((
       <Route path="/" component={MainLayout} >
         <IndexRoute component={Home} />
         <Route path="welcome" component={Landing}/>
+        <Route path="signin" component={LoginPage} />
+        <Route path="signup" component={RegisterPage} />
+        <Route path="register" component={RegisterFormPage} />
         <Route path="*" errorId='NOT_FOUND' component={Error404}/>
       </Route>
     </Router>

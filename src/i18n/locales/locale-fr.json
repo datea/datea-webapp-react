@@ -18,7 +18,7 @@
 	"VOTE" : "Soutien",
 	"VOTES" : "Soutiens",
 	"PROJECT_BY" : "Un projet de",
-	
+
 	"MENU_TOP" : {
 		"SEARCH" : "Rechercher",
 		"CAMPAIGNS" : "Initiatives",
@@ -39,7 +39,7 @@
 		"CREATE_CAMPAIGN" : "Créer une initiative",
 		"LOGOUT" : "Déconnexion"
 	},
-		
+
 	"LANDING_PAGE" : {
 		"SUBTITLE" : "Tous cartographes !",
 		"SLOGAN" : "Partagez et affichez des informations utiles dans votre communauté pour réussir à avoir des améliorations",
@@ -122,7 +122,7 @@
 		"SAVE" : "Confirmer",
 		"PUBLISHED" : "Publié",
 		"DELETE" : "Effacer",
-		"SUCCESS_TITLE" : "Bravo !", 
+		"SUCCESS_TITLE" : "Bravo !",
 		"SUCCESS_MSG" : "Localisation créée !",
 		"GOTO_DATEO" : "Voir sur la carte",
 		"CLOSE" : "Fermer",
@@ -191,7 +191,7 @@
 		"FLAGGED" : "Signalé !",
 		"TITLE" : "Signaler contenu inapproprié",
 		"LABEL" : "Veuillez décrire le motif du signalement.",
-		"LABEL_SR" : "Motif", 
+		"LABEL_SR" : "Motif",
 		"FLAG_PH" : "Veuillez mettre le contenu ici",
 		"CLOSE" : "Fermer",
 		"FLAG_BTN" : "Signaler",
@@ -420,7 +420,7 @@
 		"RECOVER_PASS_LINK" : "Mot de passe oublié ?",
 		"RECOVER_PASS_TITLE" : "Récupérer mot de passe",
 		"CONGRATS" : "Félicitations !",
-		"EMAIL_PH" : "Vérifiez vos nouveaux courriels" 
+		"EMAIL_PH" : "Vérifiez vos nouveaux courriels"
 	},
 
 	"REGISTER_PAGE" : {
@@ -441,10 +441,12 @@
 		"TITLE" : "Créer un compte",
 		"PAGE_DESC" : "Registra tu cuenta en Datea.",
 		"USERNAME_LABEL" : "Nom d'utilisateur",
-		"USERNAME_DESC" : "Sont seulement acceptés les caractères alphanumériques et le tiret, sans accent, ni espace etc.",
+		"USERNAME_ALPHANUM" : "Sont seulement acceptés les caractères alphanumériques et le tiret, sans accent, ni espace etc.",
+		"USERNAME_LENGTH" : "Minimum 2 caractères. Maximum 30 .",
 		"EMAIL_LABEL" : "Courriel électronique",
 		"PASS_LABEL" : "Mot de passe",
-		"PASS_DESC" : "Au moins 6 lettres et 1 chiffre",
+		"PASS_DESC" : "Au moins 6 lettres et 1 chiffre, maximum 32 caractères.",
+		"PASS_REPEAT_ERROR": "Les mots de passe ne correspondent pas.",
 		"REPEAT_PASS" : "Confirmez votre mot de passe",
 		"CONFIRM_TITLE" : "Merci de vérifier vos nouveaux courriels.",
 		"CONFIRM1" : "Encore un dernier effort avant de contribuer... Il faut nous confirmer votre adresse de courriel.",
@@ -517,7 +519,7 @@
 
  	"PASSW_PAGE" : {
  		"TITLE" : "Indiquer votre nouveau mot de passe",
- 		"PAGE_TITLE" : "Changer son mot de passe", 
+ 		"PAGE_TITLE" : "Changer son mot de passe",
  		"PASS_LABEL" : "Nouveau mot de passe",
  		"PASS_DESC" : "Vous devez choisir au minimum 6 lettres et un chiffre",
  		"REPEAT_LABEL" : "Confirmer le mot de passe",

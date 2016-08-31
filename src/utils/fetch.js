@@ -6,7 +6,7 @@ function fetch(url, options = {}, requestLib = request) {
       method      : 'GET',
       headers     : {},
       body        : {},
-      credentials : 'include'
+      credentials : 'omit'
   }, options);
 
   let req = request(options.method, url);
