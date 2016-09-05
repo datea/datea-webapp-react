@@ -6,6 +6,7 @@ import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import {observer} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
 import USER from '../../../stores/user';
+import UI from '../../../stores/ui';
 import FbIcon from 'material-ui-community-icons/icons/facebook';
 import TwIcon from 'material-ui-community-icons/icons/twitter';
 import DateroIcon from '../../../theme/datero-caminando';
@@ -26,8 +27,8 @@ export default class RegisterPage extends React.Component {
   }
 
   socialLogin = (party) => USER.socialSignIn(party)
-    .then(res => this.context.router.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL))
-    .catch(err => console.log('err'))
+    .then(res => this.context.router.push(USER.isNew ? '/settings/welcome' : UI.lastLoggedOutURL))
+    .catch(err => console.log('err', err))
 
   goToRegister = () => {
     this.context.router.push('/register');

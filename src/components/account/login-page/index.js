@@ -26,8 +26,8 @@ export default class LoginPage extends React.Component {
   }
 
   socialLogin = (party) => USER.socialSignIn(party)
-    .then(res => this.context.router.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL))
-    .catch(err => console.log('err'))
+    .then(res => this.context.router.push(USER.isNew ? '/settings/welcome' : UI.lastLoggedOutURL))
+    .catch(err => console.log('err', err))
 
   render() {
     return (

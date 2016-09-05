@@ -20,6 +20,9 @@
 	"PROJECT_BY" : "Un projet de",
 
 	"MENU_TOP" : {
+		"MENU" : "Menu",
+		"LANGUAGE": "Langue",
+		"HOME" : "Accueil",
 		"SEARCH" : "Rechercher",
 		"CAMPAIGNS" : "Initiatives",
 		"BLOG" : "Blog",
@@ -423,7 +426,7 @@
 		"RECOVER_PASS_TITLE" : "Récupérer mot de passe",
 		"CONGRATS" : "Félicitations!",
 		"EMAIL_PH" : "Vérifiez vos nouveaux courriels",
-		"USER_PH" : "Error HTTP 503 Service unavailable"
+		"USER_PH" : "Nom d'utilisateur ou e-mail"
 	},
 
 	"REGISTER_PAGE" : {

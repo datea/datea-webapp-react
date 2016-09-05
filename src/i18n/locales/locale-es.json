@@ -19,6 +19,9 @@
 	"PROJECT_BY" : "un proyecto de",
 
 	"MENU_TOP" : {
+		"MENU" : "Menú",
+		"LANGUAGE": "Idioma",
+		"HOME" : "Inicio",
 		"SEARCH" : "Buscar",
 		"CAMPAIGNS" : "Iniciativas",
 		"BLOG" : "Blog",

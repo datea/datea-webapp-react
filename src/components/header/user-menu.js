@@ -58,7 +58,11 @@ export default class UserMenu extends React.Component {
           <FlatButton
             label={t('LOGIN')}
             onTouchTap={this.goToLogin}
-            labelStyle={{fontSize: '1rem'}}
+            labelStyle={{
+              fontSize: '1rem',
+              paddingRight: UI.isMobile ? 6 : 16,
+              paddingLeft: UI.isMobile ? 6 : 16
+            }}
             style={{marginTop: UI.isMobile ? 6 : 7 }}
             className="login-btn"
             />
