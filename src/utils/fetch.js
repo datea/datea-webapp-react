@@ -1,4 +1,5 @@
 import request from 'superagent';
+import config from '../config';
 
 function fetch(url, options = {}, requestLib = request) {
 
@@ -12,9 +13,19 @@ function fetch(url, options = {}, requestLib = request) {
   let req = request(options.method, url);
   // body for POST
   options.body && req.send(options.body);
-  // headers
+
+  // HEADERS
   if (!options.headers.Accept) options.headers.Accept = 'application/json';
+  // language/locale
+  options.headers['Accept-Language'] = localStorage.getItem('locale') || config.defaultLocale;
+  // include Auth info if present
+  if (localStorage.getItem('apiKey') && localStorage.getItem('user')) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const apiKey = localStorage.getItem('apiKey');
+    options.headers.Authorization = 'Apikey ' + user.username + ':' + apiKey;
+  }
   req.set(options.headers);
+
   // query for GET
   options.query && Object.keys(options.query).length && req.query(options.query);
   // credentials

@@ -12,6 +12,7 @@ import Divider from 'material-ui/Divider';
 import DirectionsRunIcon from 'material-ui/svg-icons/maps/directions-run';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import DefaultAvatar from '../misc/default-avatar';
 
 @translatable
 @observer
@@ -46,6 +47,9 @@ export default class UserMenu extends React.Component {
     USER.signOut();
     this.closeDrawer();
   }
+  getAvatarSize() {
+    return UI.isMobile ? 36:44;
+  }
 
   render() {
     return (
@@ -64,10 +68,14 @@ export default class UserMenu extends React.Component {
             <IconButton
               onTouchTap={this.toggleUserDrawer}
               style={{border: 0, padding: 0}}>
-              <Avatar
-                src={USER.image}
-                size={UI.isMobile ? 36 : 44}
-                />
+              {!!USER.image &&
+                <Avatar
+                  src={USER.image}
+                  size={this.getAvatarSize()}
+                />}
+              {!USER.image &&
+                <DefaultAvatar size={this.getAvatarSize()} />
+              }
             </IconButton>
             <Drawer
               docked={false}
@@ -76,10 +84,13 @@ export default class UserMenu extends React.Component {
               className="user-drawer"
               onRequestChange={this.toggleUserDrawer}>
                   <div className="profile-menu-avatar">
-                    <Avatar
-                      src={USER.largeImage}
-                      size={UI.isMobile ? 100 : 120}
-                      />
+                    {!!USER.image &&
+                      <Avatar
+                        src={USER.largeImage}
+                        size={UI.isMobile ? 100 : 120}
+                      />}
+                    {!USER.image &&
+                      <DefaultAvatar size={UI.isMobile ? 100 : 120} />}
                   </div>
                   <MenuItem onTouchTap={this.goToProfile}
                     leftIcon={<PersonIcon />}>

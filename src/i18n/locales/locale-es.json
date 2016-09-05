@@ -419,9 +419,9 @@
 		"LOGIN_DATEA_TITLE" : "O ingresa con tu cuenta en Datea",
 		"LOGIN_LABEL" : "Ingresa con tu usuario y contraseña",
 		"NOT_A_DATERO" : "¿No eres dater@?",
-		"RECOVER_PASS_LINK" : "recuperar contraseña",
+		"RECOVER_PASS_LINK" : "Recuperar contraseña",
 		"RECOVER_PASS_TITLE" : "Recuperar contraseña",
-		"CONGRATS" : "¡Felicidades!",
+		"CONGRATS" : "¡Genial!",
 		"EMAIL_PH" : "ingresa tu correo electrónico",
 		"USER_PH" : "usuario o correo electrónico"
 	},
@@ -454,6 +454,11 @@
 		"CONFIRM_TITLE" : "¡Gracias! Ahora por favor revisa tu correo.",
 		"CONFIRM1" : "Sólo falta completar un paso para poder datear. Debes validar tu dirección de correo para activar tu cuenta. Te hemos enviado un correo con instrucciones de cómo hacerlo.",
 		"CONFIRM2" : "Una vez que hayas completado la activación, puedes ingresar con tu usuario y contraseña."
+	},
+
+	"RECOVER_PASSWORD" : {
+		"PAGE_TITLE": "¡Uy! te olvidaste la contraseña",
+		"INFO_TEXT" : "Tranquil@ amig@. Ingresa tu correo acá abajo y te enviaremos instrucciones para recuperarla."
 	},
 
 	"SETTINGS_PAGE" : {
@@ -503,16 +508,19 @@
 	"ACCOUNT_MSG" : {
 		"BLOCKED" :  "Tu usuario ha sido bloqueado. Si piensas que esto es injusto, por favor comunicate con nosotros a traves de nuestro <a href=\"http://ayuda.datea.pe/contacto\">formulario de contacto</a>.",
 		"WELCOME_READY" : "Tu cuenta ha sido activada y ya estás listo(a) para datear. Si quieres, antes puedes hacer ajustes a la configuración de tu usuario acá abajo.",
-		"WELCOME_CONFIRM" : "Ya casi eres datero(a)! Falta que nos confirmes tu dirección de correo (Twitter no nos provee ese dato). Una vez confirmada tu cuenta estarás listo(a) para datear.",
+		"WELCOME_CONFIRM" : "Ya casi eres dater@! Falta que nos confirmes tu dirección de correo. Una vez confirmada tu cuenta estarás listo(a) para datear.",
 		"DUPLICATE_EMAIL" : "La dirección de correo ya existe. Por favor utiliza otra, o si no recuerdas tu usuario, puedes salir y recuperar tu clave. Si ingresaste con otro servico (Facebook), por favor vuelve a ingresar con ese servicio.",
 		"EMAIL_EXISTS" : "La dirección ya está siendo utilizada. ¡Recupera tu contraseña!",
 		"EMAIL_INVALID" : "Por favor indique un correo válido.",
 		"DUPLICATE_USER" : "El nombre de usuario ya existe. Por favor, elige otro.",
-		"CHECK_EMAIL" : "¡Gracias! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta. Si deseas, puedes cerrar esta ventana o pestaña.",
+		"CHECK_EMAIL" : "¡Genial! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta. Si deseas, puedes cerrar esta ventana o pestaña.",
 		"CONFIRM_EMAIL" : "Antes de poder datear, necesitamos verificar tu dirección de correo. Ingrésala aquí abajo. ¡Gracias!",
 		"CONFIRM_MISSING" : "Falta que nos confirmes tu correo para activar tu cuenta. Por favor, chequea tu correo y sigue las instrucciones que te enviamos. Si deseas recibir otro correo de activación, vuelve a cliquear en \"Enviar\". ¡Gracias!",
 		"CONFIRM_SUCCESS" : "Tu cuenta ha sido plenamente activada y estas listo(a) para datear. Si deseas, puedes antes hacer ajustes a tu cuenta acá abajo.",
+		"ACTIVATION_COMPLETE_TITLE": "¡Felicitaciones!",
 		"ACTIVATION_COMPLETE" : "Tu cuenta ha sido activada. Ahora puedes ingresar con tu usuario y contraseña.",
+		"ACTIVATION_ERROR_TITLE": "¡Uy! Hubo un error",
+		"ACTIVATION_ERROR": "Por favor vuélvelo a intentar y si el error persiste, comunicate con nosotros. Seguro encontraremos la solución. Disculpa la molestia.",
 		"PASS_RESET_SENT" : "Por favor revisa tu correo y sigue las instrucciones para recuperar tu contraseña.",
 		"RESET_NOT_FOUND" : "No existen dateros con esa dirección ;)",
 		"LOGIN_ERROR" : "Tu usuario y/o contraseña no son válidos. Vuélvelo a intentar.",

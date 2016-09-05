@@ -1,8 +1,18 @@
 @import '../../../scss/vars';
 
 .register-form-page {
-  padding-bottom: 20px;
-  .form-btns {
-    padding-top: 30px;
+
+  .register-form-content, .register-success-message {
+    padding-bottom: 20px;
+    .form-btns {
+      padding-top: 30px;
+    }
+  }
+
+  .register-success-message {
+    .info-text {
+      padding-top: 20px;
+      font-size: 0.95rem;
+    }
   }
 }

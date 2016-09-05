@@ -1,3 +1,4 @@
+@import '../../scss/vars';
 
 .account-form-container {
     padding: 30px 15px;
@@ -28,6 +29,20 @@
       }
       &:last-child {
         margin-bottom: 0;
+      }
+    }
+
+    .error-msg {
+      color: $red;
+      font-size: 0.85rem;
+      padding: 15px 30px;
+      line-height: 1.2rem;
+      a {
+        color: $red;
+        font-weight: 500;
+        &:hover {
+          color:red;
+        }
       }
     }
 }

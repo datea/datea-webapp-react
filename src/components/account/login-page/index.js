@@ -21,6 +21,10 @@ export default class LoginPage extends React.Component {
     router : React.PropTypes.object
   }
 
+  componentDidMount() {
+    if (USER.isSignedIn) this.context.router.push('/');
+  }
+
   socialLogin = (party) => USER.socialSignIn(party)
     .then(res => this.context.router.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL))
     .catch(err => console.log('err'))
@@ -57,6 +61,8 @@ export default class LoginPage extends React.Component {
           <div className="bottom-info">
             <div className="info-line">
               <Link to="/signup">{t('LOGIN_PAGE.NOT_A_DATERO')}</Link>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <Link to="recover-password">{t('LOGIN_PAGE.RECOVER_PASS_LINK')}</Link>
             </div>
           </div>
         </div>

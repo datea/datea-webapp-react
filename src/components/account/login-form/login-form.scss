@@ -3,20 +3,6 @@
 .login-form {
   padding-bottom: 20px;
 
-  .error-msg {
-    color: $red;
-    font-size: 0.85rem;
-    padding: 15px 30px;
-    line-height: 1.2rem;
-    a {
-      color: $red;
-      font-weight: 500;
-      &:hover {
-        color:red;
-      }
-    }
-  }
-
   .input-row {
     margin-top: -10px;
   }

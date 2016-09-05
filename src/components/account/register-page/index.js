@@ -21,6 +21,10 @@ export default class RegisterPage extends React.Component {
     router: React.PropTypes.object
   };
 
+  componentDidMount() {
+    if (USER.isSignedIn) this.context.router.push('/');
+  }
+
   socialLogin = (party) => USER.socialSignIn(party)
     .then(res => this.context.router.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL))
     .catch(err => console.log('err'))

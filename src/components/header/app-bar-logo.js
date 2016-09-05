@@ -9,7 +9,6 @@ export default class AppBarLogo extends React.Component {
 
   render() {
     const logoSize = UI.isMobile ? 44 * 3/4 : 44;
-    console.log('isMobile', logoSize);
     return (
       <IconButton
           style={{width: logoSize+'px', height: logoSize+'px', border: 0}}

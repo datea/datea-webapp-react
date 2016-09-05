@@ -31,7 +31,13 @@ export default class LoginForm extends React.Component {
   resetError = () => this.setState({errorMsg: false});
 
   submit = () => USER.login(this.refs.loginForm.getModel())
-    .then(res => this.context.router.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL))
+    .then(res => {
+      if (this.props.onSuccess) {
+        this.props.onSuccess(res);
+      } else {
+        this.context.router.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL);
+      }
+    })
     .catch(err => {
       if (err.response && err.response.status == 404) {
         this.setState({errorMsg: t('ACCOUNT_MSG.LOGIN_ERROR')});

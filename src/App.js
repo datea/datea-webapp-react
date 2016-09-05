@@ -11,6 +11,8 @@ import Error404 from './components/error/error-404';
 import LoginPage from './components/account/login-page';
 import RegisterPage from './components/account/register-page';
 import RegisterFormPage from './components/account/register-form-page';
+import RecoverPasswordPage from './components/account/recover-password-page';
+import ActivationPage from './components/account/activation-page';
 
 import muiTheme from './theme/mui-theme.js';
 
@@ -27,7 +29,9 @@ ReactDom.render((
         <Route path="signin" component={LoginPage} />
         <Route path="signup" component={RegisterPage} />
         <Route path="register" component={RegisterFormPage} />
-        <Route path="settings" component={Home} />
+        <Route path="activation/:outcome" component={ActivationPage} />
+        <Route path="recover-password" component={RecoverPasswordPage} />
+        <Route path="settings(/:message)" component={Home} />
         <Route path="*" errorId='NOT_FOUND' component={Error404}/>
       </Route>
     </Router>

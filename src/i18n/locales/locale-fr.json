@@ -421,7 +421,7 @@
 		"NOT_A_DATERO" : "Vous n'êtes pas membre ?",
 		"RECOVER_PASS_LINK" : "Mot de passe oublié ?",
 		"RECOVER_PASS_TITLE" : "Récupérer mot de passe",
-		"CONGRATS" : "Félicitations !",
+		"CONGRATS" : "Félicitations!",
 		"EMAIL_PH" : "Vérifiez vos nouveaux courriels",
 		"USER_PH" : "Error HTTP 503 Service unavailable"
 	},
@@ -454,6 +454,11 @@
 		"CONFIRM_TITLE" : "Merci de vérifier vos nouveaux courriels.",
 		"CONFIRM1" : "Encore un dernier effort avant de contribuer... Il faut nous confirmer votre adresse de courriel.",
 		"CONFIRM2" : "Dès que l'activation est réalisée, vous pourrez vous connecter avec votre login et votre mot de passe."
+	},
+
+	"RECOVER_PASSWORD" : {
+		"PAGE_TITLE": "Houp! Vous avez oublié le mot de passe",
+		"INFO_TEXT" : "Ami calme. Entrez votre email ici et nous vous enverrons des instructions pour le récupérer."
 	},
 
 	"SETTINGS_PAGE" : {
@@ -512,7 +517,10 @@
 		"CONFIRM_EMAIL" : "Avant de pouvoir contribuer, nous avons besoin de confirmer votre adresse de courriel. À tout de suite !",
 		"CONFIRM_MISSING" : "Encore un dernier effort avant de contribuer... Il faut nous confirmer votre adresse de courriel. Si vous n'avez pas encore reçu notre courriel d'activation, il suffit de cliquer sur \"Envoyer\" pour en recevoir un nouveau. Merci !",
 		"CONFIRM_SUCCESS" : "Votre compte est désormais activé. Si vous le souhaitez, vous pouvez modifier les paramètres de votre compte en dessous.",
+		"ACTIVATION_COMPLETE_TITLE": "Félicitations!",
 		"ACTIVATION_COMPLETE" : "Votre compte a été activé et vous pouvez désormais y accéder avec votre mot de passe.",
+		"ACTIVATION_ERROR_TITLE": "Houp! Il y avait une erreur",
+		"ACTIVATION_ERROR": "S'il vous plaît essayez de nouveau et si l'erreur persiste, s'il vous plaît nous contacter. Assurance trouvera la solution. Excusez la peine.",
 		"PASS_RESET_SENT" : "Merci de vérifier votre courrier... Des instructions vont suivre pour récupérer votre mot de passe.",
 		"RESET_NOT_FOUND" : "Aucune donnée n'est associée à cette adresse.",
 		"LOGIN_ERROR" : "Votre nom d'utilisateur ou votre mot de passe n'est pas le bon. Merci de réessayer.",

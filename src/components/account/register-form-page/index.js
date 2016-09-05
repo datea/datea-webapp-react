@@ -27,18 +27,21 @@ export default class RegisterFormPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      canSubmit: false
+      canSubmit : false,
+      success   : false,
+      error     : false
     }
+  }
+
+  componentDidMount() {
+    if (USER.isSignedIn) this.context.router.push('/');
   }
 
   /* EVENT HANDLERS */
   enableSubmit = () => this.setState({canSubmit: true});
   disableSubmit = () => this.setState({canSubmit: false});
   notifyFormError = (e) => console.log('form error', e);
-
-  submit = () => {
-    console.log('submit');
-  }
+  resetError = () => this.setState({error: false});
 
   blurTextInputs = () => {
     document.querySelector('.password-confirm-field input').blur();
@@ -71,82 +74,118 @@ export default class RegisterFormPage extends React.Component {
     }
   }
 
+  submit = () => USER.register(this.refs.registerForm.getModel())
+    .then(res => this.setState({success: true}))
+    .catch(err => this.setState({error: t('ERROR.UNKNOWN')}))
+
 
   render() {
     return (
-      <AccountFormContainer>
-        <div className="account-form-header with-icon">
-          <DIcon name="daterito1" />
-          <h3 className="title">{t('REGISTER_FORM_PAGE.TITLE')}</h3>
-        </div>
-        <div className="register-form-page">
-          <Formsy.Form ref="registerForm"
-            onValid={this.onFormValid}
-            onInvalid={this.disableSubmit}
-            onValidSubmit={this.submit}
-            onInvalidSubmit={this.notifyFormError} >
-
-            <div className="input-row">
-              <FormsyText
-                name="username"
-                required
-                className="username-field"
-                onBlur={this.validateUsernameOnServer}
-                floatingLabelText={t('REGISTER_FORM_PAGE.USERNAME_LABEL')}
-                validations={'isAlphanumeric,minLength:'+minUnameL+',maxLength:'+maxUnameL}
-                validationErrors={{
-                  isAlphanumeric : t('REGISTER_FORM_PAGE.USERNAME_ALPHANUM'),
-                  minLength: t('REGISTER_FORM_PAGE.USERNAME_LENGTH'),
-                  maxLength: t('REGISTER_FORM_PAGE.USERNAME_LENGTH'),
-                }} />
+      <AccountFormContainer className="register-form-page">
+        {!this.state.success &&
+          <div>
+            <div className="account-form-header with-icon">
+              <DIcon name="daterito1" />
+              <h3 className="title">{t('REGISTER_FORM_PAGE.TITLE')}</h3>
             </div>
+            <div className="register-form-content">
 
-            <div className="input-row">
-              <FormsyText
-                name="email"
-                required
-                onBlur={this.validateEmailOnServer}
-                className="email-field"
-                floatingLabelText={t('REGISTER_FORM_PAGE.EMAIL_LABEL')}
-                validations="isEmail"
-                validationErrors={{isEmail : t('ACCOUNT_MSG.EMAIL_INVALID')}}
+              {!!this.state.error &&
+                <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.error}}></div>
+              }
+
+              <Formsy.Form ref="registerForm"
+                onValid={this.enableSubmit}
+                onInvalid={this.disableSubmit}
+                onValidSubmit={this.submit}
+                onChange={this.resetError}
+                onInvalidSubmit={this.notifyFormError} >
+
+                <div className="input-row">
+                  <FormsyText
+                    name="username"
+                    required
+                    className="username-field"
+                    onBlur={this.validateUsernameOnServer}
+                    floatingLabelText={t('REGISTER_FORM_PAGE.USERNAME_LABEL')}
+                    validations={'isAlphanumeric,minLength:'+minUnameL+',maxLength:'+maxUnameL}
+                    validationErrors={{
+                      isAlphanumeric : t('REGISTER_FORM_PAGE.USERNAME_ALPHANUM'),
+                      minLength: t('REGISTER_FORM_PAGE.USERNAME_LENGTH'),
+                      maxLength: t('REGISTER_FORM_PAGE.USERNAME_LENGTH'),
+                    }} />
+                </div>
+
+                <div className="input-row">
+                  <FormsyText
+                    name="email"
+                    required
+                    onBlur={this.validateEmailOnServer}
+                    className="email-field"
+                    floatingLabelText={t('REGISTER_FORM_PAGE.EMAIL_LABEL')}
+                    validations="isEmail"
+                    validationErrors={{isEmail : t('ACCOUNT_MSG.EMAIL_INVALID')}}
+                    />
+                </div>
+
+                <div className="input-row">
+                  <FormsyText
+                    name="password"
+                    type="password"
+                    required
+                    className="password-field"
+                    floatingLabelText={t('REGISTER_FORM_PAGE.PASS_LABEL')}
+                    validations={{matchRegexp: config.validation.password.regex}}
+                    validationErrors={{matchRegexp : t('REGISTER_FORM_PAGE.PASS_DESC')}}
+                    />
+                </div>
+
+                <div className="input-row">
+                  <FormsyText
+                    name="passwordConfirm"
+                    type="password"
+                    required
+                    className="password-confirm-field"
+                    floatingLabelText={t('REGISTER_FORM_PAGE.REPEAT_PASS')}
+                    validations="equalsField:password"
+                    validationErrors={{equalsField : t('REGISTER_FORM_PAGE.PASS_REPEAT_ERROR')}}
+                    />
+                </div>
+
+                <div className="form-btns">
+                  <RaisedButton
+                    onMouseEnter={this.blurTextInputs}
+                    primary={true}
+                    type="submit"
+                    label={t('REGISTER')}
+                    disabled={!this.state.canSubmit}
+                  />
+                </div>
+
+              </Formsy.Form>
+            </div>
+          </div>
+        }
+
+        {this.state.success &&
+          <div>
+            <div className="account-form-header with-icon">
+              <DIcon name="daterito1" />
+              <h3 className="title">{t('REGISTER_FORM_PAGE.CONFIRM_TITLE')}</h3>
+            </div>
+            <div className="register-success-message">
+              <div className="info-text">{t('REGISTER_FORM_PAGE.CONFIRM1')}</div>
+              <div className="info-text">{t('REGISTER_FORM_PAGE.CONFIRM2')}</div>
+              <div className="form-btns">
+                <RaisedButton
+                  primary={true}
+                  onTouchTap={() => this.context.router.push('/signin')}
+                  label={t('LOGIN')}
                 />
+              </div>
             </div>
-
-            <div className="input-row">
-              <FormsyText
-                name="password"
-                required
-                className="password-field"
-                floatingLabelText={t('REGISTER_FORM_PAGE.PASS_LABEL')}
-                validations={{matchRegexp: config.validation.password.regex}}
-                validationErrors={{matchRegexp : t('REGISTER_FORM_PAGE.PASS_DESC')}}
-                />
-            </div>
-
-            <div className="input-row">
-              <FormsyText
-                name="passwordConfirm"
-                required
-                className="password-confirm-field"
-                floatingLabelText={t('REGISTER_FORM_PAGE.REPEAT_PASS')}
-                validations="equalsField:password"
-                validationErrors={{equalsField : t('REGISTER_FORM_PAGE.PASS_REPEAT_ERROR')}}
-                />
-            </div>
-
-            <div className="form-btns">
-              <RaisedButton
-                onMouseEnter={this.blurTextInputs}
-                primary={true}
-                type="submit"
-                label={t('REGISTER')}
-                disabled={!this.state.canSubmit}
-              />
-            </div>
-
-          </Formsy.Form>
-        </div>
+          </div>
+        }
       </AccountFormContainer>
     )
   }

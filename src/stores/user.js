@@ -1,7 +1,8 @@
-import {observable, action, computed, autorun, runInAction} from 'mobx';
+import {observable, action, computed, autorun, runInAction, toJS} from 'mobx';
 import config from '../config';
 import {fetch, OAuth} from '../utils';
 import UI from './ui';
+import {getCurrentLocale} from '../i18n/utils';
 
 class UserStore {
 
@@ -10,21 +11,29 @@ class UserStore {
   @observable isNew = false;
 
   @computed get isSignedIn() {
-    return !!this.apiKey && !!this.data.id;
+    return !!this.apiKey && !!this.data.id && this.data.status == 1;
   }
   @computed get image() {
-    return config.api.imgUrl+this.data.image;
+    return this.data.image ? config.api.imgUrl+this.data.image : '';
   }
   @computed get smallImage() {
-    return config.api.imgUrl+this.data.image_small;
+    return this.data.image_small ? config.api.imgUrl+this.data.image_small : '';
   }
   @computed get largeImage() {
-    return config.api.imgUrl+this.data.image_large;
+    return this.data.image_large ? config.api.imgUrl+this.data.image_large : '';
+  }
+  @computed get locale() {
+    if (!!this.data.language) {
+      return this.data.language;
+    } else {
+      return getCurrentLocale();
+    }
   }
 
   constructor() {
     this.getFromLocal();
-    this.syncToLocal = autorun(() => {
+    this.getFromServer();
+    this.syncUserToLS = autorun(() => {
       if (!!this.apiKey) {
         localStorage.setItem('apiKey', this.apiKey);
         localStorage.setItem('user', JSON.stringify(this.data));
@@ -33,6 +42,8 @@ class UserStore {
         localStorage.removeItem('user');
       }
     });
+
+    this.syncLangToLS = autorun(() => localStorage.setItem('locale', this.locale));
   }
 
   /***************
@@ -78,7 +89,26 @@ class UserStore {
       .then( res => runInAction(() => {
         UI.setLoading(false);
         this.loadUser(res.body.user, res.body.token, false);
-        console.log('res', res);
+        resolve(res.body.user);
+      }))
+      .catch(err => {
+        UI.setLoading(false);
+        reject(err);
+      })
+    });
+  }
+
+  @action register(data) {
+    return new Promise((resolve, reject) => {
+      UI.setLoading(true);
+      Object.assign(data, {
+        success_redirect_url : config.app.url + '/update-user',
+		    error_redirect_url   : config.app.url
+      });
+      fetch.post(config.api.url+'account/register/', data)
+      .then( res => runInAction(() => {
+        UI.setLoading(false);
+        this.loadUser(res.body.user, res.body.token, false);
         resolve(res.body.user);
       }))
       .catch(err => {
@@ -101,6 +131,16 @@ class UserStore {
       this.apiKey = apiKey;
       this.data   = user;
     }
+  }
+
+  @action getFromServer() {
+    if (!this.data.id) return;
+    fetch.get(config.api.url+'user/'+this.data.id+'/')
+    .then(res => runInAction(() => this.data = res.body))
+  }
+
+  @action setLocale(loc) {
+    this.data.language = loc;
   }
 
   @action signOut() {

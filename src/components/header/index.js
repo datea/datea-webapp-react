@@ -10,6 +10,7 @@ import cn from 'classnames';
 import AppBarLogo from './app-bar-logo';
 import MenuBtn from './menu-button';
 import UserMenu from './user-menu';
+import LangSwitcher from './lang-switcher';
 import {observer} from 'mobx-react';
 
 import './header.scss';
@@ -53,7 +54,10 @@ export default class Header extends React.Component {
         <AppBar title={headerMain}
           iconElementLeft={<AppBarLogo onTouchTap={this.onLogoClick} />}
           style={{height: barHeight+'px'}}
-          iconElementRight={<UserMenu />}
+          iconElementRight={<span className="header-right">
+            <span className="btn"><LangSwitcher/></span>
+            <span className="btn"><UserMenu /></span>
+            </span>}
           iconStyleRight={{marginTop: UI.isMobile ? 0 : 8}}
           />
 
