@@ -2,6 +2,7 @@ import {observable, action, computed, autorun, runInAction, toJS} from 'mobx';
 import config from '../config';
 import {fetch, OAuth} from '../utils';
 import UI from './ui';
+import {setLanguageFile} from '../i18n';
 import {getCurrentLocale} from '../i18n/utils';
 
 class UserStore {
@@ -9,6 +10,7 @@ class UserStore {
   @observable data = {};
   @observable apiKey = '';
   @observable isNew = false;
+  @observable locale = getCurrentLocale();
 
   @computed get isSignedIn() {
     return !!this.apiKey && !!this.data.id && this.data.status == 1;
@@ -21,13 +23,6 @@ class UserStore {
   }
   @computed get largeImage() {
     return this.data.image_large ? config.api.imgUrl+this.data.image_large : '';
-  }
-  @computed get locale() {
-    if (!!this.data.language) {
-      return this.data.language;
-    } else {
-      return getCurrentLocale();
-    }
   }
 
   constructor() {
@@ -140,7 +135,10 @@ class UserStore {
   }
 
   @action setLocale(loc) {
-    this.data.language = loc;
+    if (loc != this.locale) {
+      if (this.data.id) this.data.language = loc;
+      this.locale = loc;
+    }
   }
 
   @action signOut() {

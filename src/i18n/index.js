@@ -1,21 +1,24 @@
 import React from 'react';
 import Polyglot from 'node-polyglot';
-import {observable, autorun} from 'mobx';
 import {observer} from 'mobx-react';
 import es from './locales/locale-es.json';
 import fr from './locales/locale-fr.json';
 import USER from '../stores/user';
+import {getCurrentLocale} from './utils';
 
 const langPhrases = {es, fr};
 const poly = new Polyglot();
 
 /****
- switch language as reaction to lang observable changes.
+ set/switch language
  **/
-autorun(() => {
-  poly.locale(USER.locale);
-  poly.replace(langPhrases[USER.locale]);
-});
+export function setLanguageFile(loc) {
+  if (loc != poly.currentLocale) {
+    poly.locale(loc);
+    poly.replace(langPhrases[loc]);
+  }
+};
+setLanguageFile(getCurrentLocale());
 
 /***
  decorator to trigger rerender with mobx
@@ -34,5 +37,6 @@ export function translatable(Component) {
 string translation function
 **/
 export function t(id, vars) {
+  setLanguageFile(USER.locale);
   return poly.t(id, vars);
 }

@@ -6,7 +6,11 @@ import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import UI from '../../stores/ui';
 import USER from '../../stores/user';
+import {observer} from 'mobx-react';
+import {translatable} from '../../i18n';
 
+@translatable
+@observer
 export default class LangSwitcher extends React.Component {
 
   locales = ['es', 'fr'];
