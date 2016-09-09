@@ -1,13 +1,12 @@
 import React from 'react';
-import UI from '../../../stores/ui';
 import USER from '../../../stores/user';
 import RaisedButton from 'material-ui/RaisedButton';
 import {t, translatable} from '../../../i18n';
 import {observer} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
+import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import DIcon from '../../../icons';
-import {Link} from 'react-router';
 import './recover-password.scss';
 
 @translatable
@@ -83,8 +82,7 @@ export default class RecoverPasswordPage extends React.Component {
               <Formsy.Form ref="passResetForm"
                 onValid={this.enableSubmit}
                 onInvalid={this.disableSubmit}
-                onValidSubmit={this.submit}
-                onInvalidSubmit={this.notifyFormError} >
+                onValidSubmit={this.submit} >
 
                 <div className="input-row">
                   <FormsyText
@@ -123,9 +121,7 @@ export default class RecoverPasswordPage extends React.Component {
 
               <div className="form-btns">
                 <RaisedButton
-                  onMouseEnter={this.blurTextInputs}
                   primary={true}
-                  type="button"
                   label={t('RESUBMIT')}
                   onTouchTap={this.resubmit}
                 />

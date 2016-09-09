@@ -70,7 +70,7 @@ export default class LoginForm extends React.Component {
                 required
                 className="username-field"
                 floatingLabelText={t('LOGIN_PAGE.USER_PH')}
-                validations="isAlphanumeric" />
+                validations="isExisty" />
             </div>
             <div className="input-row">
               <FormsyText

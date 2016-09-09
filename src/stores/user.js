@@ -129,6 +129,22 @@ class UserStore {
     });
   }
 
+  @action confirmResetPassword(params) {
+    console.log('params', params);
+    return new Promise((resolve, reject) => {
+      UI.setLoading(true);
+      fetch.post(urlJoin(config.api.url, 'account/reset-password-confirm/'), params)
+      .then(res => {
+        UI.setLoading(false);
+        resolve(res);
+      })
+      .catch(err => {
+        UI.setLoading(false);
+        reject(err);
+      })
+    })
+  }
+
   @action loadUser(user, apiKey, isNew) {
     this.data   = user;
     this.apiKey = apiKey;
