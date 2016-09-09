@@ -4,6 +4,7 @@ import {fetch, OAuth} from '../utils';
 import UI from './ui';
 import {setLanguageFile} from '../i18n';
 import {getCurrentLocale} from '../i18n/utils';
+import urlJoin from 'url-join';
 
 class UserStore {
 
@@ -58,7 +59,7 @@ class UserStore {
           params.oauth_token_secret = result.oauth_token_secret;
         }
 
-  			const url = config.api.url + 'account/socialauth/'+party+'/';
+  			const url = urlJoin(config.api.url, 'account/socialauth/'+party+'/');
         fetch.post(url, params)
         .then(result => runInAction(() => {
           UI.setLoading(false);
@@ -80,7 +81,7 @@ class UserStore {
   @action login(data) {
     return new Promise((resolve, reject) => {
       UI.setLoading(true);
-      fetch.post(config.api.url+'account/signin/', data)
+      fetch.post(urlJoin(config.api.url, 'account/signin/'), data)
       .then( res => runInAction(() => {
         UI.setLoading(false);
         this.loadUser(res.body.user, res.body.token, false);
@@ -97,15 +98,30 @@ class UserStore {
     return new Promise((resolve, reject) => {
       UI.setLoading(true);
       Object.assign(data, {
-        success_redirect_url : config.app.url + '/update-user',
+        success_redirect_url : urlJoin(config.app.url, '/update-user'),
 		    error_redirect_url   : config.app.url
       });
-      fetch.post(config.api.url+'account/register/', data)
+      fetch.post(urlJoin(config.api.url, 'account/register/'), data)
       .then( res => runInAction(() => {
         UI.setLoading(false);
         this.loadUser(res.body.user, res.body.token, false);
         resolve(res.body.user);
       }))
+      .catch(err => {
+        UI.setLoading(false);
+        reject(err);
+      })
+    });
+  }
+
+  @action resetPassword(email) {
+    return new Promise((resolve, reject) => {
+      UI.setLoading(true);
+      fetch.post(urlJoin(config.api.url,'account/reset-password/'), {email})
+      .then(res => {
+        UI.setLoading(false);
+        resolve(res);
+      })
       .catch(err => {
         UI.setLoading(false);
         reject(err);
@@ -130,7 +146,7 @@ class UserStore {
 
   @action getFromServer() {
     if (!this.data.id) return;
-    fetch.get(config.api.url+'user/'+this.data.id+'/')
+    fetch.get(urlJoin(config.api.url, 'user/'+this.data.id+'/'))
     .then(res => runInAction(() => this.data = res.body))
   }
 

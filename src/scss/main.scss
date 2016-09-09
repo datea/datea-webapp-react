@@ -28,5 +28,9 @@ a {
   }
 }
 
+.green-text {
+  color: $green;
+}
+
 @import './vendor.scss';
 @import './font.scss';
