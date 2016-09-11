@@ -145,6 +145,22 @@ class UserStore {
     })
   }
 
+  @action save(params) {
+    return new Promise((resolve, reject) => {
+      UI.setLoading(true);
+      fetch.patch(urlJoin(config.api.url, 'user', this.data.id), params)
+      .then(res => runInAction(() => {
+        UI.setLoading(false);
+        this.data = res.body;
+        resolve(res.body);
+      }))
+      .catch(err => {
+        UI.setLoading(false);
+        reject(err);
+      })
+    });
+  }
+
   @action loadUser(user, apiKey, isNew) {
     this.data   = user;
     this.apiKey = apiKey;

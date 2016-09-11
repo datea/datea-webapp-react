@@ -16,9 +16,14 @@ const theme = {
   },
   raisedButton : {
     primaryColor: colors.green,
+  },
+  tabs : {
+    backgroundColor : 'transparent',
+    selectedTextColor : 'rgba(0, 0, 0, 0.87)',
+    textColor: 'rgba(0, 0, 0, 0.4)'
   }
 };
 
-//console.log(getMuiTheme(theme));
+console.log(getMuiTheme(theme));
 
 export default getMuiTheme(theme);

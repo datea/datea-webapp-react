@@ -37,7 +37,7 @@ function fetch(url, options = {}, requestLib = request) {
   let state = 'pending';
   let prom = new Promise(function (resolve, reject) {
     req.end((err, res) =>{
-        if (!err && [200, 201, 302].indexOf(res.status) !== -1 ) {
+        if (!err && [200, 201, 202].indexOf(res.status) !== -1 ) {
           state = 'resolved';
           resolve(res);
         } else {
@@ -72,6 +72,11 @@ fetch.post = function (url, params = {}, options = {}) {
 
 fetch.put = function (url, params = {}, options = {}) {
   let opts = Object.assign(options, {body : params, method: 'PUT'});
+  return fetch(url, opts);
+}
+
+fetch.patch = function (url, params = {}, options = {}) {
+  let opts = Object.assign(options, {body : params, method: 'PATCH'});
   return fetch(url, opts);
 }
 

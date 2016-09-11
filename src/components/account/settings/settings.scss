@@ -1,0 +1,63 @@
+@import '../../../scss/vars';
+
+.settings-title {
+  text-align: center;
+  margin-bottom: 0;
+  color: #777;
+  font-weight: 400;
+  svg {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 3px;
+  }
+}
+
+.account-dialog {
+  .dialog-title {
+    display: block;
+    padding: 5px 0 20px;
+    .d-icon {
+      display: inline-block;
+      vertical-align: bottom;
+    }
+  }
+}
+
+.account-form-container.settings-form-container {
+
+  padding-top: 15px;
+
+  .account-paper {
+    padding-top: 5px;
+  }
+
+  @media (max-width: $xs-break) {
+    .account-paper {
+      padding: 7px;
+    }
+
+    .col-xs-12 {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .input-row, .form-btns, .show-pass-container {
+      text-align: center;
+    }
+  }
+
+  .show-pass-container {
+    padding-top: 20px;
+  }
+
+  .form-btns {
+    padding-top: 25px;
+    text-align: center;
+  }
+}
+
+.settings-tab-content {
+    padding: 20px 30px;
+    @media (max-width: $xs-break) {
+      padding: 15px 8px;
+    }
+}
