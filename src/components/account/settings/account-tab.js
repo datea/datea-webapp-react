@@ -113,6 +113,7 @@ export default class AccountTab extends React.Component {
               {t('SETTINGS_PAGE.CHANGE_EMAIL_WARNING_TITLE')}
             </span>
           }
+          titleStyle={{fontSize: '1.3rem'}}
           className="account-dialog"
           actions={this.dialogActions()}
           onRequestClose={() => this.setState({emailDialogOpen: false})}

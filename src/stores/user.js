@@ -152,6 +152,7 @@ class UserStore {
       .then(res => runInAction(() => {
         UI.setLoading(false);
         this.data = res.body;
+        console.log(res.body);
         resolve(res.body);
       }))
       .catch(err => {

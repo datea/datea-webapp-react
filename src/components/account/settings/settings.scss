@@ -12,13 +12,57 @@
   }
 }
 
+.settings-msg-container {
+  padding-top: 15px;
+  padding-bottom: 0px;
+  text-align: left;
+  .msg-wrapper {
+    padding-bottom: 10px;
+    position: relative;
+    h3.msg-title {
+      margin-top: 0;
+      font-size: 1.1rem;
+      line-height: 35px;
+      margin-bottom: 15px;
+      .d-icon {
+        display: inline-block;
+        vertical-align: bottom;
+        margin-right: 4px;
+        height: 35px;
+        width: 35px;
+      }
+    }
+    .msg-title, .msg-content {text-align: center}
+    .msg-content {
+      padding-bottom: 5px;
+      font-size: 0.95rem;
+    }
+    .msg-actions {
+      padding-top: 10px;
+    }
+  }
+}
+
 .account-dialog {
   .dialog-title {
     display: block;
+    font-size: 1rem;
     padding: 5px 0 20px;
     .d-icon {
+      margin-right: 5px;
       display: inline-block;
       vertical-align: bottom;
+    }
+  }
+}
+
+.account-form-container.settings-form-container,
+.settings-msg-container
+{
+  @media (max-width: $xs-break) {
+    .col-xs-12 {
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 }
@@ -34,11 +78,6 @@
   @media (max-width: $xs-break) {
     .account-paper {
       padding: 7px;
-    }
-
-    .col-xs-12 {
-      padding-left: 0;
-      padding-right: 0;
     }
     .input-row, .form-btns, .show-pass-container {
       text-align: center;
