@@ -1,0 +1,97 @@
+@import '../../scss/vars';
+
+.image-field-zone {
+  max-width: 100%;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  img {
+    max-width: 100%;
+    width: 320px;
+  }
+
+  .drag-over-msg {
+    display: none;
+  }
+
+  .progress-wrap {
+    display: block;
+    background-color: rgba(255,255,255, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    .progress {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &.drag-over {
+    .drag-over-msg {
+      display: block;
+      background-color: rgba(255,255,255, 0.8);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      text-align: center;
+      font-size: 1rem;
+      .txt {
+        text-align: center;
+        font-weight: 500;
+        position: absolute;
+        left: 0;
+        right: 0;
+        padding: 0 15px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  &.normal-zone {
+    min-height: 150px;
+    position: relative;
+    border: 3px dashed $greyLightBg;
+    width: 100%;
+
+    &.loaded {
+      border: 0;
+      background-color: $greyLightBg;
+      img {margin : 10px};
+    }
+    &.drag-over {
+      border: 3px dashed $greyLight !important;
+    }
+
+    .ph-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    /*&:hover {
+      border: 3px dashed $greyLight;
+    }*/
+  }
+
+  &.avatar-zone {
+    .error-msg {
+      width: 150%;
+      transform: translateX(-18%);
+      padding: 0 !important;
+      font-size: 0.8rem;
+    }
+  }
+
+  &.avatar-zone {
+    img {
+      width: auto;
+    }
+  }
+}

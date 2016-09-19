@@ -32,6 +32,32 @@
       }
     }
 
+    .info-row {
+      padding: 30px 0 0px;
+      font-size: 0.9rem;
+    }
+
+    .checkbox-row {
+      padding: 8px 0;
+      label {
+        font-size: 0.9rem;
+      }
+    }
+
+    .img-row {
+      padding: 15px 0;
+      .img-label {
+          font-size: 12px;
+          padding-bottom: 10px;
+      }
+      &.avatar-row, &.bg-img-row {
+        //text-align: center;
+        .avatar-zone {
+          display: inline-block;
+        }
+      }
+    }
+
     .error-msg {
       color: $red;
       font-size: 0.85rem;

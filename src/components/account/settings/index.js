@@ -17,12 +17,14 @@ import './settings.scss';
 import {colors} from '../../../theme/vars';
 
 import AccountTab from './account-tab';
+import ProfileTab from './profile-tab';
+import NotificationsTab from './notifications-tab';
 
 @translatable
 @observer
 export default class AccountSettings extends React.Component {
 
-  static contextTypes ={
+  static contextTypes = {
     router : React.PropTypes.object
   };
 
@@ -46,10 +48,13 @@ export default class AccountSettings extends React.Component {
         content  = ['ACCOUNT_MSG.WELCOME_READY'];
         actions  = [
           <RaisedButton primary={true}
+            key="next"
             label={t('SETTINGS_PAGE.NEXT')}
             onTouchTap={() => this.context.router.push('/')} />
         ];
         break;
+      default:
+        return '';
     }
     return (
       <AccountFormContainer className="settings-msg-container">
@@ -71,14 +76,18 @@ export default class AccountSettings extends React.Component {
   render() {
 
     const tabBtnStyle = {fontSize : UI.isMobile ? '0.75rem' : '0.9rem'};
-    let msg = this.props.params.message;
-    if (USER.data.status == 0) msg = 'email-confirm';
+    let urlValue = this.props.params.urlValue;
+    if (USER.data.status == 0) urlValue = 'email-confirm';
+
+    let tab = 0;
+    if (urlValue == 'profile') tab = 1;
+    if (urlValue == 'notifications') tab = 2;
 
     return (
       <div>
 
         {/* ACCOUNT MESSAGES */}
-        {!!msg && this.showMessage(msg)}
+        {!!urlValue && this.showMessage(urlValue)}
 
         <h3 className="settings-title">
           <SettingsIcon color="#777" />
@@ -86,15 +95,15 @@ export default class AccountSettings extends React.Component {
         </h3>
         <AccountFormContainer className="settings-form-container">
           <div className="account-settings">
-            <Tabs inkBarStyle={{backgroundColor: colors.green}}>
+            <Tabs inkBarStyle={{backgroundColor: colors.green}} initialSelectedIndex={tab}>
               <Tab label={t('SETTINGS_PAGE.ACCOUNT_TAB')} style={tabBtnStyle}>
                 <AccountTab />
               </Tab>
               <Tab label={t('SETTINGS_PAGE.PROFILE_TAB')} style={tabBtnStyle}>
-                <p>BLIP</p>
+                <ProfileTab />
               </Tab>
               <Tab label={t('SETTINGS_PAGE.NOTIFY.TAB')} style={tabBtnStyle}>
-                <p>Blup</p>
+                <NotificationsTab />
               </Tab>
             </Tabs>
           </div>

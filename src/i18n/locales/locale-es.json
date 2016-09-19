@@ -569,6 +569,7 @@
  	},
 
  	"FILEINPUT": {
+		"DRAG_OVER_MSG" : "Suelta el archivo aquí",
  		"OR_PREFER" : "o si prefieres",
  		"IMAGE" : {
  			"DRAG_MSG": "suelta una <strong>imagen</strong> aquí",
@@ -590,7 +591,8 @@
 
  	"ERROR" : {
  		"UNKNOWN" : "Hubo un error. Por favor revisa tus datos e intenta de nuevo. Si no funciona, <a href=\"http://ayuda.datea.pe/contacto\">contáctanos</a>.",
- 		"NOT_FOUND" : "Oops no pudimos encontrar lo que buscabas."
+ 		"NOT_FOUND" : "Oops no pudimos encontrar lo que buscabas.",
+		"UPLOAD" : "Error al subir archivo. Xfa, inténtalo de nuevo ;)"
  	},
 
  	"REDIRECT_MSG" : "Por favor, aguarda un momento mientras te redirigimos :)",

@@ -76,11 +76,11 @@
   }
 
   @media (max-width: $xs-break) {
+    .input-row, .form-btns, .show-pass-container, .info-row {
+      text-align: center;
+    }
     .account-paper {
       padding: 7px;
-    }
-    .input-row, .form-btns, .show-pass-container {
-      text-align: center;
     }
   }
 
@@ -92,11 +92,27 @@
     padding-top: 25px;
     text-align: center;
   }
-}
 
-.settings-tab-content {
-    padding: 20px 30px;
-    @media (max-width: $xs-break) {
-      padding: 15px 8px;
-    }
+  .settings-tab-content {
+      padding: 20px 30px;
+      @media (max-width: $xs-break) {
+        padding: 15px 8px;
+        &.profile-tab {
+          .info-row {
+            padding-left: 30px;
+            padding-right: 30px;
+          }
+        }
+      }
+
+      &.notifications-tab {
+          .info-row {
+            padding-top: 15px;
+            padding-bottom: 20px;
+          }
+          .checkbox-row {
+            min-height: 45px;
+          }
+      }
+  }
 }

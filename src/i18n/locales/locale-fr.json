@@ -569,6 +569,7 @@
  	},
 
  	"FILEINPUT": {
+		"DRAG_OVER_MSG" : "Déposez le fichier ici",
  		"OR_PREFER" : "Ou si vous préférez",
  		"IMAGE" : {
  			"DRAG_MSG": "Déposez une <strong>image</strong> ici",
@@ -590,7 +591,8 @@
 
  	"ERROR" : {
  		"UNKNOWN" : "Une erreur est survenue. Merci de vous identifier à nouveau. Si cela ne fonctionne pas, <a href=\"http://ayuda.datea.pe/contacto\">nous contacter</a>.",
- 		"NOT_FOUND" : "Il semblerait que votre contenu soit introuvable. Serait-il parti sur Mars ?"
+ 		"NOT_FOUND" : "Il semblerait que votre contenu soit introuvable. Serait-il parti sur Mars ?",
+		"UPLOAD" : "Erreur téléchargement. S'il vous plaît essayer à nouveau ;)"
  	},
 
  	"REDIRECT_MSG" : "Merci de patienter... La page arrive à la vitesse de la lumière... Ou presque... :)"

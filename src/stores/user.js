@@ -130,7 +130,6 @@ class UserStore {
   }
 
   @action confirmResetPassword(params) {
-    console.log('params', params);
     return new Promise((resolve, reject) => {
       UI.setLoading(true);
       fetch.post(urlJoin(config.api.url, 'account/reset-password-confirm/'), params)
@@ -152,7 +151,7 @@ class UserStore {
       .then(res => runInAction(() => {
         UI.setLoading(false);
         this.data = res.body;
-        console.log(res.body);
+        console.log(toJS(res.body));
         resolve(res.body);
       }))
       .catch(err => {

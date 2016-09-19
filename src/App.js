@@ -34,7 +34,7 @@ ReactDom.render((
         <Route path="activation/:outcome" component={ActivationPage} />
         <Route path="recover-password" component={RecoverPasswordPage} />
         <Route path="recover-password/confirm/:uid/:token" component={RecoverPasswordConfirmPage} />
-        <Route path="settings(/:message)" component={AccountSettings} />
+        <Route path="settings(/:urlValue)" component={AccountSettings} />
         <Route path="*" errorId='NOT_FOUND' component={Error404}/>
       </Route>
     </Router>

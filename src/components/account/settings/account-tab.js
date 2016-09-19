@@ -20,7 +20,7 @@ export default class AccountTab extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      error : '',
+      errorMsg : '',
       canSubmit : false,
       showChangePassword : false,
       emailDialogOpen : false
@@ -34,13 +34,8 @@ export default class AccountTab extends React.Component {
   notifyFormError = (e) => console.log('form error', e);
   onFormChange = () => this.setState({error: false});
   blurTextInputs = () => {
-    const pcf = document.querySelector('.password-confirm-field input');
-    pcf && pcf.blur()
-    const pf = document.querySelector('.password-field input');
-    pf && pf.blur();
-    document.querySelector('.username-field input').blur();
-    document.querySelector('.email-field input').blur();
-  }
+    let fis = document.querySelectorAll('.form-field input').forEach(f => f.blur())
+  };
 
   submit = (warnEmailChange = false) => {
     this.setState({emailDialogOpen: false});
@@ -51,7 +46,8 @@ export default class AccountTab extends React.Component {
     if (warnEmailChange && model.email != USER.data.email) {
       this.setState({emailDialogOpen: true});
     } else {
-      USER.save(model);
+      USER.save(model)
+      .catch(err => this.setState({errorMsg: t('ERROR.UNKNOWN')}));
     }
   }
 
@@ -102,8 +98,8 @@ export default class AccountTab extends React.Component {
     return (
       <div className="settings-tab-content account-tab">
 
-        {!!this.state.error &&
-          <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.error}}></div>
+        {!!this.state.errorMsg &&
+          <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.errorMsg}}></div>
         }
 
         <Dialog open={this.state.emailDialogOpen}
@@ -130,7 +126,7 @@ export default class AccountTab extends React.Component {
               name="username"
               required
               value={USER.data.username}
-              className="username-field"
+              className="username-field form-field"
               onBlur={this.validateUsernameOnServer}
               floatingLabelText={t('REGISTER_FORM_PAGE.USERNAME_LABEL')}
               validations={'isAlphanumeric,minLength:'+minUnameL+',maxLength:'+maxUnameL}
@@ -147,7 +143,7 @@ export default class AccountTab extends React.Component {
               required
               value={USER.data.email}
               onBlur={this.validateEmailOnServer}
-              className="email-field"
+              className="email-field form-field"
               floatingLabelText={t('REGISTER_FORM_PAGE.EMAIL_LABEL')}
               validations="isEmail"
               validationErrors={{isEmail : t('ACCOUNT_MSG.EMAIL_INVALID')}}
@@ -158,6 +154,7 @@ export default class AccountTab extends React.Component {
             <FlatButton
               labelStyle={{color: "#888", fontWeight: 300, textTransform: 'none', paddingLeft:0, paddingRight:0}}
               label={t('SETTINGS_PAGE.'+(this.state.showChangePassword ? 'HIDE' : 'SHOW')+'_CHANGE_PASSWORD')}
+              hoverColor="transparent"
               onTouchTap={this.toggleShowPassword}
               />
           </div>
@@ -168,7 +165,7 @@ export default class AccountTab extends React.Component {
                 <FormsyText
                   name="password"
                   type="password"
-                  className="password-field"
+                  className="password-field form-field"
                   floatingLabelText={t('SETTINGS_PAGE.NEW_PASSWORD')}
                   validations={{matchRegexp: config.validation.password.regex}}
                   validationErrors={{matchRegexp : t('REGISTER_FORM_PAGE.PASS_DESC')}}
@@ -179,7 +176,7 @@ export default class AccountTab extends React.Component {
                 <FormsyText
                   name="passwordConfirm"
                   type="password"
-                  className="password-confirm-field"
+                  className="password-confirm-field form-field"
                   floatingLabelText={t('REGISTER_FORM_PAGE.REPEAT_PASS')}
                   validations="equalsField:password"
                   validationErrors={{equalsField : t('REGISTER_FORM_PAGE.PASS_REPEAT_ERROR')}}
