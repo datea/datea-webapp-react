@@ -22,7 +22,7 @@ export default class MainLayout extends React.Component {
     return (
       <div className="main-wrap">
         <div className={pWrapClasses}>
-          <Header />
+          <Header path={this.props.location.pathname} />
           {UI.loading &&
             <div className="loading-wrap">
               <div className="loading-bg"></div>

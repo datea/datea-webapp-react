@@ -35,8 +35,6 @@ export default class MainMenu extends React.Component {
         onRequestChange={this.props.onRequestChange}>
           <Subheader>{t('MENU_TOP.MENU')}</Subheader>
           <MenuItem primaryText={t('MENU_TOP.HOME')} rightIcon={<HomeIcon/>} />
-          <MenuItem primaryText={t('MENU_TOP.SEARCH')} rightIcon={<SearchIcon/>} />
-          <MenuItem primaryText={t('MENU_TOP.CAMPAIGNS')} />
           <MenuItem primaryText={t('MENU_TOP.ABOUT')} rightIcon={<InfoOutlineIcon/>} />
           <MenuItem primaryText={t('MENU_TOP.HELP')} rightIcon={<HelpOutlineIcon/>} />
           <br /><br />

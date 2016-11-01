@@ -3,13 +3,13 @@
 .header {
   .d-icon.icon-datea-logo {
     position: absolute;
-    left: 0px;
-    top: 3px;
+    left: 5px;
+    top: 11px;
   }
 
   &.mobile {
     .d-icon.icon-datea-logo {
-      top: 0;
+      top: 4px;
       width: 34px;
       height: 34px;
     }
@@ -22,7 +22,7 @@
     }
     .lang-switcher {
       margin-right: 30px;
-      margin-top: 4px;
+      margin-top: 6px;
       &.mobile {
         display: none;
       }

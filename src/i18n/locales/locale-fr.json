@@ -50,10 +50,10 @@
 	},
 
 	"LANDING_PAGE" : {
-		"SUBTITLE" : "Tous cartographes !",
+		"SUBTITLE" : "Tous cartographes!",
 		"SLOGAN" : "Partagez et affichez des informations utiles dans votre communauté pour réussir à avoir des améliorations",
-		"REGISTER_TITLE" : "Nous rejoindre ?",
-		"LOGIN_TITLE" : "Etes-vous deja enregistré(e) ?",
+		"REGISTER_TITLE" : "Nous rejoindre?",
+		"LOGIN_TITLE" : "Etes-vous deja enregistré(e)?",
 		"STEP1" : "Partagez des informations utiles",
 		"STEP2" : "Activez la participation de votre communauté",
 		"STEP3" : "Affichez et utilisez des informations pour réussir à avoir des améliorations",

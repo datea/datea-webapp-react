@@ -8,6 +8,7 @@ import UserMenu from './user-menu';
 import LangSwitcher from './lang-switcher';
 import MainMenu from './main-menu';
 import {observer} from 'mobx-react';
+import config from '../../config';
 
 import './header.scss';
 
@@ -37,10 +38,12 @@ export default class Header extends React.Component {
 
   render() {
     const barHeight = UI.isMobile ? 48 : 64;
+    const isLanding = this.props.path == '/'+config.landingPath;
 
+    const headerIcon = !isLanding ? <AppBarLogo onTouchTap={this.onLogoClick} /> : <MenuBtn onTouchTap={this.toggleMainMenu} />;
     const headerMain = (
       <span className="header-content">
-        {!UI.isMobile && <MenuBtn onTouchTap={this.toggleMainMenu} />}
+        {!UI.isMobile && !isLanding && <MenuBtn onTouchTap={this.toggleMainMenu} />}
       </span>
     );
     const headerRight = (
@@ -53,7 +56,8 @@ export default class Header extends React.Component {
     return (
       <div className={cn('header', UI.isMobile && 'mobile')}>
         <AppBar title={headerMain}
-          iconElementLeft={<AppBarLogo onTouchTap={this.onLogoClick} />}
+          iconElementLeft={headerIcon}
+          iconStyleLeft={{marginTop: UI.isMobile ? 4 : 2}}
           style={{height: barHeight+'px'}}
           iconElementRight={headerRight}
           iconStyleRight={{marginTop: UI.isMobile ? 0 : 8}}

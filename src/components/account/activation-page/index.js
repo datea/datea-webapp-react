@@ -18,8 +18,7 @@ import './activation-page.scss';
 export default class ActivationPage extends React.Component {
 
   static contextTypes = {
-    router : React.PropTypes.object,
-    route : React.PropTypes.object
+    router : React.PropTypes.object
   }
 
   componentDidMount() {

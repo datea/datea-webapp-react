@@ -1,0 +1,86 @@
+@import '../../scss/vars';
+
+.landing-page-container {
+    padding: 15px 15px;
+    text-align: center;
+    background-color: $yellow;
+
+    .logo-area {
+      padding-top: 1rem;
+      padding-bottom: 0.5rem;
+
+      .icon-datea-logo {
+        width: 60px;
+        height: 60px;
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      .title {
+        font-size: 3.7rem;
+        padding-left: 0.3rem;
+        font-family: 'OldSansBlack';
+        display: inline-block;
+        line-height: 50px;
+        margin: 0;
+        vertical-align: top;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        margin: 0;
+        position: relative;
+        top: 0px;
+        font-weight: 400;
+      }
+    }
+
+    .slogan-area {
+      .dateritos {
+        width: 85%;
+        max-width: 450px;
+      }
+      .slogan {
+        font-size: 1.1rem;
+        font-weight: 300;
+        margin: 10px 30px;
+      }
+    }
+
+    .btns-area {
+      padding-top: 1rem;
+      padding-bottom: 2rem;
+      .msg {
+        font-size: 0.95rem;
+        padding-bottom: 0.7rem;
+      }
+    }
+
+    @media (min-width: $xs-break) {
+      .logo-area {
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+
+        .icon-datea-logo {
+          width: 90px;
+          height: 90px;
+        }
+        .title {
+          font-size: 5rem;
+          padding-left: 0.3rem;
+          line-height: 80px;
+        }
+        .subtitle {
+          font-size: 1.7rem;
+          font-weight: 500;
+        }
+      }
+      .slogan-area {
+        .slogan {
+          font-size: 1.3rem;
+          font-weight: 300;
+          margin: 10px 30px;
+        }
+      }
+    }
+}

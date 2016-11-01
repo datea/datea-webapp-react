@@ -40,3 +40,16 @@ export function t(id, vars) {
   setLanguageFile(USER.locale);
   return poly.t(id, vars);
 }
+
+
+@translatable
+export class Tr extends React.Component {
+  static propTypes = {
+      id  : React.PropTypes.string.isRequired,
+      vars : React.PropTypes.object
+  };
+
+  render() {
+    return <span>{t(this.props.id, this.props.vars)}</span>;
+  }
+}
