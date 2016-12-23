@@ -2,7 +2,7 @@ import './header-mobile.scss';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import UI from '../../../stores/ui';
-import USER from '../../../stores/USER';
+import USER from '../../../stores/user';
 import cn from 'classnames';
 import AppBarLogo from '../common/app-bar-logo';
 import LandingMenuBtn from '../common/menu-button';

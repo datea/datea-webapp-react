@@ -6,7 +6,7 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import UI from '../../stores/ui';
 import USER from '../../stores/user';
-//import SearchIcon from 'material-ui/svg-icons/action/search';
+import scroll from 'scroll';
 
 const SelectableList = makeSelectable(List);
 
@@ -25,7 +25,7 @@ export default class AutocompleteList extends Component {
                value={idx}
                key={i}
                onTouchTap={() => this.context.router.push(path)}
-               className="search-list-item"
+               className={'search-list-item search-ac-item-'+idx}
               />
     }
   }
@@ -35,7 +35,20 @@ export default class AutocompleteList extends Component {
   }
 
   componentDidUpdate() {
-    UI.isMobile && this.adjustMaxHeight();
+    if (UI.isMobile) {
+      this.adjustMaxHeight();
+    }else{
+      if (this.props.selectIdx > -1) {
+        const itemEl = document.querySelector('.search-ac-item-'+this.props.selectIdx);
+        const container = this.refs.wrapper;
+        if (
+            (itemEl.offsetTop + itemEl.offsetHeight) > (container.offsetHeight + container.scrollTop)
+          || (container.scrollTop > 0 && itemEl.offsetTop < container.scrollTop)
+        ) {
+          scroll.top(container, itemEl.offsetTop, {duration: 150});
+        }
+      }
+    }
   }
 
   adjustMaxHeight() {

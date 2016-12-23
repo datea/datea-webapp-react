@@ -85,6 +85,7 @@
 
 .search-ac-list {
   border-top: 1px solid rgb(224, 224, 224);
+  position: relative;
   &.empty {
     border-top: 0;
   }

@@ -21,6 +21,10 @@ import {toJS} from 'mobx';
 @observer
 export default class SearchBar extends Component {
 
+  static contextTypes = {
+    router: React.PropTypes.object
+  };
+
   static defaultProps = {
     iconSize : 30
   };
@@ -32,13 +36,13 @@ export default class SearchBar extends Component {
     this.state = {
       focused       : false,
       query         : '',
-      acResults     : [],
+      acResults     : this.createAcResultItems([], ''),
       acSelectIndex : -1
     };
   }
 
   setFocus = (focused) => {
-    if (this.mouseHover) {
+    if (this.mouseHover && this.state.focused) {
       setTimeout(() => {
         if (this.clearPressed) {
           this.clearPressed = false;
@@ -49,6 +53,7 @@ export default class SearchBar extends Component {
     } else {
       this.setState({focused, acSelectIndex: -1});
     }
+    if (focused) this.doAutoComplete();
   }
 
   handleChange = (ev) => {
@@ -59,26 +64,36 @@ export default class SearchBar extends Component {
 
   doAutoComplete() {
     const query = this.state.query;
-    let state = {acSelectIndex : false};
+    let state = {acSelectIndex : -1};
     if (query && query.length >= 2) {
       DATA.searchAutoComplete(query).then(res => {
-        console.log(res);
-        state.acResults = res;
+        state.acResults = this.createAcResultItems(res, this.state.query);
         this.setState(state);
       });
     }else{
-      state.acResults = [];
+      state.acResults = this.createAcResultItems([], this.state.query);
       this.setState(state);
     }
   }
 
   handlePressKey = (ev) => {
-    if (ev.keyCode == 13) {
-      this.refs.searchField.blur();
-      console.log('run search');
+    const key = ev.keyCode;
+    if (key == 13) {
+      if (this.state.query && this.state.acSelectIndex == -1) {
+        this.refs.searchField.blur();
+        this.context.router.push('/search/'+this.state.query);
+      } else if (this.state.acSelectIndex >= 0) {
+        this.refs.searchField.blur();
+        let path = this.state.acResults.filter(r => r.type == 'listItem')[this.state.acSelectIndex].path;
+        this.setState({query: '', acSelectIndex: -1});
+        this.context.router.push(path);
+      }
     }
-    ev.keyCode == 40 && this.incrementAcResult(1);
-    ev.keyCode == 38 && this.incrementAcResult(-1);
+    if (key == 40 || key == 38) {
+      ev.preventDefault();
+      key == 40 && this.incrementAcResult(1);
+      key == 38 && this.incrementAcResult(-1);
+    }
   }
 
   handleClear = (ev) => {
@@ -106,10 +121,9 @@ export default class SearchBar extends Component {
     }
   }
 
-  createAcResultItems() {
+  createAcResultItems(results, query) {
     let listItems = [];
-    let results = this.state.acResults;
-    let query = this.state.query;
+    let paths     = [];
 
     if (query.length > 1 && !results.length) {
       return listItems;
@@ -203,7 +217,7 @@ export default class SearchBar extends Component {
         boxSizing    : 'border-box',
         width        : '100%',
     };
-    const acResults = this.createAcResultItems();
+    const acResults = this.state.acResults;
 
     return (
       <div className={barClass}
