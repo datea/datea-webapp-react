@@ -216,7 +216,7 @@ export default class SearchBar extends Component {
             hintText={this.state.focused ? 'Buscar mapeos' : ''}
             fullWidth={true}
             onFocus={()=> this.setFocus(true)}
-            onBlur={()=> this.setFocus(true)}
+            onBlur={()=> this.setFocus(false)}
             inputStyle={inputStyle}
             hintStyle={inputStyle}
             style={{display: 'block'}}
