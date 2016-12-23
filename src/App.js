@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import config from './config';
 import USER from './stores/user';
+import UI from './stores/ui';
 
 import MainLayout from './components/main-layout';
 import Home from './components/home';
@@ -26,10 +27,10 @@ injectTapEventPlugin();
 
 ReactDom.render((
   <MuiThemeProvider muiTheme={muiTheme}>
-    <Router history={browserHistory}>
+    <Router history={browserHistory} onUpdate={() => UI.onRouteChange()}>
       <Route path="/" component={MainLayout} >
         <IndexRoute component={Home} onEnter={(params, replace) => !USER.isSignedIn && replace('/'+config.landingPath)} />
-        <Route path={config.landingPath} component={Landing}/>
+        <Route path={config.landingPath} component={Landing} onEnter={(params, replace) => USER.isSignedIn && replace('/')}/>
         <Route path="signin" component={LoginPage} />
         <Route path="signup" component={RegisterPage} />
         <Route path="register" component={RegisterFormPage} />

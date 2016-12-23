@@ -34,6 +34,14 @@
 		"HELP" : "Aide"
 	},
 
+	"SEARCHBOX" : {
+		"SEARCH_MAPPINGS_PH" : "Buscar mapeos",
+		"DATEOS_WITH_QUERY" : "Buscar dateos con:",
+    "MAPPINGS" : "Mapeos",
+    "MY_DATEOS" : "mis dateos",
+    "MAPPINGS_I_FOLLOW" : "Mapeos que sigo"
+	},
+
 	"MENU_FOOTER" : {
 		"CONTACT" : "Contact",
 		"TERMS" : "Conditions d'utilisation",
@@ -226,7 +234,7 @@
 		},
 		"EXPIRED" : "Initiative expirée",
 		"LAST_DAY" : "Dernier jour pour cartographier !",
-		"DAYS_LEFT" : "Il reste {{days}} jours",
+		"DAYS_LEFT" : "Il reste %{days} jours",
 		"MORE_RESULTS" : "Voir davantage de resultats",
 		"NO_RESULTS" : "Aucun résultat",
 		"NO_DATEOS" : "Aucun marqueur lié à cette initiative. Cartographiez !",
@@ -411,7 +419,7 @@
 		"FILTER_TAG" : "Filtrer les étiquettes",
 		"ALL_TAGS" : "Tous",
 		"MAX_LOAD" : "Montrer tous les points",
-		"LOAD_NUM_DATEOS": "Montrer {{num}} points",
+		"LOAD_NUM_DATEOS": "Montrer %{num} points",
 		"ORDER_BY" : "Classer par",
 		"APPLY_BTN" : "Appliquer"
 	},

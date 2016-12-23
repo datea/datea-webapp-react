@@ -1,20 +1,11 @@
-@import '../../scss/vars';
+@import '../../../scss/vars';
 
-.header {
+.header.normal {
 
   .d-icon.icon-datea-logo {
     position: absolute;
     left: 5px;
     top: 11px;
-  }
-
-  &.mobile {
-    .d-icon.icon-datea-logo {
-      top: 7px;
-      left: 3px;
-      width: 34px;
-      height: 34px;
-    }
   }
 
   .header-right {
@@ -40,6 +31,19 @@
       margin-left: 42px;
       font-family: $oldSansBlack;
       font-size: 32px;
+    }
+  }
+
+  .header-content {
+    position: relative;
+    .main-menu {
+      float: left;
+    }
+    .search-container {
+      display: block;
+      padding-top: 7px;
+      margin-left: 60px;
+      margin-right: 25px;
     }
   }
 }

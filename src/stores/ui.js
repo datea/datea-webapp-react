@@ -1,5 +1,6 @@
 import {observable, action, computed} from 'mobx';
 import {rem2px, getBreakpoint} from '../utils';
+import config from '../config';
 
 class UiStore {
 
@@ -11,9 +12,16 @@ class UiStore {
   };
   @observable loading = false;
   @observable lastLoggedOutURL = '/';
+  @observable path      = document.location.pathname;
 
   @computed get isMobile() {
     return this.activeBreakpoint == 'xs'
+  }
+  @computed get isLanding() {
+    return this.path == '/'+config.landingPath;
+  }
+  @computed get isHome() {
+    return this.path == '/';
   }
 
   constructor() {
@@ -44,6 +52,11 @@ class UiStore {
   @action setLastLoggedOutURL(url = null) {
     this.lastLoggedOutURL = url || window.location.pathname + window.location.search
   }
+
+  @action onRouteChange() {
+    this.path = document.location.pathname;
+  }
+
 }
 
 let singleton = new UiStore();

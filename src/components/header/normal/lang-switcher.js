@@ -4,10 +4,10 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
-import UI from '../../stores/ui';
-import USER from '../../stores/user';
+import UI from '../../../stores/ui';
+import USER from '../../../stores/user';
 import {observer} from 'mobx-react';
-import {translatable} from '../../i18n';
+import {translatable} from '../../../i18n';
 
 @translatable
 @observer

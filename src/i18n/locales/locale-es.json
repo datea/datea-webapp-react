@@ -33,6 +33,14 @@
 		"HELP" : "Ayuda"
 	},
 
+	"SEARCHBOX" : {
+		"SEARCH_MAPPINGS_PH" : "Buscar mapeos",
+		"DATEOS_WITH_QUERY" : "Buscar dateos con:",
+    "MAPPINGS" : "Mapeos",
+    "MY_DATEOS" : "mis dateos",
+    "MAPPINGS_I_FOLLOW" : "Mapeos que sigo"
+	},
+
 	"MENU_FOOTER" : {
 		"CONTACT" : "Contacto",
 		"TERMS" : "Términos y condiciones de uso",
@@ -225,7 +233,7 @@
 		},
 		"EXPIRED" : "Iniciativa ha expirado",
 		"LAST_DAY" : "¡último dia para datear!",
-		"DAYS_LEFT" : "faltan {{days}} días",
+		"DAYS_LEFT" : "faltan %{days} días",
 		"MORE_RESULTS" : "Ver más resultados",
 		"NO_RESULTS" : "No hay resultados",
 		"NO_DATEOS" : "Aún no hay dateos en esta iniciativa. ¡Datea!",
@@ -411,7 +419,7 @@
 		"FILTER_TAG" : "filtrar etiqueta",
 		"ALL_TAGS" : "todas",
 		"MAX_LOAD" : "Cargar máximo",
-		"LOAD_NUM_DATEOS": "Cargar {{num}} dateos",
+		"LOAD_NUM_DATEOS": "Cargar %{num} dateos",
 		"ORDER_BY" : "Ordenar por",
 		"APPLY_BTN" : "Aplicar"
 	},
@@ -600,24 +608,24 @@
 	"LOG" : {
 		"IN" : "en",
 		"ONUSER" : {
-			"DATEO" : "{{actor.username}} dateó {{tags}}",
-			"COMMENT" : "{{actor.username}} comentó tu dateo {{tags}}",
-			"VOTE" : "{{actor.username}} apoyó tu dateo {{tags}}",
-			"REDATEO" : "{{actor.username}} redateó tu dateo {{tags}}"
+			"DATEO" : "%{actor.username} dateó %{tags}",
+			"COMMENT" : "%{actor.username} comentó tu dateo %{tags}",
+			"VOTE" : "%{actor.username} apoyó tu dateo %{tags}",
+			"REDATEO" : "%{actor.username} redateó tu dateo %{tags}"
 		},
 		"BYUSER" : {
-			"DATEO" : "dateaste {{tags}}",
-			"COMMENT" : "comentaste el dateo de {{target_user.username}} {{tags}}",
-			"VOTE" : "apoyaste el dateo de {{target_user.username}} {{tags}}",
-			"REDATEO" : "redateaste a {{target_user.username}} {{tags}}",
-			"CAMPAIGN" : "creaste una iniciativa {{tags}}"
+			"DATEO" : "dateaste %{tags}",
+			"COMMENT" : "comentaste el dateo de %{target_user.username} %{tags}",
+			"VOTE" : "apoyaste el dateo de %{target_user.username} %{tags}",
+			"REDATEO" : "redateaste a %{target_user.username} %{tags}",
+			"CAMPAIGN" : "creaste una iniciativa %{tags}"
 		},
 		"ANYUSER" : {
-			"DATEO" : "{{actor.username}} dateó {{tags}}",
-			"COMMENT" : "{{actor.username}} comentó dateo de {{target_user.username}} {{tags}}",
-			"VOTE" : "{{actor.username}} apoyó dateo de {{target_user.username}} {{tags}}",
-			"REDATEO" : "{{actor.username}} redateó a {{target_user.username}} {{tags}}",
-			"CAMPAIGN" : "{{actor.username}} creó una iniciativa {{tags}}"
+			"DATEO" : "%{actor.username} dateó %{tags}",
+			"COMMENT" : "%{actor.username} comentó dateo de %{target_user.username} %{tags}",
+			"VOTE" : "%{actor.username} apoyó dateo de %{target_user.username} %{tags}",
+			"REDATEO" : "%{actor.username} redateó a %{target_user.username} %{tags}",
+			"CAMPAIGN" : "%{actor.username} creó una iniciativa %{tags}"
 		}
 	}
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import UI from '../../stores/ui';
-import USER from '../../stores/user';
+import UI from '../../../stores/ui';
+import USER from '../../../stores/user';
 import IconButton from 'material-ui/IconButton';
 import {observer} from 'mobx-react';
 import FlatButton from 'material-ui/FlatButton';
-import {t, translatable} from '../../i18n';
+import {t, translatable} from '../../../i18n';
 import Avatar from 'material-ui/Avatar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
@@ -12,7 +12,7 @@ import Divider from 'material-ui/Divider';
 import DirectionsRunIcon from 'material-ui/svg-icons/maps/directions-run';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
-import DefaultAvatar from '../misc/default-avatar';
+import DefaultAvatar from '../../misc/default-avatar';
 
 @translatable
 @observer
@@ -60,6 +60,7 @@ export default class UserMenu extends React.Component {
             onTouchTap={this.goToLogin}
             labelStyle={{
               fontSize: '1rem',
+
               paddingRight: UI.isMobile ? 6 : 16,
               paddingLeft: UI.isMobile ? 6 : 16
             }}

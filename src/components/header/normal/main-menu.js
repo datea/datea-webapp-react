@@ -4,14 +4,15 @@ import MenuItem from 'material-ui/MenuItem';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import SelectField from 'material-ui/SelectField';
-import {t, translatable} from '../../i18n';
-import USER from '../../stores/user';
-import UI from '../../stores/ui';
+import {t, translatable} from '../../../i18n';
+import USER from '../../../stores/user';
+import UI from '../../../stores/ui';
 import {observer} from 'mobx-react';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import InfoOutlineIcon from 'material-ui/svg-icons/action/info-outline';
 import HelpOutlineIcon from 'material-ui/svg-icons/action/help-outline';
+import LangSelectMenuItem from '../common/lang-select-menu-item';
 
 const langs = {
   'es' : 'Español',
@@ -40,13 +41,7 @@ export default class MainMenu extends React.Component {
           <br /><br />
           <Divider />
           <Subheader>{t('MENU_TOP.LANGUAGE')}</Subheader>
-          <MenuItem>
-            <SelectField value={USER.locale} onChange={this.onLocaleChange} fullWidth={true}>
-              {['es', 'fr'].map(loc =>
-                <MenuItem key={loc} value={loc} primaryText={langs[loc]} />
-              )}
-            </SelectField>
-          </MenuItem>
+          <LangSelectMenuItem mobile={false} />
       </Drawer>
     )
   }

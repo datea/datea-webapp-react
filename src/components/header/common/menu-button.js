@@ -1,5 +1,5 @@
 import React from 'react';
-import UI from '../../stores/ui';
+import UI from '../../../stores/ui';
 import IconButton from 'material-ui/IconButton';
 import {observer} from 'mobx-react';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
