@@ -17,14 +17,12 @@ import InfoOutlineIcon from 'material-ui/svg-icons/action/info-outline';
 import HelpOutlineIcon from 'material-ui/svg-icons/action/help-outline';
 import LangSelectMenuItem from '../common/lang-select-menu-item';
 import config from '../../../config';
+import {withRouter} from 'react-router';
 
+@withRouter
 @translatable
 @observer
 export default class MobileMenu extends React.Component {
-
-  static contextTypes = {
-    router: React.PropTypes.object
-  }
 
   constructor(props, context) {
     super(props, context);
@@ -32,12 +30,13 @@ export default class MobileMenu extends React.Component {
 
   goTo = (path) => {
     this.props.onRequestChange();
-    this.context.router.push(path);
+    this.props.history.push(path);
   }
+
   logout = () => {
     this.props.onRequestChange();
     USER.signOut();
-    setTimeout(() => this.context.router.push('/'+config.landingPath));
+    setTimeout(() => this.props.history.push('/'+config.landingPath));
   }
 
   render() {

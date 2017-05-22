@@ -12,15 +12,13 @@ import config from '../../../config';
 import MobileMenuBtn from './mobile-menu-btn';
 import BackBtn from './back-btn';
 import SearchBar from '../../search-bar';
+import {withRouter} from 'react-router';
 
 const barHeight = 48;
 
+@withRouter
 @observer
 export default class Header extends React.Component {
-
-  static contextTypes = {
-    router: React.PropTypes.object
-  };
 
   constructor(props, context) {
     super(props, context);
@@ -30,7 +28,7 @@ export default class Header extends React.Component {
   }
 
   toggleMenu = () => this.setState({openMenu: !this.state.openMenu});
-  goHome     = () => this.context.router.push('/');
+  goHome     = () => this.props.history.push('/');
 
   render() {
     let headerLeft;

@@ -2,10 +2,11 @@ var webpack = require('webpack');
 var path = require('path');
 var SvgStore = require('webpack-svgstore-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var loaderRules = require('./webpack-loader-rules');
 
 module.exports = {
     entry: {
-      'datea-web': ['babel-polyfill', path.resolve(__dirname, './src/App.js')]
+      'datea-web': ['babel-polyfill', path.resolve(__dirname, './src/index.js')]
     },
     output: {
         path: path.resolve(__dirname, './dist'),
@@ -13,8 +14,8 @@ module.exports = {
         publicPath: '/'
     },
     plugins: [
-      new webpack.optimize.CommonsChunkPlugin('common.js'),
-      new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.LoaderOptionsPlugin({ debug: false}),
+      new webpack.optimize.CommonsChunkPlugin({name: 'common', filename: 'common.js'}),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, './src/index.html'),
         inject: 'body' // Inject all scripts into the body
@@ -23,38 +24,9 @@ module.exports = {
         svgoOptions: {
           plugins: [{ removeTitle: true }]
         }
-      })
+      }),
+      new webpack.optimize.UglifyJsPlugin({sourceMap: true})
     ],
-    module: {
-        /*preLoaders: [{
-          test: /\.js$/,
-          exclude: /node_modules/,
-          loader: 'eslint?{rules:{"no-unused-vars": [0]}}'
-        }],*/
-        loaders: [{
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel?presets[]=es2015&presets[]=react&presets[]=stage-0&plugins[]=transform-decorators-legacy&plugins[]=transform-runtime'
-        },{
-          test: /\.css$/,
-          loader: "style!css"
-        },{
-            test: /\.scss$/,
-            loader: 'style!css!sass'
-        },{
-            test: /\.json$/,
-            loader: 'json-loader'
-        },{
-          test: /\.woff$|\.ttf$|\.eot$/,
-          loader: 'file-loader?name=fonts/[name]-[hash].[ext]'
-        },{
-          test: /\.jpe?g$|\.gif$|\.png$|\.svg$/,
-          loaders: [
-            'url?limit=8192&hash=sha512&digest=hex&name=img/[hash].[ext]',
-            'image?bypassOnDebug&optimizationLevel=7&interlaced=false'
-          ]
-        }
-      ]
-    },
+    module: {rules: loaderRules},
     bail: false
 };

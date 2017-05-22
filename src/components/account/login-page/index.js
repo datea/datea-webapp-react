@@ -10,23 +10,19 @@ import FbIcon from 'material-ui-community-icons/icons/facebook';
 import TwIcon from 'material-ui-community-icons/icons/twitter';
 import AccountFormContainer from '../account-form-container';
 import DIcon from '../../../icons';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import './login-page.scss';
 
 @translatable
 @observer
 export default class LoginPage extends React.Component {
 
-  static contextTypes = {
-    router : React.PropTypes.object
-  }
-
   componentDidMount() {
-    if (USER.isSignedIn) this.context.router.push('/');
+    if (USER.isSignedIn) this.props.history.push('/');
   }
 
   socialLogin = (party) => USER.socialSignIn(party)
-    .then(res => this.context.router.push(USER.isNew ? '/settings/welcome' : UI.lastLoggedOutURL))
+    .then(res => this.props.history.push(USER.isNew ? '/settings/welcome' : UI.lastLoggedOutURL))
     .catch(err => console.log('err', err))
 
   render() {
@@ -56,6 +52,7 @@ export default class LoginPage extends React.Component {
           </div>
 
           <div className="login-form-title">{t('LOGIN_PAGE.LOGIN_DATEA_TITLE')}</div>
+
           <LoginForm />
 
           <div className="bottom-info">

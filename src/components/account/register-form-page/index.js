@@ -20,10 +20,6 @@ const maxUnameL = config.validation.username.maxLength;
 @observer
 export default class RegisterFormPage extends React.Component {
 
-  static contextTypes = {
-    router: React.PropTypes.object
-  };
-
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -34,7 +30,7 @@ export default class RegisterFormPage extends React.Component {
   }
 
   componentDidMount() {
-    if (USER.isSignedIn) this.context.router.push('/');
+    if (USER.isSignedIn) this.props.history.push('/');
   }
 
   /* EVENT HANDLERS */
@@ -179,7 +175,7 @@ export default class RegisterFormPage extends React.Component {
               <div className="form-btns">
                 <RaisedButton
                   primary={true}
-                  onTouchTap={() => this.context.router.push('/signin')}
+                  onTouchTap={() => this.props.history.push('/signin')}
                   label={t('LOGIN')}
                 />
               </div>

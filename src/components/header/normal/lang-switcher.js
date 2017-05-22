@@ -17,10 +17,7 @@ export default class LangSwitcher extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      open: false,
-    };
+    this.state = { open: false};
   }
 
   handleTouchTap = (event) => {
@@ -82,5 +79,4 @@ export default class LangSwitcher extends React.Component {
       </div>
     );
   }
-
 }

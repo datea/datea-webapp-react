@@ -1,4 +1,5 @@
 import React from 'react';
+import config from '../../../config';
 import UI from '../../../stores/ui';
 import USER from '../../../stores/user';
 import IconButton from 'material-ui/IconButton';
@@ -13,14 +14,12 @@ import DirectionsRunIcon from 'material-ui/svg-icons/maps/directions-run';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import DefaultAvatar from '../../misc/default-avatar';
+import {withRouter} from 'react-router';
 
+@withRouter
 @translatable
 @observer
 export default class UserMenu extends React.Component {
-
-  static contextTypes = {
-    router: React.PropTypes.object
-  }
 
   constructor(props, context) {
     super(props, context);
@@ -33,18 +32,19 @@ export default class UserMenu extends React.Component {
   closeDrawer =() => this.setState({openDrawer: false});
   goToLogin = () => {
     UI.setLastLoggedOutURL();
-    this.context.router.push('/signin');
+    this.props.history.push('/signin');
   }
   goToSettings = () => {
     this.closeDrawer();
-    this.context.router.push('/settings');
+    this.props.history.push('/settings');
   }
   goToProfile = () => {
     this.closeDrawer();
-    this.context.router.push('/'+USER.data.username);
+    this.props.history.push('/'+USER.data.username);
   }
   logout = () => {
     USER.signOut();
+    setTimeout(() => this.props.history.push('/'+config.landingPath));
     this.closeDrawer();
   }
   getAvatarSize() {

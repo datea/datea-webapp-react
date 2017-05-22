@@ -1,0 +1,60 @@
+
+crear componentes:
+
+Basicos:
+
+<Apoyar />
+  -> model
+
+<Seguir />
+  -> model
+
+<Compartir />
+  -> model ?
+  -> url
+
+<Dateo />
+  -> model
+  -> presentation: 'teaser', 'detail', 'image'
+  -> onMapPinClick
+  -> onOpenClick
+  -> onEditClick
+
+<Mapa/>
+  -> dateos
+  -> kmls
+  -> onPointSelect
+  -> getPointColors ?
+  -> zoomToDateo ?
+  -> zoom
+  -> center
+  -> fitBounds ?
+
+<MapInput />
+  -> onPointSet
+  -> onPointDelete
+  -> center
+  -> zoom
+  -> enable
+
+<AuthorInfo />
+  -> author model
+  -> subtitle
+
+
+Mapeo:
+  <Mapping>
+    <SubTags />
+    <MappingView>
+      -> isMobile
+      -> dateos
+      -> type: 'campaign, tag'
+      -> model: campaign or tag
+
+
+
+    <MapControl />
+      -> type: 'campaign', 'tag'
+      -> dateos
+      -> query
+      -> filters

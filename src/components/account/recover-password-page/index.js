@@ -13,10 +13,6 @@ import './recover-password.scss';
 @observer
 export default class RecoverPasswordPage extends React.Component {
 
-  static contextTypes = {
-    router : React.PropTypes.object
-  }
-
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -59,7 +55,7 @@ export default class RecoverPasswordPage extends React.Component {
 
 
   componentDidMount() {
-    if (USER.isSignedIn) this.context.router.push('/');
+    if (USER.isSignedIn) this.props.history.push('/');
   }
 
   render() {

@@ -15,10 +15,6 @@ import LoginForm from '../login-form';
 @observer
 export default class RecoverPasswordConfirmPage extends React.Component {
 
-  static contextTypes = {
-    router : React.PropTypes.object
-  }
-
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -36,7 +32,7 @@ export default class RecoverPasswordConfirmPage extends React.Component {
     document.querySelector('.password-field input').blur();
     document.querySelector('.password-confirm-field input').blur();
   }
-  startOver = () => this.context.router.push('/recover-password');
+  startOver = () => this.props.history.push('/recover-password');
 
   submit = () => {
     this.setState({error: false});
@@ -62,7 +58,7 @@ export default class RecoverPasswordConfirmPage extends React.Component {
   };
 
   componentDidMount() {
-    if (USER.isSignedIn) this.context.router.push('/');
+    if (USER.isSignedIn) this.props.history.push('/');
   }
 
   renderRecoverForm() {

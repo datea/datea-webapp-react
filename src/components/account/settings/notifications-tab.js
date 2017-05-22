@@ -11,10 +11,6 @@ import UI from '../../../stores/ui';
 @observer
 export default class ProfileForm extends React.Component {
 
-  static contextTypes = {
-    router: React.PropTypes.object
-  }
-
   constructor(props, context) {
     super(props, context);
     this.state = {

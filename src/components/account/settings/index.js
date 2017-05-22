@@ -24,10 +24,6 @@ import NotificationsTab from './notifications-tab';
 @observer
 export default class AccountSettings extends React.Component {
 
-  static contextTypes = {
-    router : React.PropTypes.object
-  };
-
   showMessage(msgType) {
     let daterito, title, content, actions, hasClose = true;
     switch (msgType) {
@@ -50,7 +46,7 @@ export default class AccountSettings extends React.Component {
           <RaisedButton primary={true}
             key="next"
             label={t('SETTINGS_PAGE.NEXT')}
-            onTouchTap={() => this.context.router.push('/')} />
+            onTouchTap={() => this.props.history.push('/')} />
         ];
         break;
       default:
@@ -61,7 +57,7 @@ export default class AccountSettings extends React.Component {
         <div className="msg-wrapper">
           {hasClose &&
             <IconButton className="close-icon"
-              onTouchTap={() => this.context.router.replace('/settings')}
+              onTouchTap={() => this.props.history.replace('/settings')}
               style={{position:'absolute', right:-15, top:-15}}>
               <IconClose />
             </IconButton>}

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types'
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 import {toJS} from 'mobx';
 import cn from 'classnames';
@@ -21,10 +22,11 @@ export default class AutocompleteList extends Component {
       return <Subheader style={{lineHeight: '24px', paddingTop: '10px'}} key={i}>{item.text}</Subheader>
     }else{
       const {path, ...props} = item;
-      return <ListItem {...props}
+      return <ListItem
+               {...props}
                value={idx}
                key={i}
-               onTouchTap={() => this.context.router.push(path)}
+               onTouchTap={() => this.props.onItemClick && this.props.onItemClick(path)}
                className={'search-list-item search-ac-item-'+idx}
               />
     }
@@ -39,6 +41,7 @@ export default class AutocompleteList extends Component {
       this.adjustMaxHeight();
     }else{
       if (this.props.selectIdx > -1) {
+        console.log('.search-ac-item-'+this.props.selectIdx);
         const itemEl = document.querySelector('.search-ac-item-'+this.props.selectIdx);
         const container = this.refs.wrapper;
         if (

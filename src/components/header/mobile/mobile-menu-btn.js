@@ -6,19 +6,16 @@ import {observer} from 'mobx-react';
 import FlatButton from 'material-ui/FlatButton';
 import {t, translatable} from '../../../i18n';
 import MoreIcon from 'material-ui/svg-icons/navigation/more-vert';
+import {withRouter} from 'react-router';
 
+@withRouter
 @translatable
 @observer
 export default class UserMenu extends React.Component {
 
-  static contextTypes = {
-    router : React.PropTypes.object,
-    route  : React.PropTypes.object
-  };
-
   goTo = (path) => {
     UI.setLastLoggedOutURL();
-    this.context.router.push(path);
+    this.props.history.push(path);
   }
 
   render() {

@@ -2,15 +2,14 @@ import React from 'react';
 import DIcon from '../../icons';
 import {Tr} from '../../i18n';
 import RaisedButton from 'material-ui/RaisedButton';
+import MappingColumnLayout from '../mapping-column-layout';
+import {withRouter} from 'react-router';
 
 import './landing.scss';
 import dateritos from './dateritos.svg';
 
+@withRouter
 export default class LandingPage extends React.Component {
-
-  static contextTypes = {
-      router: React.PropTypes.object,
-  };
 
   render() {
     return (
@@ -29,7 +28,7 @@ export default class LandingPage extends React.Component {
           <RaisedButton primary={false}
             style={{height: 50}}
             labelStyle={{fontSize: '1.1rem', paddingLeft: '20px', paddingRight: '20px'}}
-            onTouchTap={() => this.context.router.push('/signup')}
+            onTouchTap={() => this.props.history.push('/signup')}
             label={<Tr id="REGISTER" />}
             />
         </div>

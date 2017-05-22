@@ -1,12 +1,10 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import {withRouter} from 'react-router';
 
+@withRouter
 export default class BackButton extends React.Component {
-
-  static contextTypes = {
-    router : React.PropTypes.object
-  };
 
   render() {
     const btnStyle ={
@@ -20,7 +18,7 @@ export default class BackButton extends React.Component {
       top : '1px'
     };
     return (
-      <IconButton onTouchTap={() => this.context.router.goBack()} style={btnStyle} iconStyle={iconStyle}>
+      <IconButton onTouchTap={() => this.props.history.goBack()} style={btnStyle} iconStyle={iconStyle}>
         <ArrowBack />
       </IconButton>
     )

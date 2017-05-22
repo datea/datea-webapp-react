@@ -7,14 +7,12 @@ import {t, translatable} from '../../../i18n';
 import USER from '../../../stores/user';
 import UI from '../../../stores/ui';
 import './login-form.scss';
+import {withRouter} from 'react-router';
 
+@withRouter
 @translatable
 @observer
 export default class LoginForm extends React.Component {
-
-  static contextTypes = {
-    router: React.PropTypes.object
-  }
 
   constructor(props, context) {
     super(props, context);
@@ -35,7 +33,7 @@ export default class LoginForm extends React.Component {
       if (this.props.onSuccess) {
         this.props.onSuccess(res);
       } else {
-        this.context.router.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL);
+        this.props.history.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL);
       }
     })
     .catch(err => {

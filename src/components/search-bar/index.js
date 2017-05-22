@@ -1,5 +1,6 @@
 import './search-bar.scss';
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types'
 import {observer} from 'mobx-react';
 import _ from 'lodash';
 import cn from 'classnames';
@@ -16,13 +17,14 @@ import Avatar from 'material-ui/Avatar';
 import DefaultAvatar from '../misc/default-avatar';
 import {getImgSrc} from '../../utils';
 import {toJS} from 'mobx';
+import MapMarkerMultipleIcon from 'material-ui-community-icons/icons/map-marker-multiple';
 
 @translatable
 @observer
 export default class SearchBar extends Component {
 
   static contextTypes = {
-    router: React.PropTypes.object
+    router: PropTypes.object
   };
 
   static defaultProps = {
@@ -49,11 +51,12 @@ export default class SearchBar extends Component {
         } else {
           this.setState({focused, acSelectIndex: -1});
         }
+        focused && setTimeout(() => this.doAutoComplete());
       }, 300);
     } else {
       this.setState({focused, acSelectIndex: -1});
+      focused && this.doAutoComplete();
     }
-    if (focused) this.doAutoComplete();
   }
 
   handleChange = (ev) => {
@@ -96,9 +99,14 @@ export default class SearchBar extends Component {
     }
   }
 
+  navigateTo = (path) => {
+    this.setState({query: '', acSelectIndex: -1});
+    this.context.router.push(path);
+  }
+
   handleClear = (ev) => {
     this.clearPressed = true;
-    this.setState({query: '', acResults: [], acSelectIndex: -1});
+    this.setState({query: '', acResults: this.createAcResultItems([], ''), acSelectIndex: -1});
     this.refs.searchField.focus();
   }
 
@@ -177,7 +185,9 @@ export default class SearchBar extends Component {
           type: 'listItem',
           primaryText : item.campaigns[0].name,
           secondaryText: '#'+item.tag+', '+item.dateo_count+' dateos',
-          leftAvatar : <Avatar src={getImgSrc(item.campaigns[0].thumb)} style={{borderRadius: '5px'}} />,
+          leftAvatar : !!item.campaigns[0].thumb ?
+              <Avatar src={getImgSrc(item.campaigns[0].thumb)} style={{borderRadius: '5px'}} /> :
+              <Avatar icon={<MapMarkerMultipleIcon />} style={{borderRadius: '5px'}} />,
           path: '/'+ item.campaigns[0].username+'/'+item.campaigns[0].slug
         }
       }
@@ -197,7 +207,9 @@ export default class SearchBar extends Component {
         return {
                 type: 'listItem',
                 primaryText : item.name,
-                leftAvatar : <Avatar src={getImgSrc(item.thumb)} style={{borderRadius: '5px'}}/>,
+                leftAvatar : !!item.thumb ?
+                    <Avatar src={getImgSrc(item.thumb)} style={{borderRadius: '5px'}} /> :
+                    <Avatar icon={<MapMarkerMultipleIcon />} style={{borderRadius: '5px'}} />,
                 secondaryText : '#'+item.main_tag+', '+item.dateo_count+' dateos',
                 path : '/'+item.user+'/'+item.slug
               };
@@ -224,7 +236,8 @@ export default class SearchBar extends Component {
         onMouseEnter={() => this.mouseHover = true}
         onMouseLeave={() => this.mouseHover = false}>
         <div className="search-box">
-          <SearchIcon className="search-icon" style={{width: this.props.iconSize, height: this.props.iconSize}} />
+          <SearchIcon className="search-icon"
+            style={{width: this.props.iconSize, height: this.props.iconSize}} />
           <TextField ref="searchField"
             name="mainSearch"
             hintText={this.state.focused ? 'Buscar mapeos' : ''}
@@ -253,6 +266,7 @@ export default class SearchBar extends Component {
             <AutocompleteList
               items={acResults}
               selectIdx={this.state.acSelectIndex}
+              onItemClick={this.navigateTo}
              />
           </div>
         }

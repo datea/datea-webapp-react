@@ -10,19 +10,15 @@ import FbIcon from 'material-ui-community-icons/icons/facebook';
 import TwIcon from 'material-ui-community-icons/icons/twitter';
 import AccountFormContainer from '../account-form-container';
 import DIcon from '../../../icons';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import './activation-page.scss';
 
 @translatable
 @observer
 export default class ActivationPage extends React.Component {
 
-  static contextTypes = {
-    router : React.PropTypes.object
-  }
-
   componentDidMount() {
-    if (USER.isSignedIn) this.context.router.push('/');
+    if (USER.isSignedIn) this.props.history.push('/');
   }
 
   render() {
@@ -40,7 +36,7 @@ export default class ActivationPage extends React.Component {
 
           {success &&
             <div>
-              <LoginForm onSuccess={() => this.context.router.push('/settings/welcome')} />
+              <LoginForm onSuccess={() => this.props.history.push('/settings/welcome')} />
 
               <div className="bottom-info">
                 <div className="info-line">
@@ -52,7 +48,7 @@ export default class ActivationPage extends React.Component {
           {!success &&
             <div className="form-btns">
               <RaisedButton primary={true}
-                onTouchTap={() => this.context.router.push('/signin')}
+                onTouchTap={() => this.props.history.push('/signin')}
                 label={t('REGISTER')}
                 />
             </div>

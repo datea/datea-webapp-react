@@ -1,6 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import {observer} from 'mobx-react';
@@ -18,20 +18,16 @@ import './register-page.scss';
 @observer
 export default class RegisterPage extends React.Component {
 
-  static contextTypes = {
-    router: React.PropTypes.object
-  };
-
   componentDidMount() {
-    if (USER.isSignedIn) this.context.router.push('/');
+    if (USER.isSignedIn) this.props.history.push('/');
   }
 
   socialLogin = (party) => USER.socialSignIn(party)
-    .then(res => this.context.router.push(USER.isNew ? '/settings/welcome' : UI.lastLoggedOutURL))
+    .then(res => this.props.history.push(USER.isNew ? '/settings/welcome' : UI.lastLoggedOutURL))
     .catch(err => console.log('err', err))
 
   goToRegister = () => {
-    this.context.router.push('/register');
+    this.props.history.push('/register');
   }
 
   render() {

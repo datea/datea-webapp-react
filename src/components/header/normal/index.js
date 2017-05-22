@@ -11,15 +11,13 @@ import MainMenu from './main-menu';
 import {observer} from 'mobx-react';
 import config from '../../../config';
 import SearchBar from '../../search-bar';
+import {withRouter} from 'react-router';
 
 const barHeight = 64;
 
+@withRouter
 @observer
 export default class Header extends React.Component {
-
-  static contextTypes = {
-    router: React.PropTypes.object
-  };
 
   constructor(props, context) {
     super(props, context);
@@ -31,12 +29,13 @@ export default class Header extends React.Component {
   toggleMainMenu = () => this.setState({openMainMenu: !this.state.openMainMenu});
   setDrawer    = (o) => this.setState({openMainMenu: o});
   onLogoClick  = (ev) => {
-    this.context.router.push('/');
+    this.props.history.push('/');
   }
 
   render() {
 
     const headerIcon = !UI.isLanding ? <AppBarLogo onTouchTap={this.onLogoClick} /> : <MenuBtn onTouchTap={this.toggleMainMenu} />;
+
     const headerMain = (
       <span className="header-content">
         {!UI.isLanding && <MenuBtn onTouchTap={this.toggleMainMenu} className="main-menu" />}
