@@ -3,11 +3,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import ImageField from '../../image-field';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
-import USER from '../../../stores/user';
-import UI from '../../../stores/ui';
 
+@inject('store')
 @translatable
 @observer
 export default class ProfileForm extends React.Component {
@@ -26,17 +25,18 @@ export default class ProfileForm extends React.Component {
   notifyFormError = (e) => console.log('form error', e);
   resetError = () => this.setState({errorMsg: false});
 
-  submit = () => USER.save(this.refs.profileForm.getModel())
+  submit = () => this.props.store.user.save(this.refs.profileForm.getModel())
   //submit = () => console.log(this.refs.profileForm.getModel())
 
-  saveNewAvatar = (imgRes) => USER.save({image: imgRes});
-  saveNewUserBg = (imgRes) => USER.save({bg_image: imgRes});
+  saveNewAvatar = (imgRes) => this.props.store.user.save({image: imgRes});
+  saveNewUserBg = (imgRes) => this.props.store.user.save({bg_image: imgRes});
 
   blurTextInputs = () => {
     let fis = document.querySelectorAll('.form-field input').forEach(f => f.blur())
   };
 
   render() {
+    const {store: {user}} = this.props;
     return (
       <div className="settings-tab-content profile-tab">
 
@@ -54,7 +54,7 @@ export default class ProfileForm extends React.Component {
               <div className="img-label">{t('SETTINGS_PAGE.AVATAR_LABEL')}</div>
               <ImageField
                 onUploadSuccess={this.saveNewAvatar}
-                src={USER.data.image_large}
+                src={user.data.image_large}
                 imgType="avatar"
                 iconSize={120}
                 />
@@ -64,7 +64,7 @@ export default class ProfileForm extends React.Component {
               <div className="img-label">{t('SETTINGS_PAGE.BG_LABEL')}</div>
               <ImageField
                 onUploadSuccess={this.saveNewUserBg}
-                src={USER.data.bg_image}
+                src={user.data.bg_image}
                 />
             </div>
 
@@ -72,7 +72,7 @@ export default class ProfileForm extends React.Component {
             <div className="input-row">
               <FormsyText
                 name="full_name"
-                value={USER.data.full_name}
+                value={user.data.full_name}
                 className="fullname-field form-field"
                 floatingLabelText={t('SETTINGS_PAGE.NAME_LABEL')}
                 />
@@ -81,7 +81,7 @@ export default class ProfileForm extends React.Component {
             <div className="input-row">
               <FormsyText
                 name="url"
-                value={USER.data.url}
+                value={user.data.url}
                 className="url-field form-field"
                 floatingLabelText={t('SETTINGS_PAGE.URL_LABEL')}
                 validations="isUrl" />
@@ -92,7 +92,7 @@ export default class ProfileForm extends React.Component {
             <div className="input-row">
               <FormsyText
                 name="url_facebook"
-                value={USER.data.url_facebook}
+                value={user.data.url_facebook}
                 className="url-fb-field form-field"
                 floatingLabelText={t('SETTINGS_PAGE.FB_URL_LABEL')}
                 validations="isUrl" />
@@ -101,7 +101,7 @@ export default class ProfileForm extends React.Component {
             <div className="input-row">
               <FormsyText
                 name="url_twitter"
-                value={USER.data.url_twitter}
+                value={user.data.url_twitter}
                 className="url-tw-field form-field"
                 floatingLabelText={t('SETTINGS_PAGE.TW_URL_LABEL')}
                 validations="isUrl" />
@@ -110,7 +110,7 @@ export default class ProfileForm extends React.Component {
             <div className="input-row">
               <FormsyText
                 name="url_youtube"
-                value={USER.data.url_youtube}
+                value={user.data.url_youtube}
                 className="url-yt-field form-field"
                 floatingLabelText={t('SETTINGS_PAGE.YOUTUBE_URL_LABEL')}
                 validations="isUrl" />

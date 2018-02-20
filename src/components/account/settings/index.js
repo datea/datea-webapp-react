@@ -1,25 +1,24 @@
+import './settings.scss';
 import React from 'react';
-import USER from '../../../stores/user';
-import UI from '../../../stores/ui';
 import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import IconClose from 'material-ui/svg-icons/navigation/close';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {t, translatable} from '../../../i18n';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import DIcon from '../../../icons';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import config from '../../../config';
-import './settings.scss';
 import {colors} from '../../../theme/vars';
 
 import AccountTab from './account-tab';
 import ProfileTab from './profile-tab';
 import NotificationsTab from './notifications-tab';
 
+@inject('store')
 @translatable
 @observer
 export default class AccountSettings extends React.Component {
@@ -57,7 +56,7 @@ export default class AccountSettings extends React.Component {
         <div className="msg-wrapper">
           {hasClose &&
             <IconButton className="close-icon"
-              onTouchTap={() => this.props.history.replace('/settings')}
+              onTouchTap={() => this.props.store.goTo('settings')}
               style={{position:'absolute', right:-15, top:-15}}>
               <IconClose />
             </IconButton>}
@@ -70,20 +69,20 @@ export default class AccountSettings extends React.Component {
   }
 
   render() {
-
-    const tabBtnStyle = {fontSize : UI.isMobile ? '0.75rem' : '0.9rem'};
-    let urlValue = this.props.params.urlValue;
-    if (USER.data.status == 0) urlValue = 'email-confirm';
+    const {user, ui, router} = this.props.store;
+    const tabBtnStyle = {fontSize : (ui.isMobile ? '0.75rem' : '0.9rem')};
+    let page = router.params.page;
+    if (user.data.status == 0) page = 'email-confirm';
 
     let tab = 0;
-    if (urlValue == 'profile') tab = 1;
-    if (urlValue == 'notifications') tab = 2;
+    if (page == 'profile') tab = 1;
+    if (page == 'notifications') tab = 2;
 
     return (
       <div>
 
         {/* ACCOUNT MESSAGES */}
-        {!!urlValue && this.showMessage(urlValue)}
+        {!!page && this.showMessage(page)}
 
         <h3 className="settings-title">
           <SettingsIcon color="#777" />

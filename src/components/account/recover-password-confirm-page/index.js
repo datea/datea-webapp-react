@@ -1,8 +1,7 @@
 import React from 'react';
-import USER from '../../../stores/user';
 import RaisedButton from 'material-ui/RaisedButton';
 import {t, translatable} from '../../../i18n';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
@@ -11,6 +10,7 @@ import './recover-password-confirm.scss';
 import config from '../../../config';
 import LoginForm from '../login-form';
 
+@inject('store')
 @translatable
 @observer
 export default class RecoverPasswordConfirmPage extends React.Component {
@@ -32,7 +32,7 @@ export default class RecoverPasswordConfirmPage extends React.Component {
     document.querySelector('.password-field input').blur();
     document.querySelector('.password-confirm-field input').blur();
   }
-  startOver = () => this.props.history.push('/recover-password');
+  startOver = () => this.props.store.goTo('recover-password');
 
   submit = () => {
     this.setState({error: false});
@@ -41,7 +41,7 @@ export default class RecoverPasswordConfirmPage extends React.Component {
       token    : this.props.params.token,
       password : this.refs.passConfirmForm.getModel().password
     }
-    USER.confirmResetPassword(params)
+    this.props.store.user.confirmResetPassword(params)
     .then(res => this.setState({success: true}))
     .catch(err => {
       switch (err.response.status) {
@@ -56,10 +56,6 @@ export default class RecoverPasswordConfirmPage extends React.Component {
       }
     })
   };
-
-  componentDidMount() {
-    if (USER.isSignedIn) this.props.history.push('/');
-  }
 
   renderRecoverForm() {
     return (
@@ -159,9 +155,9 @@ export default class RecoverPasswordConfirmPage extends React.Component {
     let content;
     if (!this.state.success && this.state.errorCode != 400) {
       content = this.renderRecoverForm();
-    }else if (this.state.success) {
+    } else if (this.state.success) {
       content = this.renderSuccess();
-    }else if (this.state.errorCode == 400) {
+    } else if (this.state.errorCode == 400) {
       content = this.renderRecoverExpired();
     }
     return (

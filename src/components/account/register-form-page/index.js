@@ -2,9 +2,8 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
-import USER from '../../../stores/user';
 import DateroIcon from '../../../theme/datero-caminando';
 import AccountFormContainer from '../account-form-container';
 import {emailExists, usernameExists} from '../../../utils';
@@ -16,6 +15,7 @@ import './register-form-page.scss';
 const minUnameL = config.validation.username.minLength;
 const maxUnameL = config.validation.username.maxLength;
 
+@inject('store')
 @translatable
 @observer
 export default class RegisterFormPage extends React.Component {
@@ -27,10 +27,6 @@ export default class RegisterFormPage extends React.Component {
       success   : false,
       error     : false
     }
-  }
-
-  componentDidMount() {
-    if (USER.isSignedIn) this.props.history.push('/');
   }
 
   /* EVENT HANDLERS */
@@ -70,12 +66,13 @@ export default class RegisterFormPage extends React.Component {
     }
   }
 
-  submit = () => USER.register(this.refs.registerForm.getModel())
+  submit = () => this.props.store.user.register(this.refs.registerForm.getModel())
     .then(res => this.setState({success: true}))
     .catch(err => this.setState({error: t('ERROR.UNKNOWN')}))
 
 
   render() {
+    const {store} = this.props;
     return (
       <AccountFormContainer className="register-form-page">
         {!this.state.success &&
@@ -175,7 +172,7 @@ export default class RegisterFormPage extends React.Component {
               <div className="form-btns">
                 <RaisedButton
                   primary={true}
-                  onTouchTap={() => this.props.history.push('/signin')}
+                  onTouchTap={() => store.goTo('login')}
                   label={t('LOGIN')}
                 />
               </div>

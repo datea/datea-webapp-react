@@ -1,0 +1,35 @@
+@import '../../scss/vars';
+
+.author-header {
+  position: relative;
+  min-height: 44px;
+  padding: 5px 0;
+  .avatar-holder {
+    position: absolute;
+    top: 5px;
+    left: 0;
+  }
+  .author-info {
+    margin-left: 52px;
+    .uname {
+      color: black;
+      font-weight: 400;
+      a {
+        color: black;
+        text-decoration: none;
+      }
+    }
+    .sub-title {
+      padding-top: 2px;
+      color: $textColor;
+      font-size: 12px;
+      a {
+        color: $textColor;
+        text-decoration: none;
+        &:hover {
+          color: darken($textColor, 10%);
+        }
+      }
+    }
+  }
+}

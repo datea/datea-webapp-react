@@ -1,15 +1,17 @@
 import './mapping-column-layout.scss';
 import React, {Component} from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import {observer} from 'mobx-react';
 import MappingCard from '../mapping-card';
 
-const MappingColumnLayout = ({items}) =>
+const MappingColumnLayout = observer(({mappings}) =>
   <div className="mapping-column-layout">
-    {items.map((item, i) =>
+    {!!mappings && mappings.values().map((item, i) =>
       <div className="mapping-column-item" key={'m-'+i}>
         <MappingCard mapping={item} />
       </div>
     )}
   </div>
+)
 
 export default MappingColumnLayout;

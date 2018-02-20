@@ -1,4 +1,10 @@
 
+DATA:
+  - hydrate campaign with subtags Map with tag as key
+  - lastLoggedOutURL con nuevo router
+
+
+
 crear componentes:
 
 Basicos:
@@ -13,12 +19,28 @@ Basicos:
   -> model ?
   -> url
 
+<AuthorInfo />
+  -> author model
+  -> subtitle
+
 <Dateo />
   -> model
   -> presentation: 'teaser', 'detail', 'image'
   -> onMapPinClick
   -> onOpenClick
   -> onEditClick
+
+  <UrlView />
+    -> url
+
+  <ImageGrid />
+    -> image objects
+
+  <FileView />
+    -> File Objects
+
+  -> transladar todas las urls a al texto del dateo, abajo
+
 
 <Mapa/>
   -> dateos
@@ -37,10 +59,6 @@ Basicos:
   -> zoom
   -> enable
 
-<AuthorInfo />
-  -> author model
-  -> subtitle
-
 
 Mapeo:
   <Mapping>
@@ -50,8 +68,6 @@ Mapeo:
       -> dateos
       -> type: 'campaign, tag'
       -> model: campaign or tag
-
-
 
     <MapControl />
       -> type: 'campaign', 'tag'

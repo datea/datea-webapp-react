@@ -2,11 +2,10 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Formsy from 'formsy-react';
 import FormsyCheckbox from 'formsy-material-ui/lib/FormsyCheckbox';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
-import USER from '../../../stores/user';
-import UI from '../../../stores/ui';
 
+@inject('store')
 @translatable
 @observer
 export default class ProfileForm extends React.Component {
@@ -23,10 +22,11 @@ export default class ProfileForm extends React.Component {
   submit = () => {
     let model = this.refs.notifySettingsForm.getModel();
     model.notify_settings.id = USER.data.notify_settings.id;
-    USER.save(model);
+    this.props.store.user.save(model);
   }
 
   render() {
+    const {store: {user}} = this.props;
     return (
       <div className="settings-tab-content notifications-tab">
 
@@ -43,7 +43,7 @@ export default class ProfileForm extends React.Component {
             <div className="checkbox-row">
               <FormsyCheckbox
                 name="notify_settings.interaction"
-                value={USER.data.notify_settings.interaction}
+                value={user.data.notify_settings.interaction}
                 className="form-checkbox"
                 label={t('SETTINGS_PAGE.NOTIFY.MY_CONTENT')}
                 />
@@ -52,7 +52,7 @@ export default class ProfileForm extends React.Component {
             <div className="checkbox-row">
               <FormsyCheckbox
                 name="notify_settings.conversations"
-                value={USER.data.notify_settings.conversations}
+                value={user.data.notify_settings.conversations}
                 className="form-checkbox"
                 label={t('SETTINGS_PAGE.NOTIFY.THREADS')}
                 />
@@ -61,7 +61,7 @@ export default class ProfileForm extends React.Component {
             <div className="checkbox-row">
               <FormsyCheckbox
                 name="notify_settings.tags_dateos"
-                value={USER.data.notify_settings.tags_dateos}
+                value={user.data.notify_settings.tags_dateos}
                 className="form-checkbox"
                 label={t('SETTINGS_PAGE.NOTIFY.DATEOS_IN_TAGS')}
                 />
@@ -70,7 +70,7 @@ export default class ProfileForm extends React.Component {
             <div className="checkbox-row">
               <FormsyCheckbox
                 name="notify_settings.tags_reports"
-                value={USER.data.notify_settings.tags_reports}
+                value={user.data.notify_settings.tags_reports}
                 className="form-checkbox"
                 label={t('SETTINGS_PAGE.NOTIFY.CAMPAIGN_MSG')}
                 />
@@ -79,7 +79,7 @@ export default class ProfileForm extends React.Component {
             <div className="checkbox-row">
               <FormsyCheckbox
                 name="notify_settings.site_news"
-                value={USER.data.notify_settings.site_news}
+                value={user.data.notify_settings.site_news}
                 className="form-checkbox"
                 label={t('SETTINGS_PAGE.NOTIFY.NEWSLETTER')}
                 />

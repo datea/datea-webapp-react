@@ -1,7 +1,5 @@
 import React from 'react';
-import UI from '../../../stores/ui';
-import USER from '../../../stores/user';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
 import Avatar from 'material-ui/Avatar';
 import Drawer from 'material-ui/Drawer';
@@ -17,9 +15,8 @@ import InfoOutlineIcon from 'material-ui/svg-icons/action/info-outline';
 import HelpOutlineIcon from 'material-ui/svg-icons/action/help-outline';
 import LangSelectMenuItem from '../common/lang-select-menu-item';
 import config from '../../../config';
-import {withRouter} from 'react-router';
 
-@withRouter
+@inject('store')
 @translatable
 @observer
 export default class MobileMenu extends React.Component {
@@ -34,45 +31,47 @@ export default class MobileMenu extends React.Component {
   }
 
   logout = () => {
+    const {store} = this.props;
     this.props.onRequestChange();
-    USER.signOut();
-    setTimeout(() => this.props.history.push('/'+config.landingPath));
+    store.user.signOut();
+    setTimeout(() => store.goTo('welcome'));
   }
 
   render() {
+    const {user, ui, router, goTo} = this.props.store;
     return (
         <Drawer docked={false}
           open={this.props.open}
-          openSecondary={UI.isLanding || !USER.isSignedIn ? false : true}
+          openSecondary={router.currentView.name == 'welcome' || !user.isSignedIn ? false : true}
           className="user-drawer"
           onRequestChange={this.props.onRequestChange}>
 
-              { USER.isSignedIn &&
+              { user.isSignedIn &&
               <div className="profile-menu-avatar">
-                {!!USER.image ? <Avatar src={USER.largeImage} size={100} /> : <DefaultAvatar size={100} />}
+                {!!user.image ? <Avatar src={user.largeImage} size={100} /> : <DefaultAvatar size={100} />}
               </div> }
 
               <MenuItem primaryText={t('MENU_TOP.HOME')} leftIcon={<HomeIcon/>}
-               onTouchTap={() => this.goTo('/')}
+               onTouchTap={() => goTo('home')}
                />
 
-              { USER.isSignedIn &&
+             { user.isSignedIn &&
               <MenuItem primaryText={t('USER_MENU.GOTO_PROFILE')} leftIcon={<PersonIcon />}
-               onTouchTap={() => this.goTo('/'+USER.username)}
+               onTouchTap={() => {console.log('hey hey');goTo('profile', {username: user.username})}}
                />
               }
 
               <MenuItem primaryText={t('MENU_TOP.ABOUT')} leftIcon={<InfoOutlineIcon/>}
-               onTouchTap={() => this.goTo('/about')}
+               onTouchTap={() => goTo('about')}
                />
 
               <LangSelectMenuItem mobile={true} />
 
-              { USER.isSignedIn &&
+              { user.isSignedIn &&
               <span>
                 <Divider />
                 <MenuItem primaryText={t('USER_MENU.CONFIG')} leftIcon={<SettingsIcon />}
-                 onTouchTap={() => this.goTo('/settings')}
+                 onTouchTap={() => goTo('settings')}
                  />
                 <MenuItem primaryText={t('USER_MENU.LOGOUT')} leftIcon={<DirectionsRunIcon />}
                  onTouchTap={this.logout}

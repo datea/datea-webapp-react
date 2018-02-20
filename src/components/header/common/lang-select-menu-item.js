@@ -1,8 +1,7 @@
 import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
-import USER from '../../../stores/user';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import FlagIcon from 'material-ui/svg-icons/content/flag';
 
 const langs = {
@@ -10,6 +9,7 @@ const langs = {
   'fr' : 'Français'
 }
 
+@inject('store')
 @observer
 export default class MainMenu extends React.Component {
 
@@ -17,9 +17,10 @@ export default class MainMenu extends React.Component {
     super(props, context);
   }
 
-  onLocaleChange = (event, index, value) => USER.setLocale(value);
+  onLocaleChange = (event, index, value) => this.props.store.user.setLocale(value);
 
   render() {
+    const {store: {user}} = this.props;
     let mItemProps = {};
     if (this.props.mobile) {
       mItemProps.leftIcon = <FlagIcon/>;
@@ -28,7 +29,7 @@ export default class MainMenu extends React.Component {
     }
     return (
       <MenuItem {...mItemProps}>
-        <SelectField value={USER.locale} onChange={this.onLocaleChange} fullWidth={true}>
+        <SelectField value={user.locale} onChange={this.onLocaleChange} fullWidth={true}>
           {['es', 'fr'].map(loc =>
             <MenuItem key={loc} value={loc} primaryText={langs[loc]} />
           )}

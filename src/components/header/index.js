@@ -1,16 +1,17 @@
 import './header.scss';
 import React from 'react';
-import UI from '../../stores/ui';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import config from '../../config';
 import MobileHeader from './mobile';
 import NormalHeader from './normal';
 
+@inject('store')
 @observer
 export default class Header extends React.Component {
 
   render() {
-    if (UI.isMobile) return <MobileHeader />
+    const {ui} = this.props.store;
+    if (ui.isMobile) return <MobileHeader />
     return <NormalHeader />
   }
 }

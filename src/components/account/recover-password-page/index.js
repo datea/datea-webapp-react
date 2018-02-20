@@ -1,14 +1,14 @@
 import React from 'react';
-import USER from '../../../stores/user';
 import RaisedButton from 'material-ui/RaisedButton';
 import {t, translatable} from '../../../i18n';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import DIcon from '../../../icons';
 import './recover-password.scss';
 
+@inject('store')
 @translatable
 @observer
 export default class RecoverPasswordPage extends React.Component {
@@ -33,7 +33,7 @@ export default class RecoverPasswordPage extends React.Component {
     return email;
   }
 
-  submit = () => this.setState({error: false}) || USER.resetPassword(this.getEmail())
+  submit = () => this.setState({error: false}) || this.props.store.user.resetPassword(this.getEmail())
     .then(res => this.setState({success: true}))
     .catch(err => {
       switch (err.response.status) {
@@ -49,14 +49,9 @@ export default class RecoverPasswordPage extends React.Component {
       }
     })
 
-  resubmit = () => this.setState({error: false}) || USER.resetPassword(this.email)
+  resubmit = () => this.setState({error: false}) || this.props.store.user.resetPassword(this.email)
     .then(res => this.setState({resubmitted: true}))
     .catch(err => this.setState({error: t('ERROR.UNKNOWN')}))
-
-
-  componentDidMount() {
-    if (USER.isSignedIn) this.props.history.push('/');
-  }
 
   render() {
     return (

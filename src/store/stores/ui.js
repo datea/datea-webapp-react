@@ -1,8 +1,8 @@
 import {observable, action, computed} from 'mobx';
-import {rem2px, getBreakpoint} from '../utils';
-import config from '../config';
+import {rem2px, getBreakpoint} from '../../utils';
+import config from '../../config';
 
-class UiStore {
+export default class UiStore {
 
   @observable activeBreakpoint = getBreakpoint();
   @observable windowSize = {width: window.innerWidth, height: window.innerHeight};
@@ -11,8 +11,12 @@ class UiStore {
     docHeightMode : 'auto' // or 'window' -> for same as the window.
   };
   @observable loading = false;
-  @observable lastLoggedOutURL = '/';
-  @observable path      = document.location.pathname;
+  @observable path = document.location.pathname;
+
+  @observable modals = {
+    slideshow : false,
+    dateo     : false
+  };
 
   @computed get isMobile() {
     return this.activeBreakpoint == 'xs'
@@ -24,7 +28,8 @@ class UiStore {
     return this.path == '/';
   }
 
-  constructor() {
+  constructor(main) {
+    this.main = main;
     window.addEventListener('resize', this.handleResize);
   }
 
@@ -49,15 +54,17 @@ class UiStore {
     this.loading = bool;
   }
 
-  @action setLastLoggedOutURL(url = null) {
-    this.lastLoggedOutURL = url || window.location.pathname + window.location.search
+  /************* SLIDSHOW *****************/
+  @action openSlideshow(images, index = 0) {
+    this.modals.slideshow = {images, index};
   }
 
-  @action onRouteChange() {
-    this.path = document.location.pathname;
+  @action setSlideIndex(idx) {
+    this.modals.slideshow.index = idx;
+  }
+
+  @action closeSlideShow() {
+    this.modals.slideshow = false;
   }
 
 }
-
-let singleton = new UiStore();
-export default singleton;

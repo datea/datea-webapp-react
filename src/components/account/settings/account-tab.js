@@ -1,9 +1,8 @@
 import React from 'react';
-import USER from '../../../stores/user';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import {t, translatable} from '../../../i18n';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import validations from 'formsy-react/src/validationRules';
@@ -15,6 +14,8 @@ import config from '../../../config';
 const minUnameL = config.validation.username.minLength;
 const maxUnameL = config.validation.username.maxLength;
 
+@inject('store')
+@observer
 export default class AccountTab extends React.Component {
 
   constructor(props, context) {
@@ -46,14 +47,14 @@ export default class AccountTab extends React.Component {
     if (warnEmailChange && model.email != USER.data.email) {
       this.setState({emailDialogOpen: true});
     } else {
-      USER.save(model)
+      this.props.store.user.save(model)
       .catch(err => this.setState({errorMsg: t('ERROR.UNKNOWN')}));
     }
   }
 
   validateEmailOnServer = (ev) => {
     const mail = ev.currentTarget.value;
-    if (validations.isEmail([], mail) && mail !== USER.data.email) {
+    if (validations.isEmail([], mail) && mail !== this.props.store.user.data.email) {
       emailExists(mail)
       .then(res => {
         res.body.result && this.refs.accountForm.updateInputsWithError({
@@ -66,7 +67,7 @@ export default class AccountTab extends React.Component {
   validateUsernameOnServer = (ev) => {
     const uname = ev.currentTarget.value;
     if (validations.isAlphanumeric([], uname)
-      && uname !== USER.data.username
+      && uname !== this.props.store.user.data.username
       && uname.length >= minUnameL
       && uname.length < maxUnameL) {
         usernameExists(uname)
@@ -95,6 +96,7 @@ export default class AccountTab extends React.Component {
   }
 
   render() {
+    const {store: {user}} = this.props;
     return (
       <div className="settings-tab-content account-tab">
 
@@ -125,7 +127,7 @@ export default class AccountTab extends React.Component {
             <FormsyText
               name="username"
               required
-              value={USER.data.username}
+              value={user.data.username}
               className="username-field form-field"
               onBlur={this.validateUsernameOnServer}
               floatingLabelText={t('REGISTER_FORM_PAGE.USERNAME_LABEL')}
@@ -141,7 +143,7 @@ export default class AccountTab extends React.Component {
             <FormsyText
               name="email"
               required
-              value={USER.data.email}
+              value={user.data.email}
               onBlur={this.validateEmailOnServer}
               className="email-field form-field"
               floatingLabelText={t('REGISTER_FORM_PAGE.EMAIL_LABEL')}

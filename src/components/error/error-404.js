@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class LandingPage extends React.Component {
+export default class Error404 extends React.Component {
 
   render() {
     return (

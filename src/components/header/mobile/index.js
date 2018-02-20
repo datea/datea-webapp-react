@@ -1,22 +1,19 @@
 import './header-mobile.scss';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import UI from '../../../stores/ui';
-import USER from '../../../stores/user';
 import cn from 'classnames';
 import AppBarLogo from '../common/app-bar-logo';
 import LandingMenuBtn from '../common/menu-button';
 import MobileMenu from './mobile-menu';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import config from '../../../config';
 import MobileMenuBtn from './mobile-menu-btn';
 import BackBtn from './back-btn';
 import SearchBar from '../../search-bar';
-import {withRouter} from 'react-router';
 
 const barHeight = 48;
 
-@withRouter
+@inject('store')
 @observer
 export default class Header extends React.Component {
 
@@ -28,14 +25,15 @@ export default class Header extends React.Component {
   }
 
   toggleMenu = () => this.setState({openMenu: !this.state.openMenu});
-  goHome     = () => this.props.history.push('/');
+  goHome     = () => this.props.store.goTo('home');
 
   render() {
+    const {store: {user, ui}} = this.props;
     let headerLeft;
-    if (USER.isSignedIn) {
-      headerLeft = UI.isHome ? <AppBarLogo onTouchTap={this.goHome} /> : <BackBtn />;
+    if (user.isSignedIn) {
+      headerLeft = ui.isHome ? <AppBarLogo onTouchTap={this.goHome} /> : <BackBtn />;
     }else{
-      headerLeft = UI.isLanding ? <LandingMenuBtn onTouchTap={this.toggleMenu} /> : <AppBarLogo onTouchTap={this.goHome} />;
+      headerLeft = ui.isLanding ? <LandingMenuBtn onTouchTap={this.toggleMenu} /> : <AppBarLogo onTouchTap={this.goHome} />;
     }
 
     const headerMain = <SearchBar />;
@@ -45,7 +43,7 @@ export default class Header extends React.Component {
       <div className="header mobile">
         <AppBar title={headerMain}
           iconElementLeft={headerLeft}
-          iconStyleLeft={{marginTop: !USER.isSignedIn && UI.isLanding ? 3 : 0}}
+          iconStyleLeft={{marginTop: !user.isSignedIn && ui.isLanding ? 3 : 0}}
           style={{height: barHeight}}
           iconElementRight={headerRight}
           iconStyleRight={{marginTop: 0}}

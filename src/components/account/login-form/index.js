@@ -1,15 +1,12 @@
+import './login-form.scss';
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
-import USER from '../../../stores/user';
-import UI from '../../../stores/ui';
-import './login-form.scss';
-import {withRouter} from 'react-router';
 
-@withRouter
+@inject('store')
 @translatable
 @observer
 export default class LoginForm extends React.Component {
@@ -28,15 +25,28 @@ export default class LoginForm extends React.Component {
   notifyFormError = (e) => console.log('form error', e);
   resetError = () => this.setState({errorMsg: false});
 
-  submit = () => USER.login(this.refs.loginForm.getModel())
+  // TODO: put this logic into the store, error inclusive
+  submit = () => this.props.store.user.login(this.refs.loginForm.getModel(), )
     .then(res => {
+      const {store} = this.props;
       if (this.props.onSuccess) {
         this.props.onSuccess(res);
       } else {
-        this.props.history.push(USER.isNew ? '/settings' : UI.lastLoggedOutURL);
+        const {store} = this.props;
+        if (!store.user.isNew) {
+          const {view, params, queryParams} = store.user.lastLoggedOutView;
+          if (view && view.name != 'welcome') {
+            store.goTo(view, params, queryParams);
+          } else {
+            store.goTo('home');
+          }
+        }else{
+          store.goTo('settings' ,{page: 'welcome'});
+        }
       }
     })
     .catch(err => {
+      console.log(err);
       if (err.response && err.response.status == 404) {
         this.setState({errorMsg: t('ACCOUNT_MSG.LOGIN_ERROR')});
       } else {

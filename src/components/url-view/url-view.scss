@@ -1,0 +1,59 @@
+@import '../../scss/vars';
+
+.url-view {
+  position: relative;
+  color: $textColor;
+  text-decoration: none;
+  display: flex;
+  margin: 10px 0;
+  padding: 15px 10px;
+  border-top: 1px dashed #eaeaea;
+  border-bottom: 1px dashed #eaeaea;
+
+  &:hover{
+    color: $textColor;
+    text-decoration: none;
+    background-color: #fefefe;
+  }
+
+  &:active {
+    color: $textColor;
+    text-decoration: none;
+  }
+
+  .link-icon {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+  }
+
+  .url-img {
+    display: inline-block;
+    vertical-align: top;
+    background-size: cover;
+    background-position: center;
+    min-width: 100px;
+    max-width: 100px;
+    margin-right: 15px;
+    height: 100px;
+    flex: 1;
+    flex-shrink: 0;
+  }
+  .url-info {
+    display: inline-block;
+    vertical-align: top;
+    .url-title {
+      margin-bottom: 5px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .url-desc {
+      font-size: 13px;
+      max-height: 3.6rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    flex: 2;
+    flex-grow: 1;
+  }
+}

@@ -1,17 +1,18 @@
 import React from 'react';
-import UI from '../../../stores/ui';
 import IconButton from 'material-ui/IconButton';
 import DIcon from '../../../icons';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 
+@inject('store')
 @observer
 export default class AppBarLogo extends React.Component {
   render() {
-    const logoSize = UI.isMobile ? 44 * 3/4 : 44;
+    const logoSize = this.props.store.ui.isMobile ? 44 * 3/4 : 44;
+    const {store, ...otherProps} = this.props;
     return (
       <IconButton
           style={{width: logoSize+'px', height: logoSize+'px', border: 0}}
-          {...this.props} >
+          {...otherProps} >
           <DIcon name="datea-logo" />
       </IconButton>
     )

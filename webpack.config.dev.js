@@ -9,8 +9,9 @@ var config = {
   devServer: {
     host: 'localhost',
     historyApiFallback: true,
+    disableHostCheck: true,
     hot: true,
-    port: 9000
+    port: 80
   },
   entry: [
     'react-hot-loader/patch',

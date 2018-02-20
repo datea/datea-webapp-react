@@ -1,7 +1,9 @@
+import './image-field.scss';
 import React from 'react';
+import PropTypes from 'prop-types';
 import request from 'superagent';
 import Dropzone from 'react-dropzone';
-import USER from '../../stores/user';
+import {observer, inject} from 'mobx-react';
 import CircularProgress from 'material-ui/CircularProgress';
 import Avatar from 'material-ui/Avatar';
 import AddPhotoIcon from 'material-ui/svg-icons/image/add-a-photo';
@@ -11,18 +13,19 @@ import config from '../../config';
 import urlJoin from 'url-join';
 import {colors} from '../../theme/vars';
 import {t,translatable} from '../../i18n';
-import './image-field.scss';
 
-
+@inject('store')
+@translatable
+@observer
 export default class ImageField extends React.Component {
 
   static propTypes = {
-    onUploadError   : React.PropTypes.func,
-    onUploadSuccess : React.PropTypes.func,
-    className       : React.PropTypes.string,
-    src             : React.PropTypes.string,
-    imgType         : React.PropTypes.string,
-    iconSize        : React.PropTypes.number
+    onUploadError   : PropTypes.func,
+    onUploadSuccess : PropTypes.func,
+    className       : PropTypes.string,
+    src             : PropTypes.string,
+    imgType         : PropTypes.string,
+    iconSize        : PropTypes.number
   };
 
   static defaultProps = {
@@ -61,6 +64,7 @@ export default class ImageField extends React.Component {
   }
 
   onDrop = (files) => {
+    const {user} = this.props.store;
     this.setState({
       src       : files[0].preview,
       uploading : true,
@@ -68,10 +72,11 @@ export default class ImageField extends React.Component {
       errorMsg  : null
     });
 
+    // TODO: move this logic into a store
     request.post(urlJoin(config.api.imgUrl, 'image/save/'))
     .set({
       Accept : 'application/json',
-      Authorization : 'Apikey ' + USER.data.username + ':' + USER.apiKey
+      Authorization : 'Apikey ' + user.data.username + ':' + user.apiKey
     })
     .attach('image', files[0])
     .on('progress', e => !!e.percent && this.setState({progress: e.percent}))

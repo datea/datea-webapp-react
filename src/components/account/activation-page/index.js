@@ -1,30 +1,27 @@
+import './activation-page.scss';
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import UI from '../../../stores/ui';
-import USER from '../../../stores/user';
 import RaisedButton from 'material-ui/RaisedButton';
 import {t, translatable} from '../../../i18n';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
+import Link from '../../link';
 import LoginForm from '../login-form';
 import FbIcon from 'material-ui-community-icons/icons/facebook';
 import TwIcon from 'material-ui-community-icons/icons/twitter';
 import AccountFormContainer from '../account-form-container';
 import DIcon from '../../../icons';
-import {Link} from 'react-router-dom';
-import './activation-page.scss';
 
+
+@inject('store')
 @translatable
 @observer
 export default class ActivationPage extends React.Component {
-
-  componentDidMount() {
-    if (USER.isSignedIn) this.props.history.push('/');
-  }
 
   render() {
     const success = this.props.params.outcome == 'success';
     const icon    = success ? 'daterito1' : 'daterito6';
     const msg     = success ? 'COMPLETE' : 'ERROR';
+    const {store} = this.props;
     return (
       <AccountFormContainer className="login-page">
         <div className="account-form-header with-icon">
@@ -36,11 +33,11 @@ export default class ActivationPage extends React.Component {
 
           {success &&
             <div>
-              <LoginForm onSuccess={() => this.props.history.push('/settings/welcome')} />
+              <LoginForm onSuccess={() => store.goTo('settings', {page: 'welcome'})} />
 
               <div className="bottom-info">
                 <div className="info-line">
-                  <Link to="recover-password">{t('LOGIN_PAGE.RECOVER_PASS_LINK')}</Link>
+                  <Link view="recover-password">{t('LOGIN_PAGE.RECOVER_PASS_LINK')}</Link>
                 </div>
               </div>
             </div>
@@ -48,7 +45,7 @@ export default class ActivationPage extends React.Component {
           {!success &&
             <div className="form-btns">
               <RaisedButton primary={true}
-                onTouchTap={() => this.props.history.push('/signin')}
+                onTouchTap={() => store.goTo('register')}
                 label={t('REGISTER')}
                 />
             </div>

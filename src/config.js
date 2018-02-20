@@ -10,12 +10,9 @@ const config = {
 		url    : 'http://127.0.0.1:8000/api/v2/',
 		imgUrl : 'http://127.0.0.1:8000'
 	},
-  landingPath : 'welcome',
-  oauthio : {
-    publicKey: 'du8nXdQmkjgR3nrfsjHxO07INhk',
-    url: 'https://api.datea.io:57',
-    api: 'https://api.datea.io:57/api'
-  },
+
+  facebookAppId: '222271061161837',
+
   validation : {
     username : {
       minLength : 2,

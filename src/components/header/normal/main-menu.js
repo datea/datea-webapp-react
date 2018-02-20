@@ -5,9 +5,7 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import SelectField from 'material-ui/SelectField';
 import {t, translatable} from '../../../i18n';
-import USER from '../../../stores/user';
-import UI from '../../../stores/ui';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import InfoOutlineIcon from 'material-ui/svg-icons/action/info-outline';
@@ -19,6 +17,7 @@ const langs = {
   'fr' : 'Français'
 }
 
+@inject('store')
 @translatable
 @observer
 export default class MainMenu extends React.Component {
@@ -27,7 +26,7 @@ export default class MainMenu extends React.Component {
     super(props, context);
   }
 
-  onLocaleChange = (event, index, value) => USER.setLocale(value);
+  onLocaleChange = (event, index, value) => this.props.store.user.setLocale(value);
 
   render() {
     return (

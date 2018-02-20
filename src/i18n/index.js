@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Polyglot from 'node-polyglot';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import es from './locales/locale-es.json';
 import fr from './locales/locale-fr.json';
-import USER from '../stores/user';
 import {getCurrentLocale} from './utils';
 
 const langPhrases = {es, fr};
@@ -24,29 +24,31 @@ setLanguageFile(getCurrentLocale());
  decorator to trigger rerender with mobx
  when translation changed
  **/
-@observer
 export function translatable(Component) {
-  return class Translatable extends React.Component {
+  @inject('store')
+  @observer
+  class Translatable extends React.Component {
     render() {
-      return <Component {...this.props} lang={USER.locale} />;
+      return <Component {...this.props} lang={this.props.store.user.locale} />;
     }
   }
+  return Translatable;
 }
 
 /***
 string translation function
 **/
 export function t(id, vars) {
-  setLanguageFile(USER.locale);
   return poly.t(id, vars);
 }
 
 
 @translatable
 export class Tr extends React.Component {
+
   static propTypes = {
-      id  : React.PropTypes.string.isRequired,
-      vars : React.PropTypes.object
+      id  : PropTypes.string.isRequired,
+      vars : PropTypes.object
   };
 
   render() {

@@ -4,11 +4,10 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
-import UI from '../../../stores/ui';
-import USER from '../../../stores/user';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import {translatable} from '../../../i18n';
 
+@inject('store')
 @translatable
 @observer
 export default class LangSwitcher extends React.Component {
@@ -36,12 +35,13 @@ export default class LangSwitcher extends React.Component {
   };
 
   switchLang = (loc) => {
-    USER.setLocale(loc);
+    this.props.store.user.setLocale(loc);
     this.setState({open: false});
   }
 
   render() {
-    if (UI.isMobile) return <span></span>;
+    const {user, ui} = this.props.store;
+    if (ui.isMobile) return <span></span>;
 
     const btnStyle = {
       //border: '1px solid black',
@@ -57,10 +57,10 @@ export default class LangSwitcher extends React.Component {
     };
 
     return (
-      <div className={classnames('lang-switcher', UI.isMobile && 'mobile')}>
+      <div className={classnames('lang-switcher', ui.isMobile && 'mobile')}>
         <FlatButton
           onTouchTap={this.handleTouchTap}
-          label={USER.locale}
+          label={user.locale}
           style={btnStyle}
           labelStyle={labelStyle} />
         <Popover
@@ -71,7 +71,7 @@ export default class LangSwitcher extends React.Component {
           onRequestClose={this.handleRequestClose}
         >
           <Menu>
-            {this.locales.filter(loc => loc != USER.locale).map(loc =>
+            {this.locales.filter(loc => loc != user.locale).map(loc =>
               <MenuItem key={loc} primaryText={loc.toUpperCase()} onTouchTap={() => this.switchLang(loc)}/>
             )}
           </Menu>

@@ -1,0 +1,19 @@
+
+.dateo {
+  .tags {
+    margin: 15px 0;
+    .tag {
+      display: inline-block;
+      margin-right: 10px;
+      line-height: 24px;
+    }
+  }
+  .content {
+    font-size: 15px;
+    margin: 0 0 15px;
+  }
+}
+
+.dateo-detail {
+  max-width: 400px;
+}

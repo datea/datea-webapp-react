@@ -1,0 +1,42 @@
+@import '../../scss/vars';
+
+.file-view {
+  position: relative;
+  padding: 10px;
+  display: block;
+  background-color: white;
+  border: 1px solid $greyLighter;
+  border-radius: 3px;
+
+  &:hover, &:active {
+    text-decoration: none;
+  }
+
+  &:hover {
+    background-color: $greyLighter;
+  }
+
+  .file-icon {
+    position: absolute;
+    left: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+    fill: $greyLight !important;
+  }
+  .file-title {
+    margin-left: 40px;
+    display: block;
+  }
+  .file-name {
+    margin-top: 3px;
+    display: block;
+    margin-left: 40px;
+  }
+
+  &.with-title {
+    .file-name {
+      color: $textColor;
+      font-size: 13px;
+    }
+  }
+}

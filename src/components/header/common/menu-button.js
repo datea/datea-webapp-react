@@ -1,26 +1,28 @@
 import React from 'react';
-import UI from '../../../stores/ui';
 import IconButton from 'material-ui/IconButton';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 
+@inject('store')
 @observer
 export default class MenuBtn extends React.Component {
 
   render() {
+    const {store, ...otherProps} = this.props;
+    const {ui} = store;
     const menuIconStyle = {
-      width: (UI.isMobile ? 34 * 3/4 : 34)+'px',
-      height: (UI.isMobile ? 34 * 3/4 : 34)+'px',
+      width: (ui.isMobile ? 34 * 3/4 : 34)+'px',
+      height: (ui.isMobile ? 34 * 3/4 : 34)+'px',
       position: 'relative',
-      top: UI.isMobile ? '-3px' : '3px',
+      top: ui.isMobile ? '-3px' : '3px',
       left: '-5px'
     };
     const menuBtnStyle = {
-      width: UI.isMobile ? '44px' : '48px',
-      height: UI.isMobile ? '44px' : '48px'
+      width: ui.isMobile ? '44px' : '48px',
+      height: ui.isMobile ? '44px' : '48px'
     };
     return <IconButton
-      {...this.props}
+      {...otherProps}
       style={menuBtnStyle}
       iconStyle={menuIconStyle}>
       <MenuIcon  />

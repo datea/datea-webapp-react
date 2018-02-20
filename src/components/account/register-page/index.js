@@ -1,12 +1,10 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import {Link} from 'react-router-dom';
+import Link from '../../link';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
-import USER from '../../../stores/user';
-import UI from '../../../stores/ui';
 import FbIcon from 'material-ui-community-icons/icons/facebook';
 import TwIcon from 'material-ui-community-icons/icons/twitter';
 import DateroIcon from '../../../theme/datero-caminando';
@@ -14,20 +12,26 @@ import DIcon from '../../../icons';
 import AccountFormContainer from '../account-form-container';
 import './register-page.scss';
 
+@inject('store')
 @translatable
 @observer
 export default class RegisterPage extends React.Component {
 
-  componentDidMount() {
-    if (USER.isSignedIn) this.props.history.push('/');
-  }
-
+  // TODO: put this logic into stores
   socialLogin = (party) => USER.socialSignIn(party)
-    .then(res => this.props.history.push(USER.isNew ? '/settings/welcome' : UI.lastLoggedOutURL))
+    .then(res => {
+      const {store} = this.props;
+      if (!store.user.isNew) {
+        const {view, params, queryParams} = store.user.lastLoggedOutView;
+        store.goTo(view, params, queryParams);
+      }else{
+        store.goTo('settings' ,{page: 'welcome'});
+      }
+    })
     .catch(err => console.log('err', err))
 
   goToRegister = () => {
-    this.props.history.push('/register');
+    this.props.store.goTo('registerFormPage');
   }
 
   render() {
@@ -65,7 +69,7 @@ export default class RegisterPage extends React.Component {
           </div>
           <div className="bottom-info">
             <div className="info-line">{t('REGISTER_PAGE.NOT_WITHOUT_CONSENT')}</div>
-            <div className="info-line"><Link to="/privacidad">{(t('MENU_FOOTER.PRIVACY'))}</Link></div>
+            <div className="info-line"><Link view="privacidad">{(t('MENU_FOOTER.PRIVACY'))}</Link></div>
           </div>
         </div>
       </AccountFormContainer>

@@ -1,24 +1,21 @@
 import './search-bar.scss';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types'
-import {observer} from 'mobx-react';
 import _ from 'lodash';
 import cn from 'classnames';
-import UI from '../../stores/ui';
-import USER from '../../stores/user';
-import DATA from '../../stores/data';
+import {observer, inject} from 'mobx-react';
 import TextField from 'material-ui/TextField';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import AutocompleteList from './autocomplete-list';
-import {t, translatable} from '../../i18n';
 import Avatar from 'material-ui/Avatar';
+import MapMarkerMultipleIcon from 'material-ui-community-icons/icons/map-marker-multiple';
+import {t, translatable} from '../../i18n';
 import DefaultAvatar from '../misc/default-avatar';
 import {getImgSrc} from '../../utils';
-import {toJS} from 'mobx';
-import MapMarkerMultipleIcon from 'material-ui-community-icons/icons/map-marker-multiple';
 
+@inject('store')
 @translatable
 @observer
 export default class SearchBar extends Component {
@@ -66,10 +63,11 @@ export default class SearchBar extends Component {
   }
 
   doAutoComplete() {
+    const {data} = this.props.store;
     const query = this.state.query;
     let state = {acSelectIndex : -1};
     if (query && query.length >= 2) {
-      DATA.searchAutoComplete(query).then(res => {
+      data.searchAutoComplete(query).then(res => {
         state.acResults = this.createAcResultItems(res, this.state.query);
         this.setState(state);
       });
@@ -80,16 +78,18 @@ export default class SearchBar extends Component {
   }
 
   handlePressKey = (ev) => {
+    const {store} = this.props;
     const key = ev.keyCode;
     if (key == 13) {
       if (this.state.query && this.state.acSelectIndex == -1) {
         this.refs.searchField.blur();
-        this.context.router.push('/search/'+this.state.query);
+        const query = this.state.query.trim();
+        store.goTo('search', {query});
       } else if (this.state.acSelectIndex >= 0) {
         this.refs.searchField.blur();
-        let path = this.state.acResults.filter(r => r.type == 'listItem')[this.state.acSelectIndex].path;
+        let route = this.state.acResults.filter(r => r.type == 'listItem')[this.state.acSelectIndex].route;
         this.setState({query: '', acSelectIndex: -1});
-        this.context.router.push(path);
+        store.goTo(route.view, route.params);
       }
     }
     if (key == 40 || key == 38) {
@@ -99,9 +99,9 @@ export default class SearchBar extends Component {
     }
   }
 
-  navigateTo = (path) => {
+  navigateTo = (route) => {
     this.setState({query: '', acSelectIndex: -1});
-    this.context.router.push(path);
+    this.props.store.goTo(route.view, route.params);
   }
 
   handleClear = (ev) => {
@@ -111,10 +111,11 @@ export default class SearchBar extends Component {
   }
 
   incrementAcResult(num) {
+    const {user} = this.props.store;
     let totalResults;
     if (this.state.query.length < 2) {
-      if (USER.isSignedIn) {
-        totalResults = (!!USER.data.dateo_count ? 1 : 0) + (USER.data.tags_followed.length);
+      if (user.isSignedIn) {
+        totalResults = (!!user.data.dateo_count ? 1 : 0) + (user.data.tags_followed.length);
       }else{
         totalResults = 0;
       }
@@ -130,15 +131,15 @@ export default class SearchBar extends Component {
   }
 
   createAcResultItems(results, query) {
+    const {user} = this.props.store;
     let listItems = [];
-    let paths     = [];
 
     if (query.length > 1 && !results.length) {
       return listItems;
     } else if (!results || !results.length) {
       // add personal dateos
-      if (USER.isSignedIn) {
-        if (USER.data.dateo_count > 0) {
+      if (user.isSignedIn) {
+        if (user.data.dateo_count > 0) {
           listItems.push({
             type: 'listItem',
             primaryText:
@@ -146,12 +147,12 @@ export default class SearchBar extends Component {
                      <strong>{'@'+USER.data.username}</strong>
                      <span> {'('+t('SEARCHBOX.MY_DATEOS')+')'}</span>
                    </span>,
-            secondaryText: USER.data.dateo_count+ ' dateos',
-            leftAvatar: USER.image ? <Avatar src={USER.smallImage} /> : <DefaultAvatar />,
-            path : '/'+USER.data.username+'/dateos'
+            secondaryText: user.data.dateo_count+ ' dateos',
+            leftAvatar: user.image ? <Avatar src={user.smallImage} /> : <DefaultAvatar />,
+            route : { view: 'profileDateos'}
           });
 
-          if (USER.data.tags_followed.length) {
+          if (user.data.tags_followed.length) {
             // add stuff I follow
             listItems.push({
               type : 'subHeader',
@@ -172,13 +173,14 @@ export default class SearchBar extends Component {
   }
 
   createFollowedAcItemList() {
-    return USER.data.tags_followed.map(item => {
+    const {user} = this.props;
+    return user.data.tags_followed.map(item => {
       if (t.type == 'tag') {
         return {
           type: 'listItem',
           primaryText: '#'+item.tag,
           secondaryText : item.dateo_count + 'dateos',
-          path: '/tag/'+item.tag,
+          route: {view: 'tag', params: {tag: item.tag}}
         }
       }else{
         return {
@@ -188,7 +190,13 @@ export default class SearchBar extends Component {
           leftAvatar : !!item.campaigns[0].thumb ?
               <Avatar src={getImgSrc(item.campaigns[0].thumb)} style={{borderRadius: '5px'}} /> :
               <Avatar icon={<MapMarkerMultipleIcon />} style={{borderRadius: '5px'}} />,
-          path: '/'+ item.campaigns[0].username+'/'+item.campaigns[0].slug
+          route: {
+            view: 'campaign',
+            params: {
+              username: item.campaigns[0].username,
+              slug: item.campaigns[0].slug
+            }
+          }
         }
       }
     })
@@ -201,7 +209,10 @@ export default class SearchBar extends Component {
                 type: 'listItem',
                 primaryText : '#'+item.tag,
                 secondaryText : item.dateo_count+' dateos',
-                path : '/tag/'+item.tag
+                route : {
+                  view: 'tag',
+                  params: {tag: item.tag}
+                }
               };
       }else if (item.type == 'campaign') {
         return {
@@ -211,16 +222,23 @@ export default class SearchBar extends Component {
                     <Avatar src={getImgSrc(item.thumb)} style={{borderRadius: '5px'}} /> :
                     <Avatar icon={<MapMarkerMultipleIcon />} style={{borderRadius: '5px'}} />,
                 secondaryText : '#'+item.main_tag+', '+item.dateo_count+' dateos',
-                path : '/'+item.user+'/'+item.slug
+                route : {
+                  view: 'campaign',
+                  params: {
+                    username: item.user,
+                    slug: item.slug
+                  }
+                }
               };
       }
     });
   }
 
   render() {
+    const {ui} = this.props.store
     const barClass = cn(
       'search-bar',
-      UI.isMobile ? 'mobile' : 'normal',
+      ui.isMobile ? 'mobile' : 'normal',
       this.state.focused && 'focused'
     );
     const inputStyle = {

@@ -3,13 +3,27 @@ var rules = [
   /********** JS ***********/
   {
     test: /\.js$/,
-    exclude: /node_modules/,
+    exclude: /node_modules/, ///node_modules\/(?!(mobx-router)\/).*/,
     use : {
       loader: 'babel-loader',
       options: {
         cacheDirectory: true,
-        presets : [['es2015', {modules : false}], 'react', 'stage-0'],
-        plugins : ['transform-decorators-legacy'] //, 'transform-runtime']
+        presets : [['env',{
+          "targets": {
+            "browsers": ["last 2 versions"]
+          }
+        }], 'react'],
+        plugins : [
+          'transform-decorators-legacy',
+          'transform-object-rest-spread',
+          'transform-es2015-modules-commonjs',
+          'transform-es2017-object-entries',
+          'transform-es2015-destructuring',
+          'transform-class-properties',
+          'fast-async',
+          'transform-export-extensions',
+          //'transform-optional-chaining'
+        ]
       }
     }
   },

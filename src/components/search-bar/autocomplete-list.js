@@ -1,43 +1,39 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types'
 import {List, ListItem, makeSelectable} from 'material-ui/List';
-import {toJS} from 'mobx';
+import {observer, inject} from 'mobx-react';
 import cn from 'classnames';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
-import UI from '../../stores/ui';
-import USER from '../../stores/user';
 import scroll from 'scroll';
 
 const SelectableList = makeSelectable(List);
 
+@inject('store')
+@observer
 export default class AutocompleteList extends Component {
-
-  static contextTypes = {
-    router : React.PropTypes.object
-  }
 
   renderListItem (item, idx, i) {
     if (item.type == 'subHeader') {
       return <Subheader style={{lineHeight: '24px', paddingTop: '10px'}} key={i}>{item.text}</Subheader>
     }else{
-      const {path, ...props} = item;
+      const {route, ...props} = item;
       return <ListItem
                {...props}
                value={idx}
                key={i}
-               onTouchTap={() => this.props.onItemClick && this.props.onItemClick(path)}
+               onTouchTap={() => this.props.onItemClick && this.props.onItemClick(route)}
                className={'search-list-item search-ac-item-'+idx}
               />
     }
   }
 
   componentDidMount() {
-    UI.isMobile && this.adjustMaxHeight();
+    this.props.store.ui.isMobile && this.adjustMaxHeight();
   }
 
   componentDidUpdate() {
-    if (UI.isMobile) {
+    if (this.props.store.ui.isMobile) {
       this.adjustMaxHeight();
     }else{
       if (this.props.selectIdx > -1) {

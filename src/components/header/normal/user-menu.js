@@ -1,9 +1,7 @@
 import React from 'react';
 import config from '../../../config';
-import UI from '../../../stores/ui';
-import USER from '../../../stores/user';
 import IconButton from 'material-ui/IconButton';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import FlatButton from 'material-ui/FlatButton';
 import {t, translatable} from '../../../i18n';
 import Avatar from 'material-ui/Avatar';
@@ -14,9 +12,10 @@ import DirectionsRunIcon from 'material-ui/svg-icons/maps/directions-run';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import DefaultAvatar from '../../misc/default-avatar';
-import {withRouter} from 'react-router';
+import UserAvatar from '../../user-avatar';
 
-@withRouter
+
+@inject('store')
 @translatable
 @observer
 export default class UserMenu extends React.Component {
@@ -30,57 +29,51 @@ export default class UserMenu extends React.Component {
 
   toggleUserDrawer = () => this.setState({openDrawer: !this.state.openDrawer});
   closeDrawer =() => this.setState({openDrawer: false});
-  goToLogin = () => {
-    UI.setLastLoggedOutURL();
-    this.props.history.push('/signin');
-  }
+  goTo = (...args) => this.props.store.goTo(...args);
   goToSettings = () => {
     this.closeDrawer();
-    this.props.history.push('/settings');
+    this.props.store.goTo('settings');
   }
   goToProfile = () => {
     this.closeDrawer();
-    this.props.history.push('/'+USER.data.username);
+    this.props.store.goTo('profile', {username: this.props.store.user.data.username});
   }
   logout = () => {
-    USER.signOut();
-    setTimeout(() => this.props.history.push('/'+config.landingPath));
+    const {store} = this.props;
+    store.user.signOut();
+    setTimeout(() => store.goTo('welcome'));
     this.closeDrawer();
   }
+
   getAvatarSize() {
-    return UI.isMobile ? 36:44;
+    return this.props.store.ui.isMobile ? 36:44;
   }
 
   render() {
+    const {user, ui, router} = this.props.store;
+    const isLoginView = !!router && router.currentView && router.currentView.name == 'login';
     return (
       <span className="user-menu">
-        {!USER.isSignedIn &&
+        {!user.isSignedIn &&
           <FlatButton
-            label={t('LOGIN')}
-            onTouchTap={this.goToLogin}
+            label={t(isLoginView ? 'REGISTER' : 'LOGIN')}
+            onTouchTap={() => this.goTo(isLoginView ? 'register' : 'login')}
             labelStyle={{
               fontSize: '1rem',
 
-              paddingRight: UI.isMobile ? 6 : 16,
-              paddingLeft: UI.isMobile ? 6 : 16
+              paddingRight: ui.isMobile ? 6 : 16,
+              paddingLeft: ui.isMobile ? 6 : 16
             }}
-            style={{marginTop: UI.isMobile ? 6 : 7 }}
+            style={{marginTop: ui.isMobile ? 6 : 7 }}
             className="login-btn"
             />
         }
-        {USER.isSignedIn &&
+        {user.isSignedIn &&
           <span>
             <IconButton
               onTouchTap={this.toggleUserDrawer}
               style={{border: 0, padding: 0}}>
-              {!!USER.image &&
-                <Avatar
-                  src={USER.image}
-                  size={this.getAvatarSize()}
-                />}
-              {!USER.image &&
-                <DefaultAvatar size={this.getAvatarSize()} />
-              }
+              <UserAvatar src={user.image} size={this.getAvatarSize()} />
             </IconButton>
             <Drawer
               docked={false}
@@ -89,13 +82,10 @@ export default class UserMenu extends React.Component {
               className="user-drawer"
               onRequestChange={this.toggleUserDrawer}>
                   <div className="profile-menu-avatar">
-                    {!!USER.image &&
-                      <Avatar
-                        src={USER.largeImage}
-                        size={UI.isMobile ? 100 : 120}
-                      />}
-                    {!USER.image &&
-                      <DefaultAvatar size={UI.isMobile ? 100 : 120} />}
+                    <UserAvatar
+                      src={user.largeImage}
+                      size={ui.isMobile ? 100 : 120}
+                    />
                   </div>
                   <MenuItem onTouchTap={this.goToProfile}
                     leftIcon={<PersonIcon />}>

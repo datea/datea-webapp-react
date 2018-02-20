@@ -1,21 +1,19 @@
 import './header-normal.scss';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import UI from '../../../stores/ui';
 import cn from 'classnames';
 import AppBarLogo from '../common/app-bar-logo';
 import MenuBtn from '../common/menu-button';
 import UserMenu from './user-menu';
 import LangSwitcher from './lang-switcher';
 import MainMenu from './main-menu';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import config from '../../../config';
 import SearchBar from '../../search-bar';
-import {withRouter} from 'react-router';
 
 const barHeight = 64;
 
-@withRouter
+@inject('store')
 @observer
 export default class Header extends React.Component {
 
@@ -29,16 +27,16 @@ export default class Header extends React.Component {
   toggleMainMenu = () => this.setState({openMainMenu: !this.state.openMainMenu});
   setDrawer    = (o) => this.setState({openMainMenu: o});
   onLogoClick  = (ev) => {
-    this.props.history.push('/');
+    this.props.store.goTo('home');
   }
 
   render() {
-
-    const headerIcon = !UI.isLanding ? <AppBarLogo onTouchTap={this.onLogoClick} /> : <MenuBtn onTouchTap={this.toggleMainMenu} />;
+    const {ui} = this.props.store;
+    const headerIcon = !ui.isLanding ? <AppBarLogo onTouchTap={this.onLogoClick} /> : <MenuBtn onTouchTap={this.toggleMainMenu} />;
 
     const headerMain = (
       <span className="header-content">
-        {!UI.isLanding && <MenuBtn onTouchTap={this.toggleMainMenu} className="main-menu" />}
+        {!ui.isLanding && <MenuBtn onTouchTap={this.toggleMainMenu} className="main-menu" />}
         <div className="search-container"><SearchBar /></div>
       </span>
     );

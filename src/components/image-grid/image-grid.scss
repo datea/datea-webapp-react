@@ -1,0 +1,21 @@
+
+.image-grid {
+  margin-left: -2px;
+  margin-right: -2px;
+  .grid-thumb-wrap {
+    padding-top: 33%;
+    width: 33%;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    .grid-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      bottom: 2px;
+      background-size: cover;
+      background-position: center;
+    }
+  }
+}

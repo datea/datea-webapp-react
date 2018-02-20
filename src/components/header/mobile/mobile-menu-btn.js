@@ -1,27 +1,24 @@
 import React from 'react';
-import USER from '../../../stores/user';
-import UI from '../../../stores/ui';
 import IconButton from 'material-ui/IconButton';
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import FlatButton from 'material-ui/FlatButton';
 import {t, translatable} from '../../../i18n';
 import MoreIcon from 'material-ui/svg-icons/navigation/more-vert';
-import {withRouter} from 'react-router';
 
-@withRouter
+@inject('store')
 @translatable
 @observer
 export default class UserMenu extends React.Component {
 
-  goTo = (path) => {
-    UI.setLastLoggedOutURL();
-    this.props.history.push(path);
+  goTo = (view) => {
+    this.props.store.goTo(view);
   }
 
   render() {
-    if (!USER.isSignedIn) {
-      const label = UI.path == '/signin' ? t('REGISTER') : t('LOGIN');
-      const link  = UI.path == '/signin' ? '/signup' : 'signin';
+    const {ui, user, router} = this.props.store;
+    if (!user.isSignedIn) {
+      const label = router.currentView.name == 'login' ? t('REGISTER') : t('LOGIN');
+      const link  = router.currentView.name == 'login' ? 'register' : 'login';
       return (
         <FlatButton className="login-btn"
           label={label}
