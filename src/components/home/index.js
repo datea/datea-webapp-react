@@ -5,7 +5,7 @@ import {getImgSrc} from '../../utils';
 import {observer, inject} from 'mobx-react';
 import MappingColumnLayout from '../mapping-column-layout';
 import TestDateo from '../dateo/test-dateo';
-import MapStore from '../../store/stores/map';
+import MapStore from '../../state/stores/map';
 import DateaResizableMap from '../map';
 
 @inject('store')

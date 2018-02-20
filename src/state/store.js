@@ -2,7 +2,7 @@ import {RouterStore} from 'mobx-router';
 import DataStore from './stores/data';
 import UIStore from './stores/ui';
 import UserStore from './stores/user';
-import Views from '../Views';
+import Views from './views';
 
 export default class DateaStore {
   constructor() {

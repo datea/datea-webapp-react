@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'mobx-router';
 import {inject} from 'mobx-react';
-import Views from '../../Views';
+import Views from '../../state/views';
 
 const DateaLink = ({view, params, queryParams, store, children, title, className, style}) => {
   if (!Views[view]) return <a href={view}>[nr] {children}</a>;

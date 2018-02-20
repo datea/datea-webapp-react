@@ -2,19 +2,19 @@ import React from 'react';
 import {Route} from 'mobx-router';
 import {toJS} from 'mobx';
 
-import config from './config';
+import config from '../config';
 
 /* VIEWS */
-import Home from './components/home';
-import Landing from './components/landing';
-import Error404 from './components/error/error-404';
-import LoginPage from './components/account/login-page';
-import RegisterPage from './components/account/register-page';
-import RegisterFormPage from './components/account/register-form-page';
-import RecoverPasswordPage from './components/account/recover-password-page';
-import RecoverPasswordConfirmPage from './components/account/recover-password-confirm-page';
-import ActivationPage from './components/account/activation-page';
-import AccountSettings from './components/account/settings';
+import Home from '../components/home';
+import Landing from '../components/landing';
+import Error404 from '../components/error/error-404';
+import LoginPage from '../components/account/login-page';
+import RegisterPage from '../components/account/register-page';
+import RegisterFormPage from '../components/account/register-form-page';
+import RecoverPasswordPage from '../components/account/recover-password-page';
+import RecoverPasswordConfirmPage from '../components/account/recover-password-confirm-page';
+import ActivationPage from '../components/account/activation-page';
+import AccountSettings from '../components/account/settings';
 
 const Views = {
 

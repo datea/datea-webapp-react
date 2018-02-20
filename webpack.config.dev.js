@@ -11,7 +11,7 @@ var config = {
     historyApiFallback: true,
     disableHostCheck: true,
     hot: true,
-    port: 80
+    port: 9000
   },
   entry: [
     'react-hot-loader/patch',

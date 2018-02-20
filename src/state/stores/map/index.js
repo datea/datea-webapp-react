@@ -9,7 +9,6 @@ const FLY_TO_ZOOM = 16;
 export default class MapeoStore {
 
 
-
   /* OBSERVABLES */
   @observable mapState = {
     zoom: 14,
