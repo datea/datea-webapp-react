@@ -1,34 +1,19 @@
+import './register-page.scss';
 import React from 'react';
+import {observer, inject} from 'mobx-react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Link from '../../link';
-import Formsy from 'formsy-react';
-import FormsyText from 'formsy-material-ui/lib/FormsyText';
-import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
-import FbIcon from 'material-ui-community-icons/icons/facebook';
-import TwIcon from 'material-ui-community-icons/icons/twitter';
+import TwitterLoginButton from '../twitter-login-button';
+import FacebookLoginButton from '../facebook-login-button';
 import DateroIcon from '../../../theme/datero-caminando';
 import DIcon from '../../../icons';
 import AccountFormContainer from '../account-form-container';
-import './register-page.scss';
 
 @inject('store')
 @translatable
 @observer
 export default class RegisterPage extends React.Component {
-
-  // TODO: put this logic into stores
-  socialLogin = (party) => USER.socialSignIn(party)
-    .then(res => {
-      const {store} = this.props;
-      if (!store.user.isNew) {
-        const {view, params, queryParams} = store.user.lastLoggedOutView;
-        store.goTo(view, params, queryParams);
-      }else{
-        store.goTo('settings' ,{page: 'welcome'});
-      }
-    })
-    .catch(err => console.log('err', err))
 
   goToRegister = () => {
     this.props.store.goTo('registerFormPage');
@@ -44,20 +29,10 @@ export default class RegisterPage extends React.Component {
         </div>
         <div className="register-page-content">
           <div className="btn-row">
-            <RaisedButton
-              label={t('LOGIN_PAGE.LOGIN_FB_BTN')}
-              icon={<FbIcon />}
-              className="social-login-btn"
-              onTouchTap={() => this.socialLogin('facebook')}
-            />
+            <FacebookLoginButton />
           </div>
           <div className="btn-row">
-            <RaisedButton
-              label={t('LOGIN_PAGE.LOGIN_TW_BTN')}
-              icon={<TwIcon />}
-              className="social-login-btn"
-              onTouchTap={() => this.socialLogin('twitter')}
-            />
+            <TwitterLoginButton />
           </div>
           <div className="btn-row">
             <RaisedButton

@@ -40,14 +40,15 @@ export default class AccountTab extends React.Component {
 
   submit = (warnEmailChange = false) => {
     this.setState({emailDialogOpen: false});
+    const {user} = this.props.store;
     let model = this.refs.accountForm.getModel();
     if ('password' in model) {
       delete model.passwordConfirm;
     }
-    if (warnEmailChange && model.email != USER.data.email) {
+    if (warnEmailChange && model.email != user.data.email) {
       this.setState({emailDialogOpen: true});
     } else {
-      this.props.store.user.save(model)
+      user.save(model)
       .catch(err => this.setState({errorMsg: t('ERROR.UNKNOWN')}));
     }
   }

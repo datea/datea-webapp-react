@@ -23,7 +23,9 @@ const Views = {
     name : 'home',
     path : '/',
     component : <Home />,
-    onEnter : (route, params, store) => !store.user.isSignedIn && store.router.goTo(Views.welcome, {}, store)
+    onEnter : (route, params, store) => {
+      !store.user.isSignedIn && store.router.goTo(Views.welcome, {}, store);
+    }
   }),
 
   /* LANDING / WELCOME */
@@ -31,7 +33,9 @@ const Views = {
     name : 'welcome',
     path : '/welcome',
     component : <Landing />,
-    onEnter: (route, params, store) => store.user.isSignedIn && store.router.goTo(Views.home, {}, store)
+    onEnter: (route, params, store) => {
+      store.user.isSignedIn && store.router.goTo(Views.home, {}, store);
+    }
   }),
 
   /* ACCOUNT PATHS */
@@ -39,30 +43,20 @@ const Views = {
     path: '/login',
     name : 'login',
     component: <LoginPage />,
-    beforeEnter: (route, params, store) => {
-      const {router} = store;
-      store.user.setLastLoggedOutView({
-        view: toJS(router.currentView),
-        params : toJS(router.params),
-        queryParams : toJS(router.queryParams)
-      });
-    },
-    onEnter : (route, params, store) => store.user.isSignedIn && store.router.goTo(Views.home, {}, store)
+    beforeEnter: (route, params, store) => store.user.setLastLoggedOutView(),
+    onEnter : (route, params, store) => {
+      store.user.isSignedIn && store.router.goTo(Views.home, {}, store);
+    }
   }),
 
   register : new Route({
     name : 'register',
     path: '/register',
     component : <RegisterPage />,
-    beforeEnter: (route, params, store) => {
-      const {router} = store;
-      store.user.setLastLoggedOutView({
-        view: toJS(router.currentView),
-        params : toJS(router.params),
-        queryParams : toJS(router.queryParams)
-      });
-    },
-    onEnter : (route, params, store) => store.user.isSignedIn && store.router.goTo(Views.home, {}, store)
+    beforeEnter: (route, params, store) => store.user.setLastLoggedOutView(),
+    onEnter : (route, params, store) => {
+      store.user.isSignedIn && store.router.goTo(Views.home, {}, store)
+    }
   }),
 
   registerFormPage : new Route({

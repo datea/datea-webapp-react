@@ -144,7 +144,7 @@ export default class SearchBar extends Component {
             type: 'listItem',
             primaryText:
                    <span>
-                     <strong>{'@'+USER.data.username}</strong>
+                     <strong>{'@'+user.data.username}</strong>
                      <span> {'('+t('SEARCHBOX.MY_DATEOS')+')'}</span>
                    </span>,
             secondaryText: user.data.dateo_count+ ' dateos',
@@ -173,7 +173,7 @@ export default class SearchBar extends Component {
   }
 
   createFollowedAcItemList() {
-    const {user} = this.props;
+    const {user} = this.props.store;
     return user.data.tags_followed.map(item => {
       if (t.type == 'tag') {
         return {
@@ -235,7 +235,7 @@ export default class SearchBar extends Component {
   }
 
   render() {
-    const {ui} = this.props.store
+    const {ui} = this.props.store;
     const barClass = cn(
       'search-bar',
       ui.isMobile ? 'mobile' : 'normal',

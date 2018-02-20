@@ -32,7 +32,7 @@ export default class LoginPage extends React.Component {
           </div>
 
           <div className="btn-row">
-            <TwitterLoginButton onError={err => console.log(err)} />
+            <TwitterLoginButton />
           </div>
 
           <div className="login-form-title">{t('LOGIN_PAGE.LOGIN_DATEA_TITLE')}</div>

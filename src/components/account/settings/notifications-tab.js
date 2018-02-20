@@ -21,12 +21,13 @@ export default class ProfileForm extends React.Component {
 
   submit = () => {
     let model = this.refs.notifySettingsForm.getModel();
-    model.notify_settings.id = USER.data.notify_settings.id;
-    this.props.store.user.save(model);
+    const {user} = this.props.store;
+    model.notify_settings.id = user.data.notify_settings.id;
+    user.save(model);
   }
 
   render() {
-    const {store: {user}} = this.props;
+    const {user} = this.props.store;
     return (
       <div className="settings-tab-content notifications-tab">
 

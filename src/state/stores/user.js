@@ -252,7 +252,14 @@ export default class UserStore {
     this.location = loc;
   }
 
-  setLastLoggedOutView(viewDesc) {
+  setLastLoggedOutView() {
+    const {router} = this.main;
+    const viewDesc = {
+      view: toJS(router.currentView),
+      params : toJS(router.params),
+      queryParams : toJS(router.queryParams)
+    }
+    console.log('lastLoggedOutView', viewDesc)
     this.lastLoggedOutView = viewDesc
   }
 }
