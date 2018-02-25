@@ -11,8 +11,13 @@ const MARKER_CONFIG = {
 
 export default class MapMarkerFactory {
 
-  constructor(campaign) {
-    this.campaign = campagin;
+  constructor(main, mappingType) {
+    this.main = main;
+    this.mappingType = mappingType;
+  }
+
+  getMapping() {
+    return this.main[this.mappingType+'View'].data[this.mappingType];
   }
 
   buildMarker(dateo) {
@@ -21,16 +26,17 @@ export default class MapMarkerFactory {
 
 			let tags = [];
 			let labelTags = [];
+      const mapping = this.getMapping();
 
     	dateo.tags.forEach(tag => {
-				!!this.campaign.subTags[tag] && labelTags.push('#'+tag);
+				!!mapping.subTags && mapping.subTags[tag] && labelTags.push('#'+tag);
 				tags.push(tag);
 			});
 
 			return L.marker(
         L.latLng([...dateo.position.coordinates].reverse()),
         {
-          group       : !!this.campaign ? this.campaign.main_tag.tag : 'dateos',
+          group       : !!mapping.main_tag ? mapping.main_tag.tag : 'dateos',
           title       : labelTags.join(','),
           label       : { message: labelTags.join(',') },
     			draggable   : false,
@@ -45,24 +51,32 @@ export default class MapMarkerFactory {
   buildMarkerIcon(dateo) {
 
     const clipPath = document.location.href + '#pinpath';
+    const mapping = this.getMapping();
     let markerSVG;
 
-    if (this.campaign) {
+    if (mapping.subTags) {
 
       const coloredTags = dateo.tags
                           .map(tag => typeof tag == 'string' ? tag : tag.tag)
-                          .filter(tag => !!this.campaign.subTags[tag]);
+                          .filter(tag => !!mapping.subTags[tag]);
       const catWidth = MARKER_CONFIG.width / coloredTags.length;
 
   		markerSVG = (
         <svg width={MARKER_CONFIG.width} height={MARKER_CONFIG.height}>
+          {/*<defs>
+            <filter id="markerShadow">
+              <feDropShadow dx="0" dy="0" stdDeviation="2" floodOpacity="1" />
+            </filter>
+          </defs>*/}
+
           <g style={{clipPath: 'url('+clipPath+')'}}>
-    		    {coloredTags.map(tag =>
-              <rect height={MARKER_CONFIG.height} width={catWidth} fill={this.campaign.subTags[tag].color} x={i*catWidth} y={0} />
+    		    {coloredTags.map((tag, i) =>
+              <rect key={tag} height={MARKER_CONFIG.height} width={catWidth} fill={mapping.subTags[tag].color} x={i*catWidth} y={0} />
             )}
-    				<circle cx="14.5" cy="13" r="4" fill="white" />
-    				<path d={MARKER_CONFIG.path} stroke="#888888" fill="none" stroke-width="1" />
   				</g>
+
+          <path d={MARKER_CONFIG.path} stroke="#888888" fill="blue" strokeWidth="1" style={{filter:'url(#markerShadow)'}} />
+          <circle cx="14.5" cy="13" r="4" fill="white" />
         </svg>
       );
 
@@ -72,20 +86,19 @@ export default class MapMarkerFactory {
           <g style={{clipPath: 'url('+clipPath+')'}}>
             <rect height={MARKER_CONFIG.height} width={MARKER_CONFIG.width} fill={MARKER_CONFIG.defaultColor} x={0} y={0} />
             <circle cx="14.5" cy="13" r="4" fill="white" />
-            <path d={MARKER_CONFIG.path} stroke="#888888" fill="none" stroke-width="1" />
+            <path d={MARKER_CONFIG.path} stroke="#888888" fill="none" strokeWidth="1" />
           </g>
         </svg>
       );
     }
 
-		return {
-		    type        : 'div',
+		return L.divIcon({
         iconSize    : [MARKER_CONFIG.width, MARKER_CONFIG.height],
         iconAnchor  : [MARKER_CONFIG.width/2, MARKER_CONFIG.height],
         popupAnchor : [0, -33],
         labelAnchor : [8, -25],
         html        : ReactDOMServer.renderToStaticMarkup(markerSVG),
         className   : 'datea-marker-icon',
-		}
+		});
 	}
 }

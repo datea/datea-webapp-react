@@ -15,6 +15,8 @@ import RecoverPasswordPage from '../components/account/recover-password-page';
 import RecoverPasswordConfirmPage from '../components/account/recover-password-confirm-page';
 import ActivationPage from '../components/account/activation-page';
 import AccountSettings from '../components/account/settings';
+import Profile from '../components/profile';
+import CampaignView from '../components/campaign-view';
 
 const Views = {
 
@@ -86,6 +88,25 @@ const Views = {
   settings : new Route({
     path: '/settings/:page?',
     component: <AccountSettings />,
+  }),
+
+  profile : new Route({
+    path: '/:username',
+    component: <Profile />
+  }),
+
+  profileDateos : new Route({
+    path: '/:username/dateos',
+    component: <Profile />
+  }),
+
+  /* CAMPAIGNS - TAGS */
+  campaign : new Route({
+    path: '/:username/:campaignSlug',
+    component : <CampaignView />,
+    onEnter: (route, params, store) => {
+      store.campaignView.loadView(params.username, params.slug)
+    }
   }),
 
   /* 404 */

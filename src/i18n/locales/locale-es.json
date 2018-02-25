@@ -21,6 +21,9 @@
 	"CANCEL" : "Cancelar",
 	"PROJECT_BY" : "un proyecto de",
 	"THANK_YOU" : "¡Gracias!",
+  "SHOW_DETAIL" : "Ver detalle",
+  "MORE_INFO" : "Más info",
+  "LOAD_MORE_RESULTS" : "Mostrar más resultados",
 
 	"MENU_TOP" : {
 		"MENU" : "Menú",

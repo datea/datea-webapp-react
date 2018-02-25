@@ -1,0 +1,144 @@
+@import '../../scss/vars';
+
+$contentBarHeightMobile: 48px;
+$contentBarHeight: 48px;
+
+.mapping-layout {
+  position: relative;
+
+  &.non-mobile {
+    height: calc(100vh - #{$appBarHeight});
+
+    display: flex;
+
+    .visual-area {
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 65%;
+      order: 2;
+    }
+
+    .content-area {
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: 35%;
+      order: 1;
+      overflow-y: auto;
+      position: relative;
+
+      .content-bar {
+        height: $contentBarHeight;
+        position: fixed;
+        top: $appBarHeight;
+        width: 35%;
+        background-color: white;
+        z-index: 10;
+        &.bar-sticky-conditional {
+          display: none;
+        }
+      }
+
+      &.bar-sticky {
+        .content-bar {
+          display: block !important;
+        }
+      }
+
+      .content-container {
+        box-sizing: border-box;
+        padding: 16px;
+        background-color: white;
+      }
+
+      &.bar-sticky {
+        .content-bar {
+          box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+        }
+      }
+      &.pad-bar-top {
+        .content-area {
+          padding-top: $contentBarHeight;
+        }
+      }
+    }
+
+    @media (max-width: $md-break) {
+      .visual-area {
+        flex-basis: 60%;
+      }
+      .content-area {
+        flex-basis: 40%;
+        .content-bar {
+          width: 40%;
+        }
+      }
+    }
+
+  }
+
+
+  &.mobile {
+
+    height: calc(100vh - #{$appBarHeightMobile});
+
+    .visual-area {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 70%;
+      z-index: 1;
+      //transition: bottom 0.3s ease;
+    }
+
+    .content-area {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y : auto;
+      z-index: 2;
+      transition: top 0.3s ease;
+
+      .visual-overlay {
+        height: 30%;
+        transition: height 0.3s ease;
+      }
+      .content-bar {
+        height: $contentBarHeightMobile;
+        background-color: white;
+      }
+      .content-container {
+        box-sizing: border-box;
+        padding: 16px;
+        background-color: white;
+      }
+
+      &.bar-sticky {
+        padding-top: $contentBarHeightMobile;
+        .content-bar {
+          position: fixed;
+          display: block !important;
+          top: $contentBarHeightMobile;
+          left: 0;
+          right: 0;
+          box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+        }
+      }
+    }
+
+    &.mode-visual {
+      .visual-area {
+        bottom: $contentBarHeightMobile;
+      }
+      .content-area {
+        top: calc(100% - #{$contentBarHeightMobile});
+        .visual-overlay {
+          height: 0px;
+        }
+      }
+    }
+
+  }
+}

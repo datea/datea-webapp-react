@@ -18,4 +18,10 @@
       background-position: center;
     }
   }
+  &.small-grid {
+    .grid-thump-wrap {
+      padding-top: 16.66%;
+      width: 16.66%;
+    }
+  }
 }

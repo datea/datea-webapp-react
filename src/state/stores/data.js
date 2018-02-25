@@ -1,4 +1,5 @@
 import {observable, action, computed, autorun, reaction, runInAction, toJS} from 'mobx';
+import {scaleOrdinal, schemeCategory10} from 'd3';
 import config from '../../config';
 import {fetch} from '../../utils';
 import urlJoin from 'url-join';
@@ -6,6 +7,9 @@ import urlJoin from 'url-join';
 const DATEO_QUERY_DEFAULTS = {
   limit: 1000
 }
+
+const colors = scaleOrdinal(schemeCategory10);
+const getColor = i => colors(i%10);
 
 export default class DataStore {
 
@@ -17,8 +21,10 @@ export default class DataStore {
     @observable dateos = new Map();
     @observable mappings = new Map();
 
-    @observable dateoDetail = null;
-    @observable mappingDetail = null;
+    @observable detail = {
+      dateo: null,
+      mapping: null
+    };
 
     constructor(main) {
       this.main = main;
@@ -55,19 +61,42 @@ export default class DataStore {
       .catch((err) => console.log(err));
     }
 
-    @action getMappingDetail(id, opts = {forceUpdate: true, showLoading: true}) {
-      if (!opts.forceUpdate && this.mappings.has(id)) {
-        this.mappingDetail = this.mappings.get(id);
-      } else {
-        const url = urlJoin(config.api.url, 'mapping', id);
-        !!opts.showLoading && this.main.ui.setLoading(false);
-        this.getReq(url)
-        .then(res => runInAction(() => {
-          opts.showLoading && this.main.ui.setLoading(false);
-          this.mappingDetail = res;
-        }))
-        .catch((err) => console.log(err));
+    @action getMappingDetail(id, type='campaign', opts = {forceUpdate: true, showLoading: true}) {
+      const url = urlJoin(config.api.url, type, id);
+      !!opts.showLoading && this.main.ui.setLoading(true);
+      this.getReq(url)
+      .then(res => runInAction(() => {
+        opts.showLoading && this.main.ui.setLoading(false);
+        this.detail.mapping = this.hydrateMapping(res);
+      }))
+      .catch((err) => console.log(err));
+    }
+
+    @action getCampaignDetailByUserAndSlug = (user, slug, opts = {forceUpdate: true, showLoading: true}) => {
+      const url = urlJoin(config.api.url, 'campaign');
+      !!opts.showLoading && this.main.ui.setLoading(true);
+      this.getReq(url, {user, slug})
+      .then(res => runInAction(() => {
+        opts.showLoading && this.main.ui.setLoading(false);
+        if (res.objects.length == 1) {
+          this.detail.mapping = this.hydrateMapping(res.objects[0]);
+          console.log(res.objects[0]);
+          this.setDateoQuery({tags: this.detail.mapping.main_tag.tag});
+        }else{
+          this.main.ui.show404();
+        }
+      }))
+      .catch((err) => console.log(err));
+    }
+
+    hydrateMapping = (mapping) => {
+      if (mapping && mapping.secondary_tags) {
+        mapping.subTags = mapping.secondary_tags.reduce((result, item, i) => {
+          result[item.tag] = Object.assign({}, item, {color: getColor(i)});
+          return result;
+        }, {});
       }
+      return mapping;
     }
 
     /* DATEOS */
@@ -91,14 +120,14 @@ export default class DataStore {
 
     @action getDateoDetail(id, opts = {forceUpdate: true, showLoading: true}) {
       if (!opts.forceUpdate && this.dateos.has(id)) {
-        this.dateoDetail = this.dateos.get(id);
+        this.detail.dateo = this.dateos.get(id);
       } else {
         !!opts.showLoading && this.main.ui.setLoading(true);
         const url = urlJoin(config.api.url, 'dateo', id);
         this.getReq(url)
         .then(res => runInAction(() => {
           opts.showLoading && this.main.ui.setLoading(false);
-          this.dateoDetail = res;
+          this.detail.dateo = res;
         }))
         .catch((err) => console.log(err));
       }

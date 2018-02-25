@@ -1,5 +1,5 @@
 import React from 'react';
-import Dateo from './index.js';
+import DateoDetail from './index.js';
 import {observer, inject} from 'mobx-react';
 
 @inject('store')
@@ -11,11 +11,11 @@ export default class TestDateo extends React.Component {
   }
 
   render() {
-    const {store: {data}} = this.props;
+    const {data} = this.props.store;
     return (
       <div className="test-dateo">
-        {!data.dateoDetail && <div>Loading...</div>}
-        {!!data.dateoDetail && <Dateo dateo={data.dateoDetail} />}
+        {!data.detail.dateo && <div>Loading...</div>}
+        {!!data.detail.dateo && <DateoDetail dateo={data.detail.dateo} />}
       </div>
     )
   }

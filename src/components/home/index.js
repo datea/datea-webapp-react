@@ -7,6 +7,8 @@ import MappingColumnLayout from '../mapping-column-layout';
 import TestDateo from '../dateo/test-dateo';
 import MapStore from '../../state/stores/map';
 import DateaResizableMap from '../map';
+import MappingLayout from '../mapping-layout';
+import RaisedButton from 'material-ui/RaisedButton';
 
 @inject('store')
 @observer
@@ -14,16 +16,72 @@ export default class HomePage extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    this.mapStore = new MapStore(this.props.store.user);
+    const {user, data} = this.props.store;
+    this.mapStore = new MapStore(user, data);
+    this.state = {
+      layout: 'content'
+    }
   }
 
   componentDidMount() {
     const {data} = this.props.store;
-    data.setMappingQuery({followed_by_tags: this.props.store.user.data.id});
-    data.setDateoQuery({tags: 'Redsopa'});
+    //data.setMappingQuery({followed_by_tags: this.props.store.user.data.id});
+    //data.getMappingDetail(49);
+    //data.setDateoQuery({tags: 'Dateoacoso'})
   }
 
   render() {
+    return (
+      <MappingLayout
+        mode={this.state.layout}
+        visualPane={<DateaResizableMap mapStore={this.mapStore} />}
+        onOpenVisualClick={() => this.setState({layout:'visual'})}
+        contentBar={
+          <div>
+            <RaisedButton onTouchTap={() => this.setState({layout: this.state.layout == 'visual' ? 'content' : 'visual'})} >toggle state</RaisedButton>
+          </div>
+        }
+        contentPane={
+          <div>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+            <p>content here</p>
+          </div>
+        }
+      />
+    )
+  }
+
+
+  /*render() {
     return (
       <div className="home-page-container">
 
@@ -40,5 +98,5 @@ export default class HomePage extends React.Component {
         </div>
       </div>
     )
-  }
+  }*/
 }

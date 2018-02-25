@@ -41,7 +41,7 @@ var config = {
       }
     })
   ],
-  devtool: 'eval-source-map'
+  devtool: 'source-map'
   //devtool: 'eval'
 };
 

@@ -24,7 +24,7 @@ const config = {
       regex : /^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$/
     }
   },
-  defaultLocale: 'es'
+  defaultLocale: 'es',
 };
 
 export default config;

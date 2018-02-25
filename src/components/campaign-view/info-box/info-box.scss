@@ -1,0 +1,38 @@
+@import '../../../scss/vars';
+
+.campaign-info {
+  background-color: #5E6E66;
+
+  .campaign-img {
+    height: 180px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+  }
+
+  .box-content {
+    padding: 16px;
+    color: white;
+
+    .campaign-title {
+      font-size: 20px;
+      font-weight: 300;
+      margin-bottom: 5px;
+      margin-top: 0px;
+    }
+    .main-tag {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 5px;
+    }
+    .short-desc {
+      font-size: 15px;
+      margin: 15px 0;
+    }
+    .more-info {
+      color: $green;
+      cursor: pointer;
+    }
+  }
+}

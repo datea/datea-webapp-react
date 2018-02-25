@@ -7,8 +7,9 @@ export default class UiStore {
   @observable activeBreakpoint = getBreakpoint();
   @observable windowSize = {width: window.innerWidth, height: window.innerHeight};
   @observable layout = {
-    showFooter    : true,
-    docHeightMode : 'auto' // or 'window' -> for same as the window.
+    showFooter    : false,
+    docHeightMode : 'window', // or 'window' -> for same as the window.
+    show404       : false
   };
   @observable loading = false;
   @observable path = document.location.pathname;
@@ -52,6 +53,14 @@ export default class UiStore {
 
   @action setLoading(bool) {
     this.loading = bool;
+  }
+
+  @action show404() {
+    this.layout.show404 = true;
+  }
+
+  @action reset404() {
+    this.layout.show404 = false;
   }
 
   /************* SLIDSHOW *****************/

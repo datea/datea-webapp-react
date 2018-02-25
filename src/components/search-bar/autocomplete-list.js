@@ -37,7 +37,6 @@ export default class AutocompleteList extends Component {
       this.adjustMaxHeight();
     }else{
       if (this.props.selectIdx > -1) {
-        console.log('.search-ac-item-'+this.props.selectIdx);
         const itemEl = document.querySelector('.search-ac-item-'+this.props.selectIdx);
         const container = this.refs.wrapper;
         if (
@@ -56,11 +55,12 @@ export default class AutocompleteList extends Component {
   }
 
   render() {
+    const {ui} = this.props.store;
     let idx = -1;
     const query = this.props.query || '';
     return (
       <div ref="wrapper"
-        className={cn('search-ac-list', UI.isMobile ? 'mobile' : 'normal', !this.props.items.length && 'empty')}
+        className={cn('search-ac-list', ui.isMobile ? 'mobile' : 'normal', !this.props.items.length && 'empty')}
         >
         <SelectableList ref="list" style={{padding: 0}} value={this.props.selectIdx}>
           {this.props.items.map((item, i) => {
