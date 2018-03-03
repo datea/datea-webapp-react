@@ -36,10 +36,9 @@ export default class RegisterPage extends React.Component {
           </div>
           <div className="btn-row">
             <Button variant="raised"
-              icon={<DateroIcon />}
               className="social-login-btn"
               onClick={this.goToRegister}
-            >{t('REGISTER_PAGE.REGISTER_DATEA_BTN')}</Button>
+            ><DateroIcon className="d-icon" />{t('REGISTER_PAGE.REGISTER_DATEA_BTN')}</Button>
           </div>
           <div className="bottom-info">
             <div className="info-line">{t('REGISTER_PAGE.NOT_WITHOUT_CONSENT')}</div>

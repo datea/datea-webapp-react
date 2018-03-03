@@ -11,8 +11,15 @@ import config from '../../../config';
 import MobileMenuBtn from './mobile-menu-btn';
 import BackBtn from './back-btn';
 import SearchBar from '../../search-bar';
+import {colors} from '../../../theme/vars';
 
 const barHeight = 48;
+
+const styles = {
+  colorPrimary : {
+
+  }
+}
 
 @inject('store')
 @observer
@@ -29,41 +36,32 @@ export default class Header extends React.Component {
   goHome     = () => this.props.store.goTo('home');
 
   render() {
-    const {user, ui} = this.props.store;
+    const {user, ui, router} = this.props.store;
 
     let headerLeft;
     if (user.isSignedIn) {
       headerLeft = ui.isHome ? <AppBarLogo onClick={this.goHome} /> : <BackBtn />;
     }else{
-      headerLeft = ui.isLanding ? <LandingMenuBtn onClick={this.toggleMenu} /> : <AppBarLogo onClick={this.goHome} />;
+      headerLeft = router.currentView.name == 'welcome' ? <LandingMenuBtn onClick={this.toggleMenu} /> : <AppBarLogo onClick={this.toggleMenu} />;
     }
 
     return (
-      <div className="header mobile">
-        {/*
-        <AppBar title={headerMain}
-          iconElementLeft={headerLeft}
-          iconStyleLeft={{marginTop: !user.isSignedIn && ui.isLanding ? 3 : 0}}
-          style={{height: barHeight}}
-          iconElementRight={headerRight}
-          iconStyleRight={{marginTop: 0}}
-          titleStyle={{marginTop: 0, height: barHeight, lineHeight: barHeight+'px'}}
-          />*/}
-          <AppBar position={'static'} style={{height: barHeight, minHeight: barHeight}}>
-            <Toolbar style={{minHeight: barHeight, height: barHeight}}>
-              <div className="header-content">
-                <div className="header-left">
-                  {headerLeft}
-                </div>
-                <div className="header-center">
-                  <div className="search-container"><SearchBar /></div>
-                </div>
-                <div className="header-right">
-                  <MobileMenuBtn onClick={this.toggleMenu} />
-                </div>
+      <div className={cn('header mobile', user.isSignedIn ? 'signed-in' : 'signed-out')}>
+        <AppBar position={'static'} style={{height: barHeight, minHeight: barHeight, backgroundColor: colors.yellow}}>
+          <Toolbar style={{minHeight: barHeight, height: barHeight}}>
+            <div className="header-content">
+              <div className="header-left">
+                {headerLeft}
               </div>
-            </Toolbar>
-          </AppBar>
+              <div className="header-center">
+                <div className="search-container"><SearchBar /></div>
+              </div>
+              <div className="header-right">
+                <MobileMenuBtn onClick={this.toggleMenu} />
+              </div>
+            </div>
+          </Toolbar>
+        </AppBar>
         <MobileMenu open={this.state.openMenu} onClose={this.toggleMenu} />
       </div>
     )

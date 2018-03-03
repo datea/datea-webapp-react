@@ -3,8 +3,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Typography from 'material-ui/Typography';
 import Card, {CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import PoundIcon from 'material-ui-community-icons/icons/pound';
-import MapMarkerMultipleIcon from 'material-ui-community-icons/icons/map-marker-multiple';
+import DIcon from '../../icons';
 import {getImgSrc} from '../../utils';
 
 
@@ -33,12 +32,12 @@ export default class MappingCard extends Component {
     const subtitle = (!!m.name ? '#'+m.main_tag.tag : '')+', '+m.dateo_count+' dateos';
     let img;
     if (!!m.tag) {
-      img = <div className="mapping-card-img-icon hashtag"><PoundIcon /></div>;
+      img = <div className="mapping-card-img-icon hashtag"><DIcon name="pound" /></div>;
     } else {
       if (m.image && m.image.image) {
         img = <div className="mapping-card-img" style={{backgroundImage: 'url('+getImgSrc(m.image.image)+')'}} />;
       }else{
-        img = <div className="mapping-card-img-icon campaign"><MapMarkerMultipleIcon /></div>
+        img = <div className="mapping-card-img-icon campaign"><DIcon name="map-marker-multiple" /></div>
       }
     }
 

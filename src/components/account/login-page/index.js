@@ -5,8 +5,6 @@ import Button from 'material-ui/Button';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import LoginForm from '../login-form';
-import FbIcon from 'material-ui-community-icons/icons/facebook';
-import TwIcon from 'material-ui-community-icons/icons/twitter';
 import AccountFormContainer from '../account-form-container';
 import DIcon from '../../../icons';
 import Link from '../../link';

@@ -15,4 +15,11 @@
       right: -8px;
     }
   }
+
+  &.signed-out {
+    .header-content {
+      .header-center .search-container .search-bar.mobile {margin-right: 0}
+      .header-right { min-width: 90px;}
+    }
+  }
 }

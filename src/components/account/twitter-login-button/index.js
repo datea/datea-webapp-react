@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import TwitterLogin from 'react-twitter-auth/lib/react-twitter-auth-component';
-import TwIcon from 'material-ui-community-icons/icons/twitter';
+import DIcon from '../../../icons';
 import {observer, inject} from 'mobx-react';
 import Button from 'material-ui/Button';
 import {t, translatable} from '../../../i18n';
@@ -16,10 +16,9 @@ class TwitterLoginButton extends TwitterLogin {
 
   render = () =>
     <Button variant="raised"
-      icon={<TwIcon />}
       className={cn('social-login-btn', this.props.className)}
       onClick={this.onButtonClick}
-    >{t('LOGIN_PAGE.LOGIN_TW_BTN')}</Button>
+    ><DIcon name="twitter" />{t('LOGIN_PAGE.LOGIN_TW_BTN')}</Button>
 }
 
 const TwitterLoginButtonWithActions = (props) => {

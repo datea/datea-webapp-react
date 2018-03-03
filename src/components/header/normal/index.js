@@ -12,6 +12,7 @@ import MainMenu from './main-menu';
 import {observer, inject} from 'mobx-react';
 import config from '../../../config';
 import SearchBar from '../../search-bar';
+import {colors} from '../../../theme/vars';
 
 const barHeight = 64;
 
@@ -36,7 +37,7 @@ export default class Header extends React.Component {
     const {ui} = this.props.store;
     return (
       <div className="header normal">
-          <AppBar position={'static'}>
+          <AppBar position={'static'} style={{backgroundColor: colors.yellow}}>
             <Toolbar>
               <div className="header-content">
                 <div className="header-left">

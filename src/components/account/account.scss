@@ -33,6 +33,15 @@
       .social-login-btn {
         width: 100%;
         max-width: 350px;
+        position: relative;
+        .d-icon {
+          position: absolute;
+          top: 8px;
+          left: 16px;
+          fill-opacity: 0.7;
+          margin-right: 15px;
+          width: 22px; height: 22px;
+        }
       }
       &:last-child {
         margin-bottom: 0;

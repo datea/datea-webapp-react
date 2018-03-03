@@ -10,10 +10,8 @@ import CloseIcon from 'material-ui-icons/Close';
 import IconButton from 'material-ui/IconButton';
 import AutocompleteList from './autocomplete-list';
 import Avatar from 'material-ui/Avatar';
-import MapMarkerMultipleIcon from 'material-ui-community-icons/icons/map-marker-multiple';
 import {t, translatable} from '../../i18n';
-import DefaultAvatar from '../misc/default-avatar';
-import {getImgSrc} from '../../utils';
+import DIcon from '../../icons';
 
 @inject('store')
 @translatable
@@ -189,7 +187,7 @@ export default class SearchBar extends Component {
           secondaryText: '#'+item.tag+', '+item.dateo_count+' dateos',
           leftAvatar : !!item.campaigns[0].thumb ?
               <Avatar src={getImgSrc(item.campaigns[0].thumb)} style={{borderRadius: '5px'}} /> :
-              <Avatar style={{borderRadius: '5px'}}><MapMarkerMultipleIcon /></Avatar>,
+              <Avatar style={{borderRadius: '5px'}}><DIcon name="map-marker-multiple" /></Avatar>,
           route: {
             view: 'campaign',
             params: {
@@ -220,7 +218,7 @@ export default class SearchBar extends Component {
                 primaryText : item.name,
                 leftAvatar : !!item.thumb ?
                     <Avatar src={getImgSrc(item.thumb)} style={{borderRadius: '5px'}} /> :
-                    <Avatar icon={<MapMarkerMultipleIcon />} style={{borderRadius: '5px'}} />,
+                    <Avatar style={{borderRadius: '5px'}}><DIcon name="map-marker-multiple" /></Avatar>,
                 secondaryText : '#'+item.main_tag+', '+item.dateo_count+' dateos',
                 route : {
                   view: 'campaign',

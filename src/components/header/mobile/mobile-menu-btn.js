@@ -22,7 +22,7 @@ export default class UserMenu extends React.Component {
       return (
         <Button className="login-btn"
           onClick={() => this.goTo(link) }
-          style={{marginTop: 6}}
+          style={{marginTop: 6, paddingLeft: 0, paddingRight: 0}}
         >{label}</Button>
       )
       /*
