@@ -1,6 +1,5 @@
 import './home.scss';
 import React from 'react';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {getImgSrc} from '../../utils';
 import {observer, inject} from 'mobx-react';
 import MappingColumnLayout from '../mapping-column-layout';
@@ -8,7 +7,7 @@ import TestDateo from '../dateo/test-dateo';
 import MapStore from '../../state/stores/map';
 import DateaResizableMap from '../map';
 import MappingLayout from '../mapping-layout';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 
 @inject('store')
 @observer
@@ -38,7 +37,7 @@ export default class HomePage extends React.Component {
         onOpenVisualClick={() => this.setState({layout:'visual'})}
         contentBar={
           <div>
-            <RaisedButton onTouchTap={() => this.setState({layout: this.state.layout == 'visual' ? 'content' : 'visual'})} >toggle state</RaisedButton>
+            <Button variant="raised"  onClick={() => this.setState({layout: this.state.layout == 'visual' ? 'content' : 'visual'})} >toggle state</Button>
           </div>
         }
         contentPane={

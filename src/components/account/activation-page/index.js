@@ -1,7 +1,7 @@
 import './activation-page.scss';
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import Link from '../../link';
@@ -44,10 +44,9 @@ export default class ActivationPage extends React.Component {
           }
           {!success &&
             <div className="form-btns">
-              <RaisedButton primary={true}
-                onTouchTap={() => store.goTo('register')}
-                label={t('REGISTER')}
-                />
+              <Button variant="raised"  color="primary"
+                onClick={() => store.goTo('register')}
+                >label={t('REGISTER')}</Button>
             </div>
           }
         </div>

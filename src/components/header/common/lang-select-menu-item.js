@@ -1,8 +1,9 @@
 import React from 'react';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
+import {MenuItem} from 'material-ui/Menu';
+import {ListItemText, ListItemIcon} from 'material-ui/List';
+import Select from 'material-ui/Select';
 import {observer, inject} from 'mobx-react';
-import FlagIcon from 'material-ui/svg-icons/content/flag';
+import FlagIcon from 'material-ui-icons/Flag';
 
 const langs = {
   'es' : 'Español',
@@ -11,7 +12,7 @@ const langs = {
 
 @inject('store')
 @observer
-export default class MainMenu extends React.Component {
+export default class LangSelectMenuItem extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -20,20 +21,18 @@ export default class MainMenu extends React.Component {
   onLocaleChange = (event, index, value) => this.props.store.user.setLocale(value);
 
   render() {
-    const {store: {user}} = this.props;
-    let mItemProps = {};
-    if (this.props.mobile) {
-      mItemProps.leftIcon = <FlagIcon/>;
-    } else {
-      mItemProps.rightIcon = <FlagIcon/>;
-    }
+    const {user, ui} = this.props.store;
     return (
-      <MenuItem {...mItemProps}>
-        <SelectField value={user.locale} onChange={this.onLocaleChange} fullWidth={true}>
-          {['es', 'fr'].map(loc =>
-            <MenuItem key={loc} value={loc} primaryText={langs[loc]} />
-          )}
-        </SelectField>
+      <MenuItem>
+        {ui.isMobile && <ListItemIcon><FlagIcon/></ListItemIcon>}
+        <ListItemText primary={
+          <Select value={user.locale} onChange={this.onLocaleChange} fullWidth={true}>
+            {['es', 'fr'].map(loc =>
+              <MenuItem key={loc} value={loc}>{langs[loc]}</MenuItem>
+            )}
+          </Select>
+        } />
+        {!ui.isMobile && <ListItemIcon><FlagIcon/></ListItemIcon>}
       </MenuItem>
     )
   }

@@ -1,22 +1,24 @@
 import './settings.scss';
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
-import IconClose from 'material-ui/svg-icons/navigation/close';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import IconClose from 'material-ui-icons/Close';
+import Tabs, { Tab } from 'material-ui/Tabs';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
-import Formsy from 'formsy-react';
-import FormsyText from 'formsy-material-ui/lib/FormsyText';
+//import Formsy from 'formsy-react';
+//import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import DIcon from '../../../icons';
-import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import SettingsIcon from 'material-ui-icons/Settings';
 import config from '../../../config';
 import {colors} from '../../../theme/vars';
 
-import AccountTab from './account-tab';
-import ProfileTab from './profile-tab';
-import NotificationsTab from './notifications-tab';
+//import AccountTab from './account-tab';
+//import ProfileTab from './profile-tab';
+//import NotificationsTab from './notifications-tab';
+
+const TABS = ['account', 'profile', 'notifications'];
 
 @inject('store')
 @translatable
@@ -25,6 +27,7 @@ export default class AccountSettings extends React.Component {
 
   showMessage(msgType) {
     let daterito, title, content, actions, hasClose = true;
+    const {store} = this.props;
     switch (msgType) {
       case 'email-confirm':
         daterito = 'daterito2';
@@ -42,10 +45,11 @@ export default class AccountSettings extends React.Component {
         title    = 'SETTINGS_PAGE.CONGRATS';
         content  = ['ACCOUNT_MSG.WELCOME_READY'];
         actions  = [
-          <RaisedButton primary={true}
+          <Button variant="raised" color="primary"
             key="next"
-            label={t('SETTINGS_PAGE.NEXT')}
-            onTouchTap={() => this.props.history.push('/')} />
+            onClick={() => store.goTo('home')}>
+            {t('SETTINGS_PAGE.NEXT')}
+          </Button>
         ];
         break;
       default:
@@ -56,7 +60,7 @@ export default class AccountSettings extends React.Component {
         <div className="msg-wrapper">
           {hasClose &&
             <IconButton className="close-icon"
-              onTouchTap={() => this.props.store.goTo('settings')}
+              onClick={() => this.props.store.goTo('settings')}
               style={{position:'absolute', right:-15, top:-15}}>
               <IconClose />
             </IconButton>}
@@ -68,15 +72,18 @@ export default class AccountSettings extends React.Component {
     );
   }
 
+  onTabChange = (ev, val) => {
+    this.props.store.goTo('settings', {page: TABS[val]});
+  }
+
   render() {
     const {user, ui, router} = this.props.store;
     const tabBtnStyle = {fontSize : (ui.isMobile ? '0.75rem' : '0.9rem')};
     let page = router.params.page;
     if (user.data.status == 0) page = 'email-confirm';
 
-    let tab = 0;
-    if (page == 'profile') tab = 1;
-    if (page == 'notifications') tab = 2;
+    let tab = TABS.indexOf(page);
+    tab = tab < 0 ? 0 : tab;
 
     return (
       <div>
@@ -85,22 +92,23 @@ export default class AccountSettings extends React.Component {
         {!!page && this.showMessage(page)}
 
         <h3 className="settings-title">
-          <SettingsIcon color="#777" />
+          <SettingsIcon style={{fill: '#777'}} />
           {t('SETTINGS_PAGE.TITLE')}
         </h3>
         <AccountFormContainer className="settings-form-container">
           <div className="account-settings">
-            <Tabs inkBarStyle={{backgroundColor: colors.green}} initialSelectedIndex={tab}>
-              <Tab label={t('SETTINGS_PAGE.ACCOUNT_TAB')} style={tabBtnStyle}>
-                <AccountTab />
-              </Tab>
-              <Tab label={t('SETTINGS_PAGE.PROFILE_TAB')} style={tabBtnStyle}>
-                <ProfileTab />
-              </Tab>
-              <Tab label={t('SETTINGS_PAGE.NOTIFY.TAB')} style={tabBtnStyle}>
-                <NotificationsTab />
-              </Tab>
+            <Tabs indicatorColor="primary" value={tab} onChange={this.onTabChange} fullWidth>
+              <Tab label={t('SETTINGS_PAGE.ACCOUNT_TAB')} style={tabBtnStyle} />
+              <Tab label={t('SETTINGS_PAGE.PROFILE_TAB')} style={tabBtnStyle} />
+              <Tab label={t('SETTINGS_PAGE.NOTIFY.TAB')} style={tabBtnStyle} />
             </Tabs>
+            <div className="tab-content">
+              {/*
+              {tab == 0 && <AccountTab />}
+              {tab == 1 && <ProfileTab />}
+              {tab == 2 && <NotificationsTab />}
+              */}
+            </div>
           </div>
         </AccountFormContainer>
       </div>

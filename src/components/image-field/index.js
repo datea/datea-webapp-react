@@ -6,7 +6,7 @@ import Dropzone from 'react-dropzone';
 import {observer, inject} from 'mobx-react';
 import CircularProgress from 'material-ui/CircularProgress';
 import Avatar from 'material-ui/Avatar';
-import AddPhotoIcon from 'material-ui/svg-icons/image/add-a-photo';
+import AddPhotoIcon from 'material-ui-icons/AddAPhoto';
 import DefaultAvatar from '../misc/default-avatar';
 import cn from 'classnames';
 import config from '../../config';
@@ -94,12 +94,13 @@ export default class ImageField extends React.Component {
 
   render() {
     let imgSrc = this.state.src;
+    const {iconSize} = this.props;
     if (imgSrc && imgSrc.indexOf('blob') != 0) imgSrc = urlJoin(config.api.imgUrl, imgSrc);
 
     let imgElem, style;
     if (this.props.imgType == 'avatar') {
-      imgElem = <Avatar src={imgSrc} size={this.props.iconSize} />
-      style = {width: this.props.iconSize, height: this.props.iconSize};
+      imgElem = <Avatar src={imgSrc} style={{width: iconSize, height: iconSize}} />
+      style = {width: iconSize, height: iconSize};
     }else{
       imgElem = <img src={imgSrc} />
     }
@@ -132,7 +133,7 @@ export default class ImageField extends React.Component {
           {this.state.uploading &&
             <div className="progress-wrap">
               <div className="progress">
-                <CircularProgress color={colors.greyMid} size={0.8} mode="determinate" value={this.state.progress} />
+                <CircularProgress style={{color: colors.greyMid}} size={50} variant="determinate" value={this.state.progress} />
               </div>
             </div>
           }

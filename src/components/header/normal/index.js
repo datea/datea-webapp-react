@@ -1,6 +1,8 @@
 import './header-normal.scss';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 import cn from 'classnames';
 import AppBarLogo from '../common/app-bar-logo';
 import MenuBtn from '../common/menu-button';
@@ -32,33 +34,29 @@ export default class Header extends React.Component {
 
   render() {
     const {ui} = this.props.store;
-    const headerIcon = !ui.isLanding ? <AppBarLogo onTouchTap={this.onLogoClick} /> : <MenuBtn onTouchTap={this.toggleMainMenu} />;
-
-    const headerMain = (
-      <span className="header-content">
-        {!ui.isLanding && <MenuBtn onTouchTap={this.toggleMainMenu} className="main-menu" />}
-        <div className="search-container"><SearchBar /></div>
-      </span>
-    );
-    const headerRight = (
-      <span className="header-right">
-        <span className="btn"><LangSwitcher/></span>
-        <span className="btn"><UserMenu /></span>
-      </span>
-    );
-
     return (
       <div className="header normal">
-        <AppBar title={headerMain}
-          iconElementLeft={headerIcon}
-          iconStyleLeft={{marginTop: 2}}
-          style={{height: barHeight}}
-          iconElementRight={headerRight}
-          iconStyleRight={{marginTop: 8}}
-          titleStyle={{overflow: 'visible'}}
-          />
+          <AppBar position={'static'}>
+            <Toolbar>
+              <div className="header-content">
+                <div className="header-left">
+                  {!ui.isLanding && <AppBarLogo onClick={this.onLogoClick} />}
+                  <MenuBtn onClick={this.toggleMainMenu} />
+                </div>
+                <div className="header-center">
+                  <div className="search-container">
+                    <SearchBar />
+                  </div>
+                </div>
+                <div className="header-right">
+                  <span className="btn"><LangSwitcher/></span>
+                  <span className="btn"><UserMenu /></span>
+                </div>
+              </div>
+            </Toolbar>
+          </AppBar>
         <MainMenu open={this.state.openMainMenu}
-          onRequestChange={this.toggleMainMenu}
+          onClose={this.toggleMainMenu}
           />
       </div>
     )

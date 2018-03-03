@@ -6,6 +6,7 @@ var SvgStore          = require('webpack-svgstore-plugin');
 var loaderRules       = require('./webpack-loader-rules');
 
 var config = {
+  mode: 'development',
   devServer: {
     host: 'localhost',
     historyApiFallback: true,

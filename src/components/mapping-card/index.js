@@ -1,7 +1,8 @@
 import './mapping-card.scss';
 import React, {Component} from 'react';
-import PropTypes from 'prop-types'
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import PropTypes from 'prop-types';
+import Typography from 'material-ui/Typography';
+import Card, {CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import PoundIcon from 'material-ui-community-icons/icons/pound';
 import MapMarkerMultipleIcon from 'material-ui-community-icons/icons/map-marker-multiple';
 import {getImgSrc} from '../../utils';
@@ -42,9 +43,12 @@ export default class MappingCard extends Component {
     }
 
     return (
-      <Card onTouchTap={this.goToMapping}>
-        <CardMedia>{img}</CardMedia>
-        <CardTitle title={title} subtitle={subtitle} />
+      <Card onClick={this.goToMapping}>
+        <CardMedia image={img} />
+        <CardContent>
+          <Typography variant="headline" component="h3">{title}</Typography>
+          <Typography variant="subheading" component="p">{subtitle}</Typography>
+        </CardContent>
       </Card>
     )
   }

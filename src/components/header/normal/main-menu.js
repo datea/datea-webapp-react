@@ -1,15 +1,14 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import Subheader from 'material-ui/Subheader';
+import {MenuItem, MenuList} from 'material-ui/Menu';
+import {ListItemIcon, ListItemText, ListSubheader} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import SelectField from 'material-ui/SelectField';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
-import HomeIcon from 'material-ui/svg-icons/action/home';
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import InfoOutlineIcon from 'material-ui/svg-icons/action/info-outline';
-import HelpOutlineIcon from 'material-ui/svg-icons/action/help-outline';
+import HomeIcon from 'material-ui-icons/Home';
+import SearchIcon from 'material-ui-icons/Search';
+import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
+import HelpOutlineIcon from 'material-ui-icons/HelpOutline';
 import LangSelectMenuItem from '../common/lang-select-menu-item';
 
 const langs = {
@@ -29,18 +28,30 @@ export default class MainMenu extends React.Component {
   onLocaleChange = (event, index, value) => this.props.store.user.setLocale(value);
 
   render() {
+    console.log('open', this.props.open);
     return (
-      <Drawer docked={false}
+      <Drawer
         open={this.props.open}
-        onRequestChange={this.props.onRequestChange}>
-          <Subheader>{t('MENU_TOP.MENU')}</Subheader>
-          <MenuItem primaryText={t('MENU_TOP.HOME')} rightIcon={<HomeIcon/>} />
-          <MenuItem primaryText={t('MENU_TOP.ABOUT')} rightIcon={<InfoOutlineIcon/>} />
-          <MenuItem primaryText={t('MENU_TOP.HELP')} rightIcon={<HelpOutlineIcon/>} />
-          <br /><br />
-          <Divider />
-          <Subheader>{t('MENU_TOP.LANGUAGE')}</Subheader>
-          <LangSelectMenuItem mobile={false} />
+        onClose={this.props.onClose}>
+          <MenuList className="main-menu-list">
+            <ListSubheader>{t('MENU_TOP.MENU')}</ListSubheader>
+            <MenuItem>
+              <ListItemText primary={t('MENU_TOP.HOME')} />
+              <ListItemIcon><HomeIcon/></ListItemIcon>
+            </MenuItem>
+            <MenuItem>
+              <ListItemText primary={t('MENU_TOP.ABOUT')} />
+              <ListItemIcon><InfoOutlineIcon/></ListItemIcon>
+            </MenuItem>
+            <MenuItem>
+              <ListItemText primary={t('MENU_TOP.HELP')} />
+              <ListItemIcon><HelpOutlineIcon/></ListItemIcon>
+            </MenuItem>
+            <br /><br />
+            <Divider />
+            <ListSubheader>{t('MENU_TOP.LANGUAGE')}</ListSubheader>
+            <LangSelectMenuItem />
+          </MenuList>
       </Drawer>
     )
   }

@@ -5,8 +5,8 @@ import _ from 'lodash';
 import cn from 'classnames';
 import {observer, inject} from 'mobx-react';
 import TextField from 'material-ui/TextField';
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import SearchIcon from 'material-ui-icons/Search';
+import CloseIcon from 'material-ui-icons/Close';
 import IconButton from 'material-ui/IconButton';
 import AutocompleteList from './autocomplete-list';
 import Avatar from 'material-ui/Avatar';
@@ -82,11 +82,11 @@ export default class SearchBar extends Component {
     const key = ev.keyCode;
     if (key == 13) {
       if (this.state.query && this.state.acSelectIndex == -1) {
-        this.refs.searchField.blur();
+        this.searchFieldRef.blur();
         const query = this.state.query.trim();
         store.goTo('search', {query});
       } else if (this.state.acSelectIndex >= 0) {
-        this.refs.searchField.blur();
+        this.searchFieldRef.blur();
         let route = this.state.acResults.filter(r => r.type == 'listItem')[this.state.acSelectIndex].route;
         this.setState({query: '', acSelectIndex: -1});
         store.goTo(route.view, route.params);
@@ -107,7 +107,7 @@ export default class SearchBar extends Component {
   handleClear = (ev) => {
     this.clearPressed = true;
     this.setState({query: '', acResults: this.createAcResultItems([], ''), acSelectIndex: -1});
-    this.refs.searchField.focus();
+    this.searchFieldRef.focus();
   }
 
   incrementAcResult(num) {
@@ -189,7 +189,7 @@ export default class SearchBar extends Component {
           secondaryText: '#'+item.tag+', '+item.dateo_count+' dateos',
           leftAvatar : !!item.campaigns[0].thumb ?
               <Avatar src={getImgSrc(item.campaigns[0].thumb)} style={{borderRadius: '5px'}} /> :
-              <Avatar icon={<MapMarkerMultipleIcon />} style={{borderRadius: '5px'}} />,
+              <Avatar style={{borderRadius: '5px'}}><MapMarkerMultipleIcon /></Avatar>,
           route: {
             view: 'campaign',
             params: {
@@ -246,6 +246,7 @@ export default class SearchBar extends Component {
         paddingRight : 44,
         boxSizing    : 'border-box',
         width        : '100%',
+        lineHeight   : '35px',
     };
     const acResults = this.state.acResults;
 
@@ -256,16 +257,14 @@ export default class SearchBar extends Component {
         <div className="search-box">
           <SearchIcon className="search-icon"
             style={{width: this.props.iconSize, height: this.props.iconSize}} />
-          <TextField ref="searchField"
+          <TextField inputRef={ref => {this.searchFieldRef = ref}}
             name="mainSearch"
-            hintText={this.state.focused ? 'Buscar mapeos' : ''}
+            placeholder={this.state.focused ? 'Buscar mapeos' : ''}
             fullWidth={true}
             onFocus={()=> this.setFocus(true)}
             onBlur={()=> this.setFocus(false)}
-            inputStyle={inputStyle}
-            hintStyle={inputStyle}
+            InputProps={{style:inputStyle, disableUnderline: true}}
             style={{display: 'block'}}
-            underlineShow={false}
             onKeyDown={this.handlePressKey}
             onChange={this.handleChange}
             value={this.state.query}
@@ -273,7 +272,7 @@ export default class SearchBar extends Component {
            {!!this.state.focused && !!this.state.query &&
              <IconButton className="search-clear-btn"
               style={{position: 'absolute', top: 0, right: 0}}
-              onTouchTap={this.handleClear}>
+              onClick={this.handleClear}>
                 <CloseIcon />
             </IconButton>
            }

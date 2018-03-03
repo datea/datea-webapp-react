@@ -2,16 +2,15 @@ import React from 'react';
 import config from '../../../config';
 import IconButton from 'material-ui/IconButton';
 import {observer, inject} from 'mobx-react';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import {t, translatable} from '../../../i18n';
-import Avatar from 'material-ui/Avatar';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+import {MenuItem, MenuList} from 'material-ui/Menu';
+import {ListItemIcon, ListItemText} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import DirectionsRunIcon from 'material-ui/svg-icons/maps/directions-run';
-import PersonIcon from 'material-ui/svg-icons/social/person';
-import SettingsIcon from 'material-ui/svg-icons/action/settings';
-import DefaultAvatar from '../../misc/default-avatar';
+import DirectionsRunIcon from 'material-ui-icons/DirectionsRun';
+import PersonIcon from 'material-ui-icons/Person';
+import SettingsIcon from 'material-ui-icons/Settings';
 import UserAvatar from '../../user-avatar';
 
 
@@ -55,52 +54,46 @@ export default class UserMenu extends React.Component {
     return (
       <span className="user-menu">
         {!user.isSignedIn &&
-          <FlatButton
-            label={t(isLoginView ? 'REGISTER' : 'LOGIN')}
-            onTouchTap={() => this.goTo(isLoginView ? 'register' : 'login')}
-            labelStyle={{
-              fontSize: '1rem',
-
-              paddingRight: ui.isMobile ? 6 : 16,
-              paddingLeft: ui.isMobile ? 6 : 16
-            }}
+          <Button
+            onClick={() => this.goTo(isLoginView ? 'register' : 'login')}
             style={{marginTop: ui.isMobile ? 6 : 7 }}
-            className="login-btn"
-            />
+            className="login-btn">
+            {t(isLoginView ? 'REGISTER' : 'LOGIN')}
+          </Button>
         }
         {user.isSignedIn &&
           <span>
             <IconButton
-              onTouchTap={this.toggleUserDrawer}
+              onClick={this.toggleUserDrawer}
               style={{border: 0, padding: 0}}>
               <UserAvatar src={user.image} size={this.getAvatarSize()} />
             </IconButton>
             <Drawer
-              docked={false}
               open={this.state.openDrawer}
-              openSecondary={true}
+              anchor="right"
               className="user-drawer"
-              onRequestChange={this.toggleUserDrawer}>
+              onClose={this.toggleUserDrawer}>
                   <div className="profile-menu-avatar">
                     <UserAvatar
                       src={user.largeImage}
                       size={ui.isMobile ? 100 : 120}
                     />
                   </div>
-                  <MenuItem onTouchTap={this.goToProfile}
-                    leftIcon={<PersonIcon />}>
-                    {t('USER_MENU.GOTO_PROFILE')}
-                  </MenuItem>
-                  <MenuItem onTouchTap={this.goToSettings}
-                    leftIcon={<SettingsIcon />}>
-                    {t('USER_MENU.CONFIG')}
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem onTouchTap={this.logout}
-                    leftIcon={<DirectionsRunIcon />}
-                    >
-                    {t('USER_MENU.LOGOUT')}
-                  </MenuItem>
+                  <MenuList>
+                    <MenuItem onClick={this.goToProfile}>
+                      <ListItemIcon><PersonIcon /></ListItemIcon>
+                      <ListItemText primary={t('USER_MENU.GOTO_PROFILE')} />
+                    </MenuItem>
+                    <MenuItem onClick={this.goToSettings}>
+                      <ListItemIcon><SettingsIcon /></ListItemIcon>
+                      <ListItemText primary={t('USER_MENU.CONFIG')} />
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={this.logout}>
+                      <ListItemIcon><DirectionsRunIcon /></ListItemIcon>
+                      <ListItemText primary={t('USER_MENU.LOGOUT')} />
+                    </MenuItem>
+                  </MenuList>
             </Drawer>
           </span>
         }

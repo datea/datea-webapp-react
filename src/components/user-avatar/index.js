@@ -5,7 +5,7 @@ import Avatar from 'material-ui/Avatar';
 import {getImgSrc} from '../../utils';
 
 const UserAvatar = ({src, size}) =>
-  src ? <Avatar src={getImgSrc(src)} size={size} /> : <DefaultAvatar size={size} />
+  src ? <Avatar src={getImgSrc(src)} style={{width: size, height: size}} /> : <DefaultAvatar size={size} />
 
 UserAvatar.propTypes = {
   src  : PropTypes.string,

@@ -1,6 +1,7 @@
 import './header-mobile.scss';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
 import cn from 'classnames';
 import AppBarLogo from '../common/app-bar-logo';
 import LandingMenuBtn from '../common/menu-button';
@@ -28,19 +29,18 @@ export default class Header extends React.Component {
   goHome     = () => this.props.store.goTo('home');
 
   render() {
-    const {store: {user, ui}} = this.props;
+    const {user, ui} = this.props.store;
+
     let headerLeft;
     if (user.isSignedIn) {
-      headerLeft = ui.isHome ? <AppBarLogo onTouchTap={this.goHome} /> : <BackBtn />;
+      headerLeft = ui.isHome ? <AppBarLogo onClick={this.goHome} /> : <BackBtn />;
     }else{
-      headerLeft = ui.isLanding ? <LandingMenuBtn onTouchTap={this.toggleMenu} /> : <AppBarLogo onTouchTap={this.goHome} />;
+      headerLeft = ui.isLanding ? <LandingMenuBtn onClick={this.toggleMenu} /> : <AppBarLogo onClick={this.goHome} />;
     }
-
-    const headerMain = <SearchBar />;
-    const headerRight = <MobileMenuBtn onTouchTap={this.toggleMenu} />;
 
     return (
       <div className="header mobile">
+        {/*
         <AppBar title={headerMain}
           iconElementLeft={headerLeft}
           iconStyleLeft={{marginTop: !user.isSignedIn && ui.isLanding ? 3 : 0}}
@@ -48,8 +48,23 @@ export default class Header extends React.Component {
           iconElementRight={headerRight}
           iconStyleRight={{marginTop: 0}}
           titleStyle={{marginTop: 0, height: barHeight, lineHeight: barHeight+'px'}}
-          />
-        <MobileMenu open={this.state.openMenu} onRequestChange={this.toggleMenu} />
+          />*/}
+          <AppBar position={'static'} style={{height: barHeight, minHeight: barHeight}}>
+            <Toolbar style={{minHeight: barHeight, height: barHeight}}>
+              <div className="header-content">
+                <div className="header-left">
+                  {headerLeft}
+                </div>
+                <div className="header-center">
+                  <div className="search-container"><SearchBar /></div>
+                </div>
+                <div className="header-right">
+                  <MobileMenuBtn onClick={this.toggleMenu} />
+                </div>
+              </div>
+            </Toolbar>
+          </AppBar>
+        <MobileMenu open={this.state.openMenu} onClose={this.toggleMenu} />
       </div>
     )
   }

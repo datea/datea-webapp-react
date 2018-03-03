@@ -1,7 +1,7 @@
 import './register-page.scss';
 import React from 'react';
 import {observer, inject} from 'mobx-react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import Link from '../../link';
 import {t, translatable} from '../../../i18n';
 import TwitterLoginButton from '../twitter-login-button';
@@ -35,12 +35,11 @@ export default class RegisterPage extends React.Component {
             <TwitterLoginButton />
           </div>
           <div className="btn-row">
-            <RaisedButton
-              label={t('REGISTER_PAGE.REGISTER_DATEA_BTN')}
+            <Button variant="raised"
               icon={<DateroIcon />}
               className="social-login-btn"
-              onTouchTap={this.goToRegister}
-            />
+              onClick={this.goToRegister}
+            >{t('REGISTER_PAGE.REGISTER_DATEA_BTN')}</Button>
           </div>
           <div className="bottom-info">
             <div className="info-line">{t('REGISTER_PAGE.NOT_WITHOUT_CONSENT')}</div>

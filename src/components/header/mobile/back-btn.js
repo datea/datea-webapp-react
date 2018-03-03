@@ -1,6 +1,6 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
-import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import ArrowBack from 'material-ui-icons/ArrowBack';
 import {inject} from 'mobx-react';
 
 @inject('store')
@@ -18,8 +18,8 @@ export default class BackButton extends React.Component {
       top : '1px'
     };
     return (
-      <IconButton onTouchTap={() => window.history.back()} style={btnStyle} iconStyle={iconStyle}>
-        <ArrowBack />
+      <IconButton onClick={() => window.history.back()} style={btnStyle}>
+        <ArrowBack style={iconStyle} />
       </IconButton>
     )
   }

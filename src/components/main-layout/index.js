@@ -2,7 +2,7 @@ import './main-layout.scss';
 import React from 'react';
 import {observer, inject} from 'mobx-react';
 import cn from 'classnames';
-import CircularProgress from 'material-ui/CircularProgress';
+import {CircularProgress} from 'material-ui/Progress';
 import Footer from '../footer';
 import Header from '../header';
 
@@ -27,7 +27,7 @@ export default class MainLayout extends React.Component {
             <div className="loading-wrap">
               <div className="loading-bg"></div>
               <div className="progress">
-                <CircularProgress color={'#999999'} />
+                <CircularProgress style={{color: '#999999'}} size={60} />
               </div>
             </div>
           }

@@ -3,16 +3,17 @@ import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
 import Avatar from 'material-ui/Avatar';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+import {MenuItem, MenuList} from 'material-ui/Menu';
+import { ListItemIcon, ListItemText } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import DirectionsRunIcon from 'material-ui/svg-icons/maps/directions-run';
-import PersonIcon from 'material-ui/svg-icons/social/person';
-import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import DirectionsRunIcon from 'material-ui-icons/DirectionsRun';
+import PersonIcon from 'material-ui-icons/Person';
+import SettingsIcon from 'material-ui-icons/Settings';
 import DefaultAvatar from '../../misc/default-avatar';
-import HomeIcon from 'material-ui/svg-icons/action/home';
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import InfoOutlineIcon from 'material-ui/svg-icons/action/info-outline';
-import HelpOutlineIcon from 'material-ui/svg-icons/action/help-outline';
+import HomeIcon from 'material-ui-icons/Home';
+import SearchIcon from 'material-ui-icons/Search';
+import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
+import HelpOutlineIcon from 'material-ui-icons/HelpOutline';
 import LangSelectMenuItem from '../common/lang-select-menu-item';
 import config from '../../../config';
 
@@ -25,58 +26,67 @@ export default class MobileMenu extends React.Component {
     super(props, context);
   }
 
-  goTo = (path) => {
-    this.props.onRequestChange();
-    this.props.history.push(path);
+  goTo = (view, params) => {
+    this.props.onClose();
+    this.props.store.goTo(view, params);
   }
 
   logout = () => {
     const {store} = this.props;
-    this.props.onRequestChange();
+    this.props.onClose();
     store.user.signOut();
     setTimeout(() => store.goTo('welcome'));
   }
 
   render() {
-    const {user, ui, router, goTo} = this.props.store;
+    const {user, ui, router} = this.props.store;
     return (
-        <Drawer docked={false}
+        <Drawer
           open={this.props.open}
-          openSecondary={router.currentView.name == 'welcome' || !user.isSignedIn ? false : true}
+          anchor={router.currentView.name == 'welcome' || !user.isSignedIn ? 'left' : 'right'}
           className="user-drawer"
-          onRequestChange={this.props.onRequestChange}>
+          onClose={this.props.onClose}>
 
               { user.isSignedIn &&
-              <div className="profile-menu-avatar">
-                {!!user.image ? <Avatar src={user.largeImage} size={100} /> : <DefaultAvatar size={100} />}
+              <div className="profile-menu-avatar" style={{width: 250}}>
+                {!!user.image ? <Avatar src={user.largeImage} style={{height: 100, width: 100}} /> : <DefaultAvatar size={100} />}
               </div> }
 
-              <MenuItem primaryText={t('MENU_TOP.HOME')} leftIcon={<HomeIcon/>}
-               onTouchTap={() => goTo('home')}
-               />
+              <MenuList>
+                <MenuItem onClick={() => this.goTo('home')}>
+                  <ListItemIcon><HomeIcon/></ListItemIcon>
+                  <ListItemText inset primary={t('MENU_TOP.HOME')} />
+                </MenuItem>
 
-             { user.isSignedIn &&
-              <MenuItem primaryText={t('USER_MENU.GOTO_PROFILE')} leftIcon={<PersonIcon />}
-               onTouchTap={() => {console.log('hey hey');goTo('profile', {username: user.username})}}
-               />
-              }
+               { user.isSignedIn &&
+                  <MenuItem onClick={() => this.goTo('profile', {username: user.username})}>
+                    <ListItemIcon><PersonIcon /></ListItemIcon>
+                    <ListItemText inset primary={t('USER_MENU.GOTO_PROFILE')} />
+                  </MenuItem>
+                }
 
-              <MenuItem primaryText={t('MENU_TOP.ABOUT')} leftIcon={<InfoOutlineIcon/>}
-               onTouchTap={() => goTo('about')}
-               />
+                <MenuItem onClick={() => this.goTo('about')}>
+                 <ListItemIcon><InfoOutlineIcon/></ListItemIcon>
+                 <ListItemText inset primary={t('MENU_TOP.ABOUT')} />
+                </MenuItem>
 
-              <LangSelectMenuItem mobile={true} />
+                <LangSelectMenuItem />
 
-              { user.isSignedIn &&
-              <span>
-                <Divider />
-                <MenuItem primaryText={t('USER_MENU.CONFIG')} leftIcon={<SettingsIcon />}
-                 onTouchTap={() => goTo('settings')}
-                 />
-                <MenuItem primaryText={t('USER_MENU.LOGOUT')} leftIcon={<DirectionsRunIcon />}
-                 onTouchTap={this.logout}
-                 />
-              </span> }
+                { user.isSignedIn && [
+                  <Divider key="div" />,
+
+                  <MenuItem key="settings" onClick={() => this.goTo('settings')}>
+                   <ListItemIcon><SettingsIcon /></ListItemIcon>
+                   <ListItemText inset primary={t('USER_MENU.CONFIG')} />
+                  </MenuItem>,
+
+                  <MenuItem key="logout" onClick={this.logout}>
+                   <ListItemIcon><DirectionsRunIcon /></ListItemIcon>
+                   <ListItemText inset primary={t('USER_MENU.LOGOUT')} />
+                  </MenuItem>
+
+                ]}
+              </MenuList>
 
         </Drawer>
       )

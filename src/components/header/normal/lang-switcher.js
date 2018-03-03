@@ -1,9 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import Popover from 'material-ui/Popover';
+import Menu, {MenuItem, MenuList} from 'material-ui/Menu';
+import Button from 'material-ui/Button';
 import {observer, inject} from 'mobx-react';
 import {translatable} from '../../../i18n';
 
@@ -52,30 +50,28 @@ export default class LangSwitcher extends React.Component {
       textAlign: 'center',
       borderRadius: '50%'
     }
-    const labelStyle = {
+    /*const labelStyle = {
       padding: 0
-    };
+    };*/
 
     return (
       <div className={classnames('lang-switcher', ui.isMobile && 'mobile')}>
-        <FlatButton
-          onTouchTap={this.handleTouchTap}
-          label={user.locale}
-          style={btnStyle}
-          labelStyle={labelStyle} />
-        <Popover
+        <Button
+          onClick={this.handleTouchTap}
+          style={btnStyle}>
+          {user.locale}
+        </Button>
+        <Menu
           open={this.state.open}
           anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={this.handleRequestClose}
-        >
-          <Menu>
-            {this.locales.filter(loc => loc != user.locale).map(loc =>
-              <MenuItem key={loc} primaryText={loc.toUpperCase()} onTouchTap={() => this.switchLang(loc)}/>
-            )}
-          </Menu>
-        </Popover>
+          onClose={this.handleRequestClose}
+          >
+          <MenuList>
+          {this.locales.filter(loc => loc != user.locale).map(loc =>
+            <MenuItem key={loc} onClick={() => this.switchLang(loc)}>{loc.toUpperCase()}</MenuItem>
+          )}
+          </MenuList>
+        </Menu>
       </div>
     );
   }

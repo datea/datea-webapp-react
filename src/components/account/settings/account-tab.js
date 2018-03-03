@@ -1,13 +1,12 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
-import validations from 'formsy-react/src/validationRules';
+import validations from 'formsy-react/lib/validationRules';
 import {emailExists, usernameExists} from '../../../utils';
-import Dialog from 'material-ui/Dialog';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
 import DIcon from '../../../icons';
 import config from '../../../config';
 
@@ -82,19 +81,21 @@ export default class AccountTab extends React.Component {
 
   dialogActions = () => {
     return [
-      <FlatButton
+      <Button
         label={t('CANCEL')}
-        primary={true}
-        onTouchTap={() => this.setState({emailDialogOpen: false})}
+        color="primary"
+        onClick={() => this.setState({emailDialogOpen: false})}
       />,
-      <FlatButton
+      <Button
         label={t('SETTINGS_PAGE.CHANGE_EMAIL_PROCEED')}
-        primary={true}
+        color="primary"
         keyboardFocused={true}
-        onTouchTap={() => this.submit()}
+        onClick={() => this.submit()}
       />,
     ];
   }
+
+  closeDialog = () => this.setState({emailDialogOpen: false});
 
   render() {
     const {store: {user}} = this.props;
@@ -105,20 +106,25 @@ export default class AccountTab extends React.Component {
           <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.errorMsg}}></div>
         }
 
-        <Dialog open={this.state.emailDialogOpen}
-          title={
+        <Dialog open={this.state.emailDialogOpen} className="account-dialog" onClose={this.closeDialog}>
+          <DialogTitle>
             <span className="dialog-title">
               <DIcon name="daterito4"/>
               {t('SETTINGS_PAGE.CHANGE_EMAIL_WARNING_TITLE')}
             </span>
-          }
-          titleStyle={{fontSize: '1.3rem'}}
-          className="account-dialog"
-          actions={this.dialogActions()}
-          onRequestClose={() => this.setState({emailDialogOpen: false})}
-          >{t('SETTINGS_PAGE.CHANGE_EMAIL_WARNING')}</Dialog>
+          </DialogTitle>
+          <DialogContent>{t('SETTINGS_PAGE.CHANGE_EMAIL_WARNING')}</DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={this.closeDialog}>
+              {t('CANCEL')}
+            </Button>
+            <Button color="primary" focusRipple={true} onClick={() => this.submit()}>
+              {t('SETTINGS_PAGE.CHANGE_EMAIL_PROCEED')}
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-        <Formsy.Form ref="accountForm"
+        <Formsy ref="accountForm"
           onValid={this.enableSubmit}
           onInvalid={this.disableSubmit}
           onValidSubmit={() => this.submit(true)}
@@ -128,10 +134,11 @@ export default class AccountTab extends React.Component {
             <FormsyText
               name="username"
               required
+              fullWidth={true}
               value={user.data.username}
               className="username-field form-field"
-              onBlur={this.validateUsernameOnServer}
-              floatingLabelText={t('REGISTER_FORM_PAGE.USERNAME_LABEL')}
+              inputProps={{onBlur: this.validateUsernameOnServer}}
+              label={t('REGISTER_FORM_PAGE.USERNAME_LABEL')}
               validations={'isAlphanumeric,minLength:'+minUnameL+',maxLength:'+maxUnameL}
               validationErrors={{
                 isAlphanumeric : t('REGISTER_FORM_PAGE.USERNAME_ALPHANUM'),
@@ -144,22 +151,25 @@ export default class AccountTab extends React.Component {
             <FormsyText
               name="email"
               required
+              fullWidth={true}
               value={user.data.email}
-              onBlur={this.validateEmailOnServer}
+              inputProps={{onBlur: this.validateEmailOnServer}}
               className="email-field form-field"
-              floatingLabelText={t('REGISTER_FORM_PAGE.EMAIL_LABEL')}
+              label={t('REGISTER_FORM_PAGE.EMAIL_LABEL')}
               validations="isEmail"
               validationErrors={{isEmail : t('ACCOUNT_MSG.EMAIL_INVALID')}}
               />
           </div>
 
           <div className="show-pass-container">
-            <FlatButton
-              labelStyle={{color: "#888", fontWeight: 300, textTransform: 'none', paddingLeft:0, paddingRight:0}}
-              label={t('SETTINGS_PAGE.'+(this.state.showChangePassword ? 'HIDE' : 'SHOW')+'_CHANGE_PASSWORD')}
+            {/*labelStyle={{color: "#888", fontWeight: 300, textTransform: 'none', paddingLeft:0, paddingRight:0}}*/}
+            <Button
               hoverColor="transparent"
-              onTouchTap={this.toggleShowPassword}
-              />
+              onClick={this.toggleShowPassword}
+              >
+              {t('SETTINGS_PAGE.'+(this.state.showChangePassword ? 'HIDE' : 'SHOW')+'_CHANGE_PASSWORD')}
+            </Button>
+
           </div>
 
           {this.state.showChangePassword &&
@@ -168,8 +178,9 @@ export default class AccountTab extends React.Component {
                 <FormsyText
                   name="password"
                   type="password"
+                  fullWidth={true}
                   className="password-field form-field"
-                  floatingLabelText={t('SETTINGS_PAGE.NEW_PASSWORD')}
+                  label={t('SETTINGS_PAGE.NEW_PASSWORD')}
                   validations={{matchRegexp: config.validation.password.regex}}
                   validationErrors={{matchRegexp : t('REGISTER_FORM_PAGE.PASS_DESC')}}
                   />
@@ -179,8 +190,9 @@ export default class AccountTab extends React.Component {
                 <FormsyText
                   name="passwordConfirm"
                   type="password"
+                  fullWidth={true}
                   className="password-confirm-field form-field"
-                  floatingLabelText={t('REGISTER_FORM_PAGE.REPEAT_PASS')}
+                  label={t('REGISTER_FORM_PAGE.REPEAT_PASS')}
                   validations="equalsField:password"
                   validationErrors={{equalsField : t('REGISTER_FORM_PAGE.PASS_REPEAT_ERROR')}}
                   />
@@ -189,16 +201,15 @@ export default class AccountTab extends React.Component {
           }
 
           <div className="form-btns">
-            <RaisedButton
+            <Button variant="raised"
               onMouseEnter={this.blurTextInputs}
-              primary={true}
+              color="primary"
               type="submit"
-              label={t('SAVE')}
               disabled={!this.state.canSubmit}
-            />
+            >{t('SAVE')}</Button>
           </div>
 
-        </Formsy.Form>
+        </Formsy>
       </div>
     );
   }

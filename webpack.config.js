@@ -5,6 +5,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var loaderRules = require('./webpack-loader-rules');
 
 module.exports = {
+    mode: 'production',
     entry: {
       'datea-web': ['babel-polyfill', path.resolve(__dirname, './src/index.js')]
     },

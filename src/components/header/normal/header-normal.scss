@@ -3,21 +3,44 @@
 .header.normal {
 
   .d-icon.icon-datea-logo {
-    position: absolute;
-    left: 5px;
-    top: 11px;
+    //position: absolute;
+    //left: 5px;
+    //top: 11px;
   }
 
-  .header-right {
-    .btn {
-      display: inline-block;
-      vertical-align: top;
+  &.normal {
+
+    .header-left {
+      text-align: left;
+      flex-basis: 15%;
+      min-width: 120px;
+      .main-menu {
+        margin-left: 5px;
+      }
     }
-    .lang-switcher {
-      margin-right: 30px;
-      margin-top: 6px;
-      &.mobile {
-        display: none;
+
+    .header-center {
+      .search-container {
+        position: relative;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    .header-right {
+      text-align: right;
+      flex-basis: 15%;
+      min-width: 120px;
+
+      .btn {
+        display: inline-block;
+        vertical-align: top;
+      }
+      .lang-switcher {
+        display: inline-block;
+        margin-right: 30px;
+        margin-top: 6px;
       }
     }
   }
@@ -33,23 +56,15 @@
       font-size: 32px;
     }
   }
+}
 
-  .header-content {
-    position: relative;
-    .main-menu {
-      float: left;
-    }
-    .search-container {
-      display: block;
-      padding-top: 7px;
-      margin-left: 125px;
-      margin-right: 25px;
-    }
-  }
+.main-menu-list {
+  min-width: 250px;
 }
 
 .user-drawer {
   .profile-menu-avatar {
+    min-width: 250px;
     text-align: center;
     padding: 15px;
     .default-avatar {

@@ -4,7 +4,7 @@ import cn from 'classnames';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import FbIcon from 'material-ui-community-icons/icons/facebook';
 import {observer, inject} from 'mobx-react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import {t, translatable} from '../../../i18n';
 import config from '../../../config';
 
@@ -27,15 +27,14 @@ export default class FacebookLoginButton extends Component {
         this.props.store.ui.setLoading(false)
       }}
       render={ renderProps => (
-        <RaisedButton
-          label={t('LOGIN_PAGE.LOGIN_FB_BTN')}
+        <Button variant="raised"
           icon={<FbIcon />}
           className={cn('social-login-btn', this.props.className)}
-          onTouchTap={e => {
+          onClick={e => {
             this.props.store.ui.setLoading(true);
             renderProps.onClick(e);
           }}
-        />
+        >{t('LOGIN_PAGE.LOGIN_FB_BTN')}</Button>
       )}
     />
   )

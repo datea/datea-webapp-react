@@ -1,33 +1,36 @@
 @import '../../scss/vars';
 
 .header {
-
-  .d-icon.icon-datea-logo {
-    position: absolute;
-    left: 5px;
-    top: 11px;
-  }
+  z-index: 999;
+  position: relative;
 
   &.mobile {
-    .d-icon.icon-datea-logo {
+    /*.d-icon.icon-datea-logo {
       top: 7px;
       left: 3px;
       width: 34px;
       height: 34px;
-    }
+    }*/
   }
 
-  .header-right {
-    .btn {
-      display: inline-block;
-      vertical-align: top;
+  .header-content {
+    display: flex;
+    width: 100%;
+
+    .header-left {
+      text-align: left;
+      flex-basis: 15%;
+      min-width: 100px;
     }
-    .lang-switcher {
-      margin-right: 30px;
-      margin-top: 6px;
-      &.mobile {
-        display: none;
-      }
+
+    .header-center {
+      flex-grow: 10;
+      flex-basis: 70%;
+    }
+
+    .header-right {
+      text-align: right;
+      flex-basis: 15%;
     }
   }
 

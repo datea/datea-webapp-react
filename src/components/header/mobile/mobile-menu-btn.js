@@ -1,9 +1,9 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import {observer, inject} from 'mobx-react';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import {t, translatable} from '../../../i18n';
-import MoreIcon from 'material-ui/svg-icons/navigation/more-vert';
+import MoreIcon from 'material-ui-icons/MoreVert';
 
 @inject('store')
 @translatable
@@ -20,26 +20,27 @@ export default class UserMenu extends React.Component {
       const label = router.currentView.name == 'login' ? t('REGISTER') : t('LOGIN');
       const link  = router.currentView.name == 'login' ? 'register' : 'login';
       return (
-        <FlatButton className="login-btn"
-          label={label}
-          onTouchTap={() => this.goTo(link) }
-          labelStyle={{
-            fontSize: '1rem',
-            paddingRight: 6,
-            paddingLeft: 6
-          }}
+        <Button className="login-btn"
+          onClick={() => this.goTo(link) }
           style={{marginTop: 6}}
-        />
+        >{label}</Button>
       )
+      /*
+        labelStyle={{
+        fontSize: '1rem',
+        paddingRight: 6,
+        paddingLeft: 6
+                }}*/
     }else {
+      /*
       const iconStyle = {
         width  : 30,
         height : 30,
         position: 'relative',
         top : '-3px'
-      };
+      };*/
       return (
-        <IconButton onTouchTap={this.props.onTouchTap} iconStyle={iconStyle}>
+        <IconButton onClick={this.props.onClick}>
           <MoreIcon />
         </IconButton>
       );

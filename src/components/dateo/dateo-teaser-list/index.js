@@ -1,7 +1,7 @@
 import './dateo-teaser-list.scss';
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import {Tr} from '../../../i18n';
 import DateoTeaser from '../teaser-view';
 
@@ -14,7 +14,7 @@ const DateoTeaserList = ({dateos, onLoadMoreDateos, onDateoOpen, showMax}) =>
       )}
     </div>
     <div className="load-more-action">
-      <RaisedButton onTouchTap={onLoadMoreDateos}><Tr id="LOAD_MORE_RESULTS" /></RaisedButton>
+      <Button variant="raised"  onClick={onLoadMoreDateos}><Tr id="LOAD_MORE_RESULTS" /></Button>
     </div>
   </div>
 

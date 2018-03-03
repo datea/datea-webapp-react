@@ -50,7 +50,7 @@ var rules = [
 
   /********** FONTS ***********/
   {
-    test: /\.woff$|\.ttf$|\.eot$/,
+    test: /\.woff$|\.woff2$|\.ttf$|\.eot$/,
     use: {
       loader: 'file-loader',
       options : {

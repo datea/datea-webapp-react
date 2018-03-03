@@ -1,5 +1,5 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import ImageField from '../../image-field';
@@ -43,7 +43,7 @@ export default class ProfileForm extends React.Component {
         {this.state.errorMsg &&
           <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.errorMsg}}></div>}
 
-        <Formsy.Form ref="profileForm"
+        <Formsy ref="profileForm"
           onValid={this.enableSubmit}
           onInvalid={this.disableSubmit}
           onChange={this.resetError}
@@ -74,7 +74,8 @@ export default class ProfileForm extends React.Component {
                 name="full_name"
                 value={user.data.full_name}
                 className="fullname-field form-field"
-                floatingLabelText={t('SETTINGS_PAGE.NAME_LABEL')}
+                fullWidth={true}
+                label={t('SETTINGS_PAGE.NAME_LABEL')}
                 />
             </div>
 
@@ -83,7 +84,8 @@ export default class ProfileForm extends React.Component {
                 name="url"
                 value={user.data.url}
                 className="url-field form-field"
-                floatingLabelText={t('SETTINGS_PAGE.URL_LABEL')}
+                fullWidth={true}
+                label={t('SETTINGS_PAGE.URL_LABEL')}
                 validations="isUrl" />
             </div>
 
@@ -94,7 +96,8 @@ export default class ProfileForm extends React.Component {
                 name="url_facebook"
                 value={user.data.url_facebook}
                 className="url-fb-field form-field"
-                floatingLabelText={t('SETTINGS_PAGE.FB_URL_LABEL')}
+                fullWidth={true}
+                label={t('SETTINGS_PAGE.FB_URL_LABEL')}
                 validations="isUrl" />
             </div>
 
@@ -103,29 +106,30 @@ export default class ProfileForm extends React.Component {
                 name="url_twitter"
                 value={user.data.url_twitter}
                 className="url-tw-field form-field"
-                floatingLabelText={t('SETTINGS_PAGE.TW_URL_LABEL')}
+                fullWidth={true}
+                label={t('SETTINGS_PAGE.TW_URL_LABEL')}
                 validations="isUrl" />
             </div>
 
             <div className="input-row">
               <FormsyText
                 name="url_youtube"
+                fullWidth={true}
                 value={user.data.url_youtube}
                 className="url-yt-field form-field"
-                floatingLabelText={t('SETTINGS_PAGE.YOUTUBE_URL_LABEL')}
+                label={t('SETTINGS_PAGE.YOUTUBE_URL_LABEL')}
                 validations="isUrl" />
             </div>
 
             <div className="form-btns">
-              <RaisedButton
+              <Button variant="raised"
                 onMouseEnter={this.blurTextInputs}
-                primary={true}
+                color="primary"
                 type="submit"
-                label={t('SAVE')}
                 disabled={!this.state.canSubmit}
-              />
+              >{t('SAVE')}</Button>
             </div>
-          </Formsy.Form>
+          </Formsy>
       </div>
     )
   }

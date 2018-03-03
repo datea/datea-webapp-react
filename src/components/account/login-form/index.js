@@ -1,6 +1,6 @@
 import './login-form.scss';
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import Formsy from 'formsy-react';
 import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import {observer, inject} from 'mobx-react';
@@ -66,7 +66,7 @@ export default class LoginForm extends React.Component {
         {this.state.errorMsg &&
           <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.errorMsg}}></div>}
 
-        <Formsy.Form ref="loginForm"
+        <Formsy ref="loginForm"
           onValid={this.enableSubmit}
           onInvalid={this.disableSubmit}
           onChange={this.resetError}
@@ -77,28 +77,29 @@ export default class LoginForm extends React.Component {
                 name="username"
                 required
                 className="username-field"
-                floatingLabelText={t('LOGIN_PAGE.USER_PH')}
+                fullWidth={true}
+                label={t('LOGIN_PAGE.USER_PH')}
                 validations="isExisty" />
             </div>
             <div className="input-row">
               <FormsyText
                 name="password"
                 required
+                fullWidth={true}
                 className="password-field"
                 type="password"
-                floatingLabelText={t('PASSWORD')}
+                label={t('PASSWORD')}
                 validations="minLength:1" />
             </div>
             <div className="form-btns">
-              <RaisedButton
+              <Button variant="raised"
                 onMouseEnter={this.blurTextInputs}
-                primary={true}
+                color="primary"
                 type="submit"
-                label={t('LOGIN_PAGE.LOGIN')}
                 disabled={!this.state.canSubmit}
-              />
+              >{t('LOGIN_PAGE.LOGIN')}</Button>
             </div>
-          </Formsy.Form>
+          </Formsy>
       </div>
     )
   }

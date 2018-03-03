@@ -1,5 +1,5 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import Formsy from 'formsy-react';
 import FormsyCheckbox from 'formsy-material-ui/lib/FormsyCheckbox';
 import {observer, inject} from 'mobx-react';
@@ -34,7 +34,7 @@ export default class ProfileForm extends React.Component {
         {this.state.errorMsg &&
           <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.errorMsg}}></div>}
 
-        <Formsy.Form ref="notifySettingsForm"
+        <Formsy ref="notifySettingsForm"
           onChange={this.resetError}
           onValidSubmit={this.submit}
           >
@@ -87,13 +87,12 @@ export default class ProfileForm extends React.Component {
             </div>
 
             <div className="form-btns">
-              <RaisedButton
-                primary={true}
+              <Button variant="raised"
+                color="primary"
                 type="submit"
-                label={t('SAVE')}
-              />
+              >{t('SAVE')}</Button>
             </div>
-          </Formsy.Form>
+          </Formsy>
       </div>
     )
   }

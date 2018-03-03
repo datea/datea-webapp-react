@@ -1,7 +1,7 @@
 import React from 'react';
 import DIcon from '../../icons';
 import {Tr} from '../../i18n';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import MappingColumnLayout from '../mapping-column-layout';
 import {observer, inject} from 'mobx-react';
 
@@ -26,12 +26,11 @@ export default class LandingPage extends React.Component {
         </div>
         <div className="btns-area">
           <div className="msg"><Tr id="LOGIN_PAGE.NOT_A_DATERO" /></div>
-          <RaisedButton primary={false}
-            style={{height: 50}}
-            labelStyle={{fontSize: '1.1rem', paddingLeft: '20px', paddingRight: '20px'}}
-            onTouchTap={() => this.props.store.goTo('register')}
-            label={<Tr id="REGISTER" />}
-            />
+          <Button variant="raised"
+            size="large"
+            onClick={() => this.props.store.goTo('register')}
+            ><Tr id="REGISTER" /></Button>
+          {/*labelStyle={{fontSize: '1.1rem', paddingLeft: '20px', paddingRight: '20px'}}*/}
         </div>
       </div>
     )

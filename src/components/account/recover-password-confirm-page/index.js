@@ -1,5 +1,5 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
@@ -70,7 +70,7 @@ export default class RecoverPasswordConfirmPage extends React.Component {
             <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.error}}></div>
           }
 
-          <Formsy.Form ref="passConfirmForm"
+          <Formsy ref="passConfirmForm"
             onValid={this.enableSubmit}
             onInvalid={this.disableSubmit}
             onValidSubmit={this.submit} >
@@ -79,9 +79,10 @@ export default class RecoverPasswordConfirmPage extends React.Component {
               <FormsyText
                 name="password"
                 type="password"
+                fullWidth={true}
                 required
                 className="password-field"
-                floatingLabelText={t('PASSW_PAGE.PASS_LABEL')}
+                label={t('PASSW_PAGE.PASS_LABEL')}
                 validations={{matchRegexp: config.validation.password.regex}}
                 validationErrors={{matchRegexp : t('REGISTER_FORM_PAGE.PASS_DESC')}}
                 />
@@ -92,24 +93,24 @@ export default class RecoverPasswordConfirmPage extends React.Component {
                 name="passwordConfirm"
                 type="password"
                 required
+                fullWidth={true}
                 className="password-confirm-field"
-                floatingLabelText={t('PASSW_PAGE.REPEAT_LABEL')}
+                label={t('PASSW_PAGE.REPEAT_LABEL')}
                 validations="equalsField:password"
                 validationErrors={{equalsField : t('REGISTER_FORM_PAGE.PASS_REPEAT_ERROR')}}
                 />
             </div>
 
             <div className="form-btns">
-              <RaisedButton
+              <Button variant="raised"
                 onMouseEnter={this.blurTextInputs}
-                primary={true}
+                color="primary"
                 type="submit"
-                label={t('PASSW_PAGE.SAVE_BTN')}
                 disabled={!this.state.canSubmit}
-              />
+              >{t('PASSW_PAGE.SAVE_BTN')}</Button>
             </div>
 
-          </Formsy.Form>
+          </Formsy>
         </div>
       </div>
     )
@@ -140,11 +141,10 @@ export default class RecoverPasswordConfirmPage extends React.Component {
         <div className="password-confirm-content reset-expired">
           <div className="info-text">{t('PASSW_PAGE.ERROR_MSG')}</div>
           <div className="form-btns">
-            <RaisedButton
-              onTouchTap={this.startOver}
-              primary={true}
-              label={t('PASSW_PAGE.STARTOVER_BTN')}
-            />
+            <Button variant="raised"
+              onClick={this.startOver}
+              color="primary"
+            >{t('PASSW_PAGE.STARTOVER_BTN')}</Button>
           </div>
         </div>
       </div>

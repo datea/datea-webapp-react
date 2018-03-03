@@ -1,5 +1,5 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
@@ -70,7 +70,7 @@ export default class RecoverPasswordPage extends React.Component {
                 <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.error}}></div>
               }
 
-              <Formsy.Form ref="passResetForm"
+              <Formsy ref="passResetForm"
                 onValid={this.enableSubmit}
                 onInvalid={this.disableSubmit}
                 onValidSubmit={this.submit} >
@@ -80,23 +80,23 @@ export default class RecoverPasswordPage extends React.Component {
                     name="email"
                     required
                     className="email-field"
-                    floatingLabelText={t('LOGIN_PAGE.EMAIL_PH')}
+                    fullWidth={true}
+                    label={t('LOGIN_PAGE.EMAIL_PH')}
                     validations="isEmail"
                     validationErrors={{isEmail : t('ACCOUNT_MSG.EMAIL_INVALID')}}
                     />
                 </div>
 
                 <div className="form-btns">
-                  <RaisedButton
+                  <Button variant="raised"
                     onMouseEnter={this.blurTextInputs}
-                    primary={true}
+                    color="primary"
                     type="submit"
-                    label={t('SUBMIT')}
                     disabled={!this.state.canSubmit}
-                  />
+                  >{t('SUBMIT')}</Button>
                 </div>
 
-              </Formsy.Form>
+              </Formsy>
             </div>
           </div>
         }
@@ -111,10 +111,10 @@ export default class RecoverPasswordPage extends React.Component {
               <div className="info-text">{t('ACCOUNT_MSG.CLOSE_TAB')}</div>
 
               <div className="form-btns">
-                <RaisedButton
-                  primary={true}
+                <Button variant="raised"
+                  color="primary"
                   label={t('RESUBMIT')}
-                  onTouchTap={this.resubmit}
+                  onClick={this.resubmit}
                 />
               </div>
               {this.state.resubmitted &&

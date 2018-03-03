@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import {getImgSrc} from '../../../utils';
 import {Tr} from '../../../i18n';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 
 const InfoBox = ({campaign, onMoreInfo}) =>
   <div className="campaign-info">
