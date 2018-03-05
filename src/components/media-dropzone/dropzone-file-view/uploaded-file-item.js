@@ -58,13 +58,12 @@ export default class UploadedFile extends Component {
   onTitleInputBlur = () => {
     this.setState({editing: false});
     let fileRes = this.props.fileResource;
-    console.log('blur fileResource', fileRes);
     fileRes.title = this.state.title;
     !!this.props.onEdit && this.props.onEdit(fileRes);
   }
 
   render() {
-
+    const {onDelete, fileResource} = this.props;
     const primary = !this.state.editing
       ? this.getFileTitle()
       : <TextField
@@ -87,7 +86,7 @@ export default class UploadedFile extends Component {
           onClick={this.activateTitleEdit}
         />
         <ListItemSecondaryAction>
-          <IconButton onClick={() => console.log('on delete')}>
+          <IconButton onClick={() => !!onDelete && onDelete(fileResource)}>
             <DeleteIcon />
           </IconButton>
         </ListItemSecondaryAction>

@@ -22,7 +22,6 @@ export default class DateoFormStore {
 
   /* IMAGES AND FILES */
   @action addMedia = (resource) => {
-    console.log('resource', resource);
     const field = resource.image ? 'images' : 'files';
     let list = this.dateo.get(field) || [];
     const order = list.length;

@@ -103,19 +103,19 @@ export default class DropzoneFileView extends Component {
           onDelete={onImgDelete}
           />
 
-          {!!fileResources.length &&
-            <ListSubheader component={'div'} className="file-view-subheader files">
-              <Tr id="FILES" />
-            </ListSubheader>
-          }
-          <SortableFileContainer
-            axis="y"
-            pressDelay={200}
-            fileResources={fileResources}
-            onSortEnd={this.onFileSortEnd}
-            onDelete={onFileDelete}
-            onEdit={onFileEdit}
-            />
+        {!!fileResources.length &&
+          <ListSubheader component={'div'} className="file-view-subheader files">
+            <Tr id="FILES" />
+          </ListSubheader>
+        }
+        <SortableFileContainer
+          axis="y"
+          pressDelay={200}
+          fileResources={fileResources}
+          onSortEnd={this.onFileSortEnd}
+          onDelete={onFileDelete}
+          onEdit={onFileEdit}
+          />
       </div>
     );
   }
