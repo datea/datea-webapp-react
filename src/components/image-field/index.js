@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import request from 'superagent';
 import Dropzone from 'react-dropzone';
 import {observer, inject} from 'mobx-react';
-import CircularProgress from 'material-ui/CircularProgress';
+import {CircularProgress} from 'material-ui/Progress';
 import Avatar from 'material-ui/Avatar';
 import AddPhotoIcon from 'material-ui-icons/AddAPhoto';
 import DefaultAvatar from '../misc/default-avatar';
@@ -25,7 +25,7 @@ export default class ImageField extends React.Component {
     className       : PropTypes.string,
     src             : PropTypes.string,
     imgType         : PropTypes.string,
-    iconSize        : PropTypes.number
+    iconSize        : PropTypes.number,
   };
 
   static defaultProps = {
@@ -47,8 +47,6 @@ export default class ImageField extends React.Component {
     this.phIcon = this.props.imgType == 'avatar' ?
       <DefaultAvatar size={this.props.iconSize} /> :
       <AddPhotoIcon
-        color={colors.greyLight}
-        hoverColor={colors.greyMid}
         className="ph-icon"
         style={{
           width      : this.props.iconSize,

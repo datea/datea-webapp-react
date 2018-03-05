@@ -6,6 +6,7 @@ import Views from './views';
 
 import CampaignViewStore from './stores/campaign-view';
 import DateoStore from './stores/dateo';
+import DateoFormStore from './stores/dateo-form';
 
 export default class DateaStore {
 
@@ -18,8 +19,16 @@ export default class DateaStore {
     this.campaignView = new CampaignViewStore(this);
   }
 
-  goTo(view, paramsObject, queryParamsObject) {
+  goTo = (view, paramsObject, queryParamsObject) => {
     view = typeof(view) == 'string' ? Views[view] : view;
     this.router.goTo(view, paramsObject, this, queryParamsObject);
+  }
+
+  createDateoFormStore = (id) => {
+    if (this.dateoForm) {
+      this.dateoForm.dispose();
+      this.dateoForm = null;
+    }
+    this.dateoForm = new DateoFormStore(this, id);
   }
 }

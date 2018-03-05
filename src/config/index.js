@@ -1,3 +1,5 @@
+import allowedTypes from './upload-mimetypes';
+
 const config = {
   app: {
     name : 'datea',
@@ -22,7 +24,14 @@ const config = {
       minLength : 6,
       maxLength : 32,
       regex : /^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$/
-    }
+    },
+    allowedFileTypes : allowedTypes,
+    allowedImageTypes : [
+      'image/gif',
+      'image/jpeg',
+      'image/png',
+      'image/svg+xml'
+    ]
   },
   defaultLocale: 'es',
 };

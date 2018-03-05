@@ -2,7 +2,7 @@ import config from '../../config';
 import {fetch} from '../../utils';
 import urlJoin from 'url-join';
 
-const url = (...pathElems) => urlJoin(config.api.url, ...pathElems);
+const url = (...pathElems) => urlJoin(config.api.url, ...pathElems.map(p => String(p)));
 
 class Api {
 
@@ -28,6 +28,13 @@ class Api {
     post : obj => this.post(url('dateo'), obj),
     patch : obj => this.patch(url('dateo', obj.id), obj),
     delete : obj => this.delete(url('dateo', obj.id))
+  };
+
+  /* IMAGES */
+  image = {
+    getDetail : id => this.get(url('image'), id),
+    patch : obj => this.patch(url('image', obj.id), obj),
+    delete : obj => this.delete(url('image', obj.id))
   };
 
   /* URL INFO */

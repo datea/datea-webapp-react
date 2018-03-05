@@ -37,12 +37,12 @@ function fetch(url, options = {}, requestLib = request) {
   let state = 'pending';
   let prom = new Promise(function (resolve, reject) {
     req.end((err, res) =>{
-        if (!err && [200, 201, 202].indexOf(res.status) !== -1 ) {
+        if (!err && [200, 201, 202, 203, 204].indexOf(res.status) !== -1 ) {
           state = 'resolved';
           resolve(res);
         } else {
           state = 'rejected';
-          if (err.timeout) {
+          if (err && err.timeout) {
             res = {
               ok     : false,
               status : 'timeout'

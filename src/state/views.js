@@ -17,6 +17,7 @@ import ActivationPage from '../components/account/activation-page';
 import AccountSettings from '../components/account/settings';
 import Profile from '../components/profile';
 import CampaignView from '../components/campaign-view';
+import DatearTestView from '../components/dateo-form';
 
 const Views = {
 
@@ -68,40 +69,56 @@ const Views = {
   }),
 
   activate : new Route({
+    name : 'activate',
     path: '/activation/:outcome',
     component: <ActivationPage />,
     onEnter: (route, params, store) => store.user.isSignedIn && store.goTo('home')
   }),
 
   recoverPass : new Route({
+    name : 'recoverPass',
     path: '/recover-password',
     component: <RecoverPasswordPage />,
     onEnter: (route, params, store) => store.user.isSignedIn && store.goTo('home')
   }),
 
-  recoverPassCofirm : new Route({
+  recoverPassConfirm : new Route({
+    name: 'recoverPassConfirm',
     path: '/recover-password/confirm/:uid/:token',
     component: <RecoverPasswordConfirmPage />,
     onEnter: (route, params, store) => store.user.isSignedIn && store.goTo('home')
   }),
 
   settings : new Route({
+    name: 'settings',
     path: '/settings/:page?',
     component: <AccountSettings />,
   }),
 
+  datear : new Route({
+    name: 'datear',
+    path : '/datear/:id?',
+    component: <DatearTestView />,
+    onEnter: (route, params, store) => {
+      store.createDateoFormStore(params.id);
+    }
+  }),
+
   profile : new Route({
+    name : 'profile',
     path: '/:username',
     component: <Profile />
   }),
 
   profileDateos : new Route({
+    name : 'profileDateos',
     path: '/:username/dateos',
     component: <Profile />
   }),
 
   /* CAMPAIGNS - TAGS */
   campaign : new Route({
+    name : 'campaign',
     path: '/:username/:campaignSlug',
     component : <CampaignView />,
     onEnter: (route, params, store) => {
@@ -111,6 +128,7 @@ const Views = {
 
   /* 404 */
   notFound : new Route({
+    name : 'notFound',
     path: '*',
     component: <Error404 errorId="NOT_FOUND" />
   })

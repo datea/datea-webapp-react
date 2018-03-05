@@ -6,5 +6,8 @@ export const colors = {
   green     : '#28BC45',
   purple    : '#8B00A4',
   greyLight : '#bbbbbb',
-  greyMid   : '#888888'
+  greyMid   : '#888888',
+  greyLightBg : '#ecefee',
+  greyLighter : '#efefef',
+  greyDark    : '5E6E66'
 }

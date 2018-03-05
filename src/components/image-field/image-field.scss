@@ -73,7 +73,11 @@
       position: absolute;
       top: 50%;
       left: 50%;
+      fill: $greyLight;
       transform: translate(-50%, -50%);
+      &:hover {
+        fill: $greyMid;
+      }
     }
     /*&:hover {
       border: 3px dashed $greyLight;
