@@ -23,5 +23,11 @@ const UploadedImage = ({imgResource, index, onDelete, className, ...props}) => {
   );
 }
 
+UploadedImage.propTypes = {
+  imgResource : PropTypes.object,
+  index: PropTypes.number,
+  onDelete: PropTypes.func,
+  className: PropTypes.string
+}
 
 export default UploadedImage;

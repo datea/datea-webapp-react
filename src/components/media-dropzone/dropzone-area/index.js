@@ -7,6 +7,7 @@ import {observer, inject, PropTypes as MobxPropTypes} from 'mobx-react';
 import cn from 'classnames';
 import urlJoin from 'url-join';
 import config from '../../../config';
+import {t} from '../../../i18n';
 
 
 @inject('store')
@@ -80,30 +81,38 @@ export default class MediaUploadArea extends React.Component {
   onDrop = (files) => {
     const {user} = this.props.store;
     const file = files[0];
+    let resourceType;
 
-    this.setZoneState({
-      dragging : false,
-      uploading : true,
-      progress   : 0,
-      errorMsg  : null,
-      uploadingType : this.isImage(file.type) ? 'image' : 'file'
-    });
+    if (!file) {
+      this.setZoneState({errorMsg : t('ERROR.UPLOAD')});
+      return;
+    } else {
+      resourceType = this.isImage(file.type) ? 'image' : 'file';
+      this.setZoneState({
+        dragging : false,
+        uploading : true,
+        progress   : 0,
+        errorMsg  : null,
+        uploadingType : resourceType
+      });
+    }
 
     // TODO: move this logic into a store
-    request.post(urlJoin(config.api.imgUrl, 'image/save/'))
+    request.post(urlJoin(config.api.imgUrl, `${resourceType}/save/`))
     .set({
       Accept : 'application/json',
       Authorization : 'Apikey ' + user.data.username + ':' + user.apiKey
     })
-    .attach('image', file)
+    .attach(resourceType, file)
     .on('progress', e => !!e.percent && this.setZoneState({progress: e.percent}))
     .end((err, res) => {
+      console.log('res', res);
       let state = {
         progress: 0,
         uploading : false,
         currentTypes : this.props.acceptTypes
       };
-      if (!err && res.status == 200) {
+      if (!err && [200,201].includes(res.status)) {
         this.props.onUploadSuccess && this.props.onUploadSuccess(res.body.resource, file);
         state.errorMsg = null;
       }else {

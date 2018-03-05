@@ -17,7 +17,7 @@ export default class DateoMainForm extends Component {
     return (
       <DropzoneArea
         onUploadError={e => console.log('upload error', e)}
-        onUploadSuccess={res => form.addImage(res)}
+        onUploadSuccess={res => form.addMedia(res)}
         acceptTypes={['image', 'file']}
         >
         <div className="dateo-main-form">
@@ -42,8 +42,12 @@ export default class DateoMainForm extends Component {
           <div className="">
             <DropzoneFileView
               imgResources={form.dateo.get('images')}
-              onImagesSorted={imgs => form.resortImages(imgs)}
-              onImgDelete={img => form.deleteImage(img)}
+              fileResources={form.dateo.get('files')}
+              onImgSort={imgs => form.resortMedia(imgs)}
+              onImgDelete={img => form.deleteMedia(img)}
+              onFileSort={files => form.resortMedia(files)}
+              onFileDelete={file => form.deleteMedia(file)}
+              onFileEdit={file => form.mediaEdited(file)}
               />
           </div>
         </div>

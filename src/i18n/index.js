@@ -52,6 +52,6 @@ export class Tr extends React.Component {
   };
 
   render() {
-    return <span>{t(this.props.id, this.props.vars)}</span>;
+    return t(this.props.id, this.props.vars);
   }
 }

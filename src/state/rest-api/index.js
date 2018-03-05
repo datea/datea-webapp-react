@@ -37,6 +37,13 @@ class Api {
     delete : obj => this.delete(url('image', obj.id))
   };
 
+  /* IMAGES */
+  file = {
+    getDetail : id => this.get(url('file'), id),
+    patch : obj => this.patch(url('file', obj.id), obj),
+    delete : obj => this.delete(url('file', obj.id))
+  };
+
   /* URL INFO */
   urlInfo = {
     get : (url) => this.get(url('url_info'), {url})

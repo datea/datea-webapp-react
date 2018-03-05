@@ -24,6 +24,9 @@
   "SHOW_DETAIL" : "Ver detalle",
   "MORE_INFO" : "Más info",
   "LOAD_MORE_RESULTS" : "Mostrar más resultados",
+	"EDIT_FILE_TITLE" : "editar título",
+  "IMAGES" : "Imágenes",
+  "FILES" : "Archivos",
 
 	"MENU_TOP" : {
 		"MENU" : "Menú",

@@ -25,6 +25,9 @@
   "SHOW_DETAIL" : "Voir détail",
   "MORE_INFO" : "Plus info",
   "LOAD_MORE_RESULTS" : "Afficher plus de résultats",
+  "DEFAULT_FILE_TITLE" : "éditez titre",
+  "IMAGES" : "Images",
+  "FILES": "Fichiers",
 
 	"MENU_TOP" : {
 		"MENU" : "Menu",

@@ -1,4 +1,20 @@
+.dropzone-file-view {
+  padding-top: 0px;
+  .file-view-subheader {
+    line-height: 40px !important;
+    padding-left: 0 !important;
+    &.files {
+      line-height: 24px !important;
+      padding-top: 20px !important;
+    }
+  }
+  .file-view-list {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+}
 
-.uploaded-image-grid-item {
+
+li, .uploaded-image-grid-item, .uploaded-file-list-item {
   list-style: none !important;
 }

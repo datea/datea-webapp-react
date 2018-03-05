@@ -20,31 +20,46 @@ export default class DateoFormStore {
   }
 
 
-  /* IMAGES */
-  @action addImage = (imgRes) => {
-    let images = this.dateo.get('images') || [];
-    const order = images.length;
-    images.push(imgRes);
-    if (imgRes.order != order) {
-      imgRes.order = order;
-      Api.image.patch(imgRes);
+  /* IMAGES AND FILES */
+  @action addMedia = (resource) => {
+    console.log('resource', resource);
+    const field = resource.image ? 'images' : 'files';
+    let list = this.dateo.get(field) || [];
+    const order = list.length;
+    list.push(resource);
+    if (resource.order != order) {
+      resource.order = order;
+      Api[field.slice(0,-1)].patch(resource);
     }
-    this.dateo.set('images', images);
+    this.dateo.set(field, list);
   }
 
-  @action resortImages = (imgResources) => {
-    imgResources = imgResources.map((imgRes, i) => {
-      imgRes.order = i;
-      Api.image.patch(imgRes);
-      return imgRes;
-    });
-    this.dateo.set('images', imgResources);
+  @action resortMedia = (resourceList) => {
+    if (resourceList.length) {
+      const field = resourceList[0].image ? 'images' : 'files';
+      resourceList = resourceList.map((res, i) => {
+        res.order = i;
+        Api[field.slice(0, -1)].patch(res);
+        return res;
+      });
+      this.dateo.set(field, resourceList);
+    }
   }
 
-  @action deleteImage = (imgResource) => {
-    Api.image.delete(imgResource);
-    const images = this.dateo.get('images').filter(i => i.id != imgResource.id);
-    this.dateo.set('images', images);
+  @action deleteMedia = (resource) => {
+    const field = resource.image ? 'images' : 'files';
+    Api[field.slice(0,-1)].delete(resource);
+    const list = this.dateo.get(field).filter(i => i.id != resource.id);
+    this.dateo.set(field, list);
+  }
+
+  @action mediaEdited = (resource) => {
+    const field = resource.image ? 'images' : 'files';
+    Api[field.slice(0,-1)].patch(resource);
+    const list = this.dateo.get(field)
+    const idx = list.findIndex(r => r.id == resource.id);
+    list[idx] = resource;
+    this.dateo.set(field, list);
   }
 
   @action dispose = () => {
