@@ -6,6 +6,7 @@ import {observer, inject} from 'mobx-react';
 import TextField from 'material-ui/TextField';
 import {t, translatable} from '../../../i18n';
 import {DropzoneArea, DropzoneControl, DropzoneFileView} from '../../media-dropzone';
+import TagField from '../../tag-field';
 
 @inject('store')
 @translatable
@@ -33,6 +34,14 @@ export default class DateoMainForm extends Component {
               rowsMax={15}
               error={form.errors.get('content')}
               onChange={ev => form.setContent(ev.target.value)}
+            />
+          </div>
+
+          <div className="field-row tag-field-row">
+            <TagField
+              tags={form.dateo.get('tags')}
+              onChange={form.setTags}
+              defaultSuggestions={['abababa', 'acacaca']}
             />
           </div>
 

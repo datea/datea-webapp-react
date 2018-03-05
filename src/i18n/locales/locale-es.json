@@ -27,6 +27,8 @@
 	"EDIT_FILE_TITLE" : "editar título",
   "IMAGES" : "Imágenes",
   "FILES" : "Archivos",
+  "CREATE_TAG" : "Crear tag",
+  "TAGS_PLACEHOLDER": "Ingresa tags (al menos uno)",
 
 	"MENU_TOP" : {
 		"MENU" : "Menú",

@@ -28,6 +28,8 @@
   "DEFAULT_FILE_TITLE" : "éditez titre",
   "IMAGES" : "Images",
   "FILES": "Fichiers",
+  "CREATE_TAG" : "Créer tag",
+  "TAGS_PLACEHOLDER": "Entrer tags (au moins une)",
 
 	"MENU_TOP" : {
 		"MENU" : "Menu",

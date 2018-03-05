@@ -61,6 +61,10 @@ export default class DateoFormStore {
     this.dateo.set(field, list);
   }
 
+  @action setTags = (tags) => {
+    this.dateo.set('tags', tags);
+  }
+
   @action dispose = () => {
     //dispose here anything
   }

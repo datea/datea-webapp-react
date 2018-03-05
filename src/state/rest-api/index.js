@@ -37,11 +37,19 @@ class Api {
     delete : obj => this.delete(url('image', obj.id))
   };
 
-  /* IMAGES */
+  /* FILES */
   file = {
     getDetail : id => this.get(url('file'), id),
     patch : obj => this.patch(url('file', obj.id), obj),
     delete : obj => this.delete(url('file', obj.id))
+  };
+
+  /* TAGS */
+  tag = {
+    getList : (params = {}) => this.get(url('tag'), params),
+    getDetail : id => this.get(url('tag'), id),
+    post : obj => this.post(url('tag'), obj),
+    autocomplete : search => this.get(url('tag/autocomplete'), {q : search})
   };
 
   /* URL INFO */
