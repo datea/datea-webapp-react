@@ -1,5 +1,4 @@
-import 'leaflet.markercluster/dist/MarkerCluster.css';
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import './map.scss';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';

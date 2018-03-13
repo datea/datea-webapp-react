@@ -1,13 +1,6 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-
-
-const MARKER_CONFIG = {
-  width        : 29,
-  height       : 42,
-  defaultColor : '#28BC45',
-  path         : `M14.087,0.485c-7.566,0-13.694,6.133-13.698,13.695c0.027,3.938,2.02,8.328,4.637,10.878c2.615,3.363,6.536,8.889,6.488,11.033v0.07c0,4.195,0.364,3.92,0.4,4.051c0.128,0.441,0.527,0.746,0.99,0.746h2.179c0.464,0,0.858-0.309,0.983-0.74c0.04-0.137,0.407,0.139,0.411-4.057c0-0.039-0.004-0.059-0.004-0.068c-0.038-2.047,3.399-7.35,6.109-10.877c2.875-2.498,5.175-6.814,5.196-11.035C27.779,6.618,21.65,0.485,14.087,0.485z`
-};
+import {MARKER_CONFIG, MarkerDefs, DefaultMarkerIcon, buildMarkerIcon} from '../../../config';
 
 export default class MapMarkerFactory {
 
@@ -63,13 +56,8 @@ export default class MapMarkerFactory {
 
   		markerSVG = (
         <svg width={MARKER_CONFIG.width} height={MARKER_CONFIG.height}>
-          {/*<defs>
-            <filter id="markerShadow">
-              <feDropShadow dx="0" dy="0" stdDeviation="2" floodOpacity="1" />
-            </filter>
-          </defs>*/}
-
-          <g style={{clipPath: 'url('+clipPath+')'}}>
+          <MarkerDefs />
+          <g style={{clipPath: 'url(#markerPinPath)'}}>
     		    {coloredTags.map((tag, i) =>
               <rect key={tag} height={MARKER_CONFIG.height} width={catWidth} fill={mapping.subTags[tag].color} x={i*catWidth} y={0} />
             )}
@@ -81,24 +69,9 @@ export default class MapMarkerFactory {
       );
 
     } else {
-      markerSVG = (
-        <svg width={MARKER_CONFIG.width} height={MARKER_CONFIG.height}>
-          <g style={{clipPath: 'url('+clipPath+')'}}>
-            <rect height={MARKER_CONFIG.height} width={MARKER_CONFIG.width} fill={MARKER_CONFIG.defaultColor} x={0} y={0} />
-            <circle cx="14.5" cy="13" r="4" fill="white" />
-            <path d={MARKER_CONFIG.path} stroke="#888888" fill="none" strokeWidth="1" />
-          </g>
-        </svg>
-      );
+      markerSVG = <DefaultMarkerIcon />;
     }
 
-		return L.divIcon({
-        iconSize    : [MARKER_CONFIG.width, MARKER_CONFIG.height],
-        iconAnchor  : [MARKER_CONFIG.width/2, MARKER_CONFIG.height],
-        popupAnchor : [0, -33],
-        labelAnchor : [8, -25],
-        html        : ReactDOMServer.renderToStaticMarkup(markerSVG),
-        className   : 'datea-marker-icon',
-		});
+    return buildMarkerIcon(markerSVG);
 	}
 }

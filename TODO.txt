@@ -1,4 +1,8 @@
 
+-> format-geocoded-address : quitar el codigo postal de las direcciones.
+
+
+
 DATA:
   - hydrate campaign with subtags Map with tag as key
   - lastLoggedOutURL con nuevo router

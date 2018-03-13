@@ -1,0 +1,43 @@
+@import '../../scss/vars';
+
+.datea-map {
+
+  &.leaflet-container {
+    .leaflet-control-container {
+      .leaflet-bottom.leaflet-right {
+        line-height: 12px;
+        height: 12px;
+        .leaflet-control-attribution {
+          line-height: 12px;
+          height: 12px;
+          margin-bottom: 0;
+          padding-bottom: 0;
+          font-size: 8.5px;
+          color: #afafaf;
+          background-color: rgba(255, 255, 255, 0.5);
+          a {
+            color: #9f9f9f;
+            &:visited, &:active {
+              color: #9f9f9f;
+            }
+          }
+        }
+      }
+      @media (max-width: $xs-break) {
+        .leaflet-bottom.leaflet-right {
+          float: none;
+          text-align: center;
+          position: absolute;
+          right: 0;
+          left : 0;
+          bottom: 0;
+          text-align: center;
+          .leaflet-control-attribution {
+            float: none;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import {observable, action, computed, autorun, reaction, runInAction, toJS, observe} from 'mobx';
 import L from 'leaflet';
+import config from '../../../config';
 import 'leaflet.markercluster';
 import ClusterPieFactory from './ClusterPie';
 import MapMarkerfactory from './MapMarker';
@@ -16,8 +17,10 @@ export default class MapeoStore {
     zoom: 14,
     center: null,
     maxBounds : null,
-    minZoom : 2,
-    maxZoom: 19,
+    minZoom : config.map.minZoom,
+    maxZoom: config.map.maxZoom,
+    touch: true,
+    touchZoom: true,
     scrollWheelZoom: false
   };
   markers = new Map();
@@ -91,10 +94,11 @@ export default class MapeoStore {
     }
 
     this.lmap = L.map(element, this.mapState);
-    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  	var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    var tileUrl = config.map.tileUrl.replace('${token}', config.keys.mapbox);
+  	var tileAttrib= config.map.tileAttribution;
     const {minZoom, maxZoom} = this.mapState;
-  	var osm = new L.TileLayer(osmUrl, {minZoom, maxZoom, attribution: osmAttrib});
+  	var tileLayer = new L.TileLayer(tileUrl, {minZoom, maxZoom, attribution: tileAttrib, id: 'mapbox.streets'});
+    this.lmap.addLayer(tileLayer);
     this.lmap.addLayer(osm);
     this.addMapEvents();
 
@@ -115,6 +119,7 @@ export default class MapeoStore {
   @action navigateToDateo = (dateoId) => {
     const marker = this.markers.get(String(dateoId));
     !!marker && this.markerLayer.zoomToShowLayer(marker);
+
   }
 
   @action setMap = (center, zoom, maxBounds) => {

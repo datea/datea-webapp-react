@@ -1,7 +1,7 @@
 import {observable, action, computed, autorun, reaction, runInAction, toJS} from 'mobx';
 import {scaleOrdinal, schemeCategory10} from 'd3';
 import Api from '../rest-api';
-import Map from './map';
+import MapStore from './map';
 import config from '../../config';
 import {reduceIntoObjById} from '../../utils';
 
@@ -21,7 +21,7 @@ export default class Campaign {
 
   constructor(main) {
     this.main = main;
-    this.map = new Map(this.main, 'campaign', this.onMarkerClick);
+    this.map = new MapStore(this.main, 'campaign', this.onMarkerClick);
   }
 
   @action loadView = (user, slug, showLoading = true) => {

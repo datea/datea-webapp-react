@@ -8,7 +8,7 @@ var loaderRules       = require('./webpack-loader-rules');
 var config = {
   mode: 'development',
   devServer: {
-    host: 'localhost',
+    host: '0.0.0.0',
     historyApiFallback: true,
     disableHostCheck: true,
     hot: true,

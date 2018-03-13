@@ -30,6 +30,17 @@
   "FILES": "Fichiers",
   "CREATE_TAG" : "Créer tag",
   "TAGS_PLACEHOLDER": "Entrer tags (au moins une)",
+  "ADDRESS_PLACEHOLDER" : "Entrez l'adresse ou le lieu",
+  "CREATE_ADDRESS" : "utilise",
+  "NO_RESULTS" : "Aucun résultat",
+  "DONE" : "Prêt!",
+  "CLEAR": "effacer",
+
+  "DATEO_FORM" : {
+    "ADDITIONAL_FIELDS" : "Informations supplémentaires (optionnel)",
+    "TITLE_FIELD_PLACEHOLDER" : "Entrez un titre (optionnel)",
+    "DATE_FIELD_PLACEHOLDER": "Date (optionnel)"
+  },
 
 	"MENU_TOP" : {
 		"MENU" : "Menu",
@@ -166,7 +177,8 @@
 			"NO_CONTENT" : "Du contenu semble manquer pour créer le lieu.",
 			"NO_TAG" : "Au moins une étiquette doit être choisie.",
 			"URL_LOAD" : "Cette adresse ne semble pas exister...",
-			"URL_FORMAT" : "Format de URL invalide. Il manque au début \"http..\" ?."
+			"URL_FORMAT" : "Format de URL invalide. Il manque au début \"http..\" ?.",
+      "INVALID_DATE_FORMAT" : "Date invalide"
 		},
 		"DELETE_CONFIRM_MSG" : "Êtes-vous bien certain(e) de vouloir effacer ce marqueur ?"
 	},

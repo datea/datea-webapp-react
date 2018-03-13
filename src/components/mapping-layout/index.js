@@ -19,19 +19,27 @@ export default class MappingLayout extends Component {
     mode : PropTypes.oneOf(['visual','content', 'visualFullscreen']),
     barSticky: PropTypes.bool,
     barStickyOnContentTopScrolled: PropTypes.bool,
+    barOnlyForVisuals : PropTypes.bool,
     isMobile : PropTypes.bool,
-    onOpenVisualClick: PropTypes.func
+    forceMobile : PropTypes.bool,
+    onOpenVisualClick: PropTypes.func,
+    className: PropTypes.string
   };
 
   static defaultProps = {
     mode: 'content',
     isMobile : true,
+    forceMobile : false,
     contentBarSticky: false,
+    barOnlyForVisuals : false,
     barStickyOnContentTopScrolled: true
   };
 
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      transitioning : false
+    };
   }
 
   componentDidUpdate() {
@@ -42,15 +50,20 @@ export default class MappingLayout extends Component {
     if (!newProps.contentBar && this.contentAreaRef && this.contentAreaRef.classList.contains('bar-sticky')) {
       this.contentAreaRef.classList.remove('bar-sticky');
     }
+    if (newProps.mode != this.props.mode) {
+      this.setState({'inTransition' : true});
+      setTimeout(() => this.setState({'inTransition': false}), 310);
+    }
   }
 
   onContentScroll = (data, bar) => {
-    const {mode, barSticky, barStickyOnContentTopScrolled, isMobile, contentBar} = this.props;
+    const {mode, barSticky, barStickyOnContentTopScrolled, isMobile, forceMobile, contentBar} = this.props;
+    const mobile = forceMobile || isMobile;
     if (!!contentBar && mode == 'content' && this.contentBarRef) {
       let makeSticky = null;
 
       if (barSticky) {
-        makeSticky = this.contentAreaRef.scrollTop > (isMobile ? this.visualAreaRef.offsetHeight : 0);
+        makeSticky = this.contentAreaRef.scrollTop > (mobile ? this.visualAreaRef.offsetHeight : 0);
       } else if (barStickyOnContentTopScrolled && this.contentTopRef) {
         makeSticky = this.contentAreaRef.scrollTop > this.contentTopRef.offsetHeight - 48;
       }
@@ -68,23 +81,33 @@ export default class MappingLayout extends Component {
   render() {
     const {
       isMobile,
+      forceMobile,
       mode,
       visualPane,
       contentBar,
       contentTopPane,
       contentPane,
       onOpenVisualClick,
+      barOnlyForVisuals,
       barSticky,
       barStickyOnContentTopScrolled,
-      barMode
+      barMode,
+      className
     } = this.props;
+
+    const {inTransition} = this.state;
+
+    const mobile = forceMobile || isMobile;
 
     return (
       <div className={cn(
         'mapping-layout',
         `mode-${mode}`,
-        isMobile ? 'mobile' : 'non-mobile',
-        !!contentBar && barSticky && !barStickyOnContentTopScrolled && 'pad-bar-top'
+        mobile ? 'mobile' : 'non-mobile',
+        !!contentBar && barSticky && !barStickyOnContentTopScrolled && 'pad-bar-top',
+        !!contentBar && !barSticky && barOnlyForVisuals && 'bar-only-for-visuals',
+        inTransition && `in-transition in-transition-to-${mode}`,
+        className
         )}>
         <div className="visual-area" ref={r => {this.visualAreaRef = r}}>
           {visualPane}
@@ -93,7 +116,7 @@ export default class MappingLayout extends Component {
           onScroll={this.onContentScroll}
           ref={r => {this.contentAreaRef = r}}>
 
-          {isMobile &&
+          {mobile &&
             <div className="visual-overlay" onClick={onOpenVisualClick} />
           }
           {!!contentBar &&

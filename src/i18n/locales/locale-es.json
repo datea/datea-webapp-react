@@ -29,6 +29,17 @@
   "FILES" : "Archivos",
   "CREATE_TAG" : "Crear tag",
   "TAGS_PLACEHOLDER": "Ingresa tags (al menos uno)",
+  "ADDRESS_PLACEHOLDER" : "Ingresar dirección o lugar",
+  "CREATE_ADDRESS" : "Utilizar",
+  "NO_RESULTS" : "No hay resultados",
+  "DONE" : "¡Listo!",
+  "CLEAR" : "borrar",
+
+  "DATEO_FORM" : {
+    "ADDITIONAL_FIELDS" : "Datos adicionales (opcional)",
+    "TITLE_FIELD_PLACEHOLDER" : "Agrega un título (opcional)",
+    "DATE_FIELD_PLACEHOLDER": "Fecha (opcional)"
+  },
 
 	"MENU_TOP" : {
 		"MENU" : "Menú",
@@ -608,7 +619,8 @@
  	"ERROR" : {
  		"UNKNOWN" : "Hubo un error. Por favor revisa tus datos e intenta de nuevo. Si no funciona, <a href=\"http://ayuda.datea.pe/contacto\">contáctanos</a>.",
  		"NOT_FOUND" : "Oops no pudimos encontrar lo que buscabas.",
-		"UPLOAD" : "Error al subir archivo. Xfa, inténtalo de nuevo ;)"
+		"UPLOAD" : "Error al subir archivo. Xfa, inténtalo de nuevo ;)",
+    "INVALID_DATE_FORMAT" : "Fecha inválida"
  	},
 
  	"REDIRECT_MSG" : "Por favor, aguarda un momento mientras te redirigimos :)",

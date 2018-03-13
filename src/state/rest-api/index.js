@@ -1,5 +1,7 @@
 import config from '../../config';
 import {fetch} from '../../utils';
+import Geocoder from 'google-geocoder';
+import request from 'superagent';
 import urlJoin from 'url-join';
 
 const url = (...pathElems) => urlJoin(config.api.url, ...pathElems.map(p => String(p)));
@@ -55,11 +57,59 @@ class Api {
   /* URL INFO */
   urlInfo = {
     get : (url) => this.get(url('url_info'), {url})
-  }
+  };
+
+  /* GOOGLE PLACES */
+  autocompletePlace = (query, latLng, radius = 50000) => {
+    if (query && query.trim().length > 2) {
+      const params = {
+        input : query,
+      }
+      if (latLng) {
+        params.location = latLng.lat+','+latLng.lng;
+        params.radius = radius
+      }
+      return this.get(url('geocoding', 'autocomplete'), params)
+    }else{
+      return Promise.resolve({'result': []});
+    }
+  };
+
+  placeDetail = (placeid) => this.get(url('geocoding', 'placedetail'), {placeid});
+
+  /* GEOCODE */
+  geocode = (query) => new Promise((resolve, reject) => {
+    /*const url = 'https://nominatim.openstreetmap.org/search/'+encodeURIComponent(query);
+    return this.get(url, {format: 'json', addressdetails: 1});*/
+    Geocoder({key: config.keys.google})
+    .find(query, (err, res) => {
+      if (err) {
+        reject(err)
+      }else {
+        resolve(res);
+      }
+    });
+  });
+
+  /* REVERSE GEOCODE */
+  /*revGeocode = ({lat, lng, zoom = 17}) =>
+    const url = 'https://nominatim.openstreetmap.org/reverse';
+    return this.get(url, {lat, lon: lng, zoom, addressdetails: 1, namedetails: 1});
+  };*/
+  reverseGeocode = (latLng) => new Promise((resolve, reject) => {
+    Geocoder({key: config.keys.google})
+    .reverseFind(latLng.lat, latLng.lng, (err, res) => {
+      if (err) {
+        reject(err)
+      }else {
+        resolve(res);
+      }
+    });
+  });
 
   /* BASIC NETWORKING */
-  get = (url, params = {}) => new Promise((resolve, reject) => {
-    fetch.get(url, params)
+  get = (url, params = {}, options = {}) => new Promise((resolve, reject) => {
+    fetch.get(url, params, options)
     .then(res => resolve(res.body))
     .catch(err => reject(err))
   });

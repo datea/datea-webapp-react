@@ -1,5 +1,7 @@
 import {observable, action, extendObservable} from 'mobx';
 import Api from '../rest-api';
+import moment from 'moment';
+import MapInputStore from './map-input';
 import {reduceIntoObjById} from '../../utils';
 
 
@@ -7,18 +9,45 @@ export default class DateoFormStore {
 
   @observable dateo = new Map();
   @observable errors = new Map();
+  @observable layoutMode = 'content';
 
   constructor(main, id) {
     this.main = main;
+    this.map = new MapInputStore(this.main, {
+      mode: 'dateo',
+      onMarkerPlacedByuser : this.processReverseGeocodeResult
+    });
     if (id) {
       console.log(id);
     }
   }
 
+  /* SETTERS */
+
   @action setContent = (value) => {
     this.dateo.set('content', value);
   }
 
+  @action setTitle = (value) => {
+    this.dateo.set('title', value);
+  }
+
+  @action setTags = (tags) => {
+    this.dateo.set('tags', tags);
+  }
+
+  @action setDate = (date) => {
+    this.dateo.set('date', moment(date).toISOString());
+  }
+
+  getDateField = () => {
+    const date = this.dateo.get('date');
+    if (date) {
+      return moment(date);
+    }else {
+      return null;
+    }
+  }
 
   /* IMAGES AND FILES */
   @action addMedia = (resource) => {
@@ -61,9 +90,27 @@ export default class DateoFormStore {
     this.dateo.set(field, list);
   }
 
-  @action setTags = (tags) => {
-    this.dateo.set('tags', tags);
+  @action receiveGeocodeResult = place => {
+    if (this.map.mapState.mode == 'point') {
+      if (place.geometry) {
+        this.map.setMarker(place.geometry.location);
+        this.map.lmap.fitBounds(place.geometry.bounds);
+      }
+      this.dateo.set('address', place.formatted_address);
+    }
   }
+
+  @action setLayout = mode => {
+    this.layoutMode = mode;
+    if (mode == 'content') {
+      setTimeout(() => this.map.setViewOnGeometry(), 350);
+    }
+  }
+
+  processReverseGeocodeResult = (result) => {
+    this.dateo.set('address', result.formatted_address);
+  }
+
 
   @action dispose = () => {
     //dispose here anything

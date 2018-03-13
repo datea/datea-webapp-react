@@ -1,0 +1,12 @@
+
+.geo-search {
+  position : relative;
+  .search-adornment {
+    position: absolute;
+    top: 10px;
+    left: 3px;
+    svg {
+      fill : #777;
+    }
+  }
+}

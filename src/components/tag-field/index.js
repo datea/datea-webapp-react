@@ -1,4 +1,5 @@
 import 'react-select/dist/react-select.css';
+import './tag-field.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {PropTypes as MobxPropTypes} from 'mobx-react';
@@ -43,9 +44,7 @@ function SelectWrapped(props) {
         return t('CREATE_TAG')+': #'+removeAccents(StripChar.RSspecChar(label))
       }}
       noResultsText={<Typography>{'No results found'}</Typography>}
-      arrowRenderer={({isOpen}) => {
-        return isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
-      }}
+      arrowRenderer={() => false}
       clearRenderer={() => <ClearIcon />}
       valueComponent={valueProps => {
         const { value, children, onRemove } = valueProps;
@@ -89,6 +88,10 @@ class IntegrationReactSelect extends React.Component {
     defaultSuggestions: []
   };
 
+  state = {
+    focused : false
+  };
+
   getTagsFromResources = (tags) => {
     return tags.map( tag => {
       tag = typeof tag == 'string' ? tag : tag.tag;
@@ -116,6 +119,7 @@ class IntegrationReactSelect extends React.Component {
 
   render() {
     const { classes, tags } = this.props;
+    const { focused } = this.state;
     const currentOptions = this.getTagsFromResources(tags);
 
     return (
@@ -133,6 +137,10 @@ class IntegrationReactSelect extends React.Component {
             id: 'react-select-chip',
             name: 'react-select-chip',
             loadOptions: this.loadOptions,
+            onFocus: () => this.setState({focused: true}),
+            onBlur : () => this.setState({focused: false}),
+            clearable : true,
+            trimFilter : true
           }}
         />
       </div>

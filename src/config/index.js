@@ -1,4 +1,5 @@
 import allowedTypes from './upload-mimetypes';
+export * from './marker';
 
 const config = {
   app: {
@@ -33,7 +34,24 @@ const config = {
       'image/svg+xml'
     ]
   },
+  map : {
+    minZoom : 2,
+    maxZoom: 18,
+    /*tileUrl : 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    tileAttribution : 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',*/
+    tileUrl : 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${token}',
+    tileAttribution : `Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,
+		<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>
+			Imagery © <a href="http://mapbox.com">Mapbox</a>`
+  },
+  geolocation: {
+    ipLocationAccuracy: 10000,
+  },
   defaultLocale: 'es',
+  keys: {
+    google: 'AIzaSyBqMKdCCMaxkAouJ3DhxWuH7Dbhho0Uw8U',
+    mapbox : 'pk.eyJ1IjoicmRlcnRlYW5vIiwiYSI6ImNqZW9jMDZpczByOGcyeW12bmhpeXk4OXoifQ.0k1Ludxm8__Eo9MkdDUOmg'
+  }
 };
 
 export default config;

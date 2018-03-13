@@ -24,7 +24,7 @@ function fetch(url, options = {}, requestLib = request) {
     const apiKey = localStorage.getItem('apiKey');
     options.headers.Authorization = 'Apikey ' + user.username + ':' + apiKey;
   }
-  req.set(options.headers);
+  !options.noHeaders && req.set(options.headers);
 
   // query for GET
   options.query && Object.keys(options.query).length && req.query(options.query);
@@ -66,27 +66,27 @@ function fetch(url, options = {}, requestLib = request) {
 };
 
 fetch.post = function (url, params = {}, options = {}) {
-  let opts = Object.assign(options, {body : params, method: 'POST'});
+  let opts = Object.assign({}, options, {body : params, method: 'POST'});
   return fetch(url, opts);
 }
 
 fetch.put = function (url, params = {}, options = {}) {
-  let opts = Object.assign(options, {body : params, method: 'PUT'});
+  let opts = Object.assign({}, options, {body : params, method: 'PUT'});
   return fetch(url, opts);
 }
 
 fetch.patch = function (url, params = {}, options = {}) {
-  let opts = Object.assign(options, {body : params, method: 'PATCH'});
+  let opts = Object.assign({}, options, {body : params, method: 'PATCH'});
   return fetch(url, opts);
 }
 
 fetch.get = function (url, query = {}, options = {}) {
-  let opts = Object.assign(options, {query: query});
+  let opts = Object.assign({}, options, {query: query});
   return fetch(url, opts);
 }
 
 fetch.delete = function (url, query = {}, options = {}) {
-  let opts = Object.assign(options, {body : query, method: 'DELETE'});
+  let opts = Object.assign({}, options, {body : query, method: 'DELETE'});
   return fetch(url, opts);
 }
 

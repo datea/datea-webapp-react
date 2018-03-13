@@ -1,5 +1,6 @@
 import {observable, action, computed, autorun, runInAction, toJS} from 'mobx';
 import urlJoin from 'url-join';
+import moment from 'moment';
 import config from '../../config';
 import {fetch, OAuth} from '../../utils';
 import {setLanguageFile} from '../../i18n';
@@ -35,7 +36,6 @@ export default class UserStore {
     this.getFromLocal();
     this.getFromServer();
     this.main = main;
-
     this.syncUserToLS = autorun(() => {
       if (!!this.apiKey) {
         localStorage.setItem('apiKey', this.apiKey);
@@ -46,7 +46,10 @@ export default class UserStore {
       }
     });
 
-    this.syncLangToLS = autorun(() => localStorage.setItem('locale', this.locale));
+    this.syncLangToLS = autorun(() => {
+      moment.locale(this.locale);
+      localStorage.setItem('locale', this.locale);
+    });
     this.startLocationTracker()
   }
 
@@ -54,7 +57,7 @@ export default class UserStore {
     const locReadyEvent = new Event('userLocationReady');
     this.locationTrackId = navigator.geolocation.watchPosition(
       ({coords}) => {
-        this.setLocation({lat: coords.latitude, lng: coords.longitude});
+        this.setLocation({lat: coords.latitude, lng: coords.longitude, accuracy: coords.accuracy});
         window.dispatchEvent(locReadyEvent);
       },
       error => {
@@ -64,7 +67,7 @@ export default class UserStore {
           fetch.get(url)
           .then(res => {
             const {latitude: lat, longitude : lng} = res.body.ip_location;
-            this.setLocation({lat, lng});
+            this.setLocation({lat, lng, accuracy: config.geolocation.ipLocationAccuracy});
             window.dispatchEvent(locReadyEvent);
           })
           .catch(e => {
