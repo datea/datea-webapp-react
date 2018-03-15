@@ -59,13 +59,19 @@ export default class MappingLayout extends Component {
   onContentScroll = (data, bar) => {
     const {mode, barSticky, barStickyOnContentTopScrolled, isMobile, forceMobile, contentBar} = this.props;
     const mobile = forceMobile || isMobile;
+
     if (!!contentBar && mode == 'content' && this.contentBarRef) {
       let makeSticky = null;
 
       if (barSticky) {
+        console.log('hey 1');
         makeSticky = this.contentAreaRef.scrollTop > (mobile ? this.visualAreaRef.offsetHeight : 0);
       } else if (barStickyOnContentTopScrolled && this.contentTopRef) {
-        makeSticky = this.contentAreaRef.scrollTop > this.contentTopRef.offsetHeight - 48;
+        if (!isMobile) {
+          makeSticky = this.contentAreaRef.scrollTop > this.contentTopRef.offsetHeight - 48;
+        } else {
+          makeSticky = this.contentAreaRef.scrollTop > (this.visualAreaRef.offsetHeight + this.contentTopRef.offsetHeight);
+        }
       }
 
       if (makeSticky !== null && this.contentAreaRef.classList.contains('bar-sticky') != makeSticky) {
@@ -122,7 +128,10 @@ export default class MappingLayout extends Component {
           {!!contentBar &&
             <div className={cn('content-bar', barStickyOnContentTopScrolled && 'bar-sticky-conditional')}
               ref={r => {this.contentBarRef = r}}>
-              {React.cloneElement(contentBar, {doScrollTop: this.scrollToTop})}
+              {barStickyOnContentTopScrolled
+               ? React.cloneElement(contentBar, {doScrollTop: this.scrollToTop})
+               : contentBar
+              }
             </div>
           }
           {!!contentTopPane &&

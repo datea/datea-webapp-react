@@ -28,6 +28,7 @@ $contentBarHeightMobileVisual: 56px;
       flex-basis: 35%;
       order: 1;
       overflow-y: auto;
+      overflow-x: hidden;
       position: relative;
 
       .content-bar {
@@ -45,6 +46,8 @@ $contentBarHeightMobileVisual: 56px;
       &.bar-sticky {
         .content-bar {
           display: block !important;
+          z-index: 10;
+          box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
         }
       }
 
@@ -54,11 +57,6 @@ $contentBarHeightMobileVisual: 56px;
         background-color: white;
       }
 
-      &.bar-sticky {
-        .content-bar {
-          box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
-        }
-      }
       &.pad-bar-top {
         .content-area {
           padding-top: $contentBarHeight;
@@ -102,6 +100,7 @@ $contentBarHeightMobileVisual: 56px;
       right: 0;
       bottom: 0;
       overflow-y : auto;
+      overflow-x: hidden;
       z-index: 2;
       transition: top $transitionDuration ease;
 
@@ -123,6 +122,7 @@ $contentBarHeightMobileVisual: 56px;
         padding-top: $contentBarHeightMobile;
         .content-bar {
           position: fixed;
+          z-index: 10;
           display: block !important;
           top: $contentBarHeightMobile;
           left: 0;
@@ -151,6 +151,7 @@ $contentBarHeightMobileVisual: 56px;
       }
       .content-area {
         top: calc(100% - #{$contentBarHeightMobileVisual});
+        overflow: visible;
         .visual-overlay {
           height: 0px;
         }
@@ -158,7 +159,9 @@ $contentBarHeightMobileVisual: 56px;
       &:not(.in-transition) {
         .content-area {
           box-shadow: 0px -2px 4px -1px rgba(0, 0, 0, 0.2), 0px -4px 5px 0px rgba(0, 0, 0, 0.14), 0px -1px 10px 0px rgba(0, 0, 0, 0.12);
-          overflow: hidden;
+          .content-top-container, .content-container {
+            display: none;
+          }
         }
       }
     }

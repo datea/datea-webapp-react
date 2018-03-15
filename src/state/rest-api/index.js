@@ -29,7 +29,8 @@ class Api {
     getDetail : id => this.get(url('dateo', id)),
     post : obj => this.post(url('dateo'), obj),
     patch : obj => this.patch(url('dateo', obj.id), obj),
-    delete : obj => this.delete(url('dateo', obj.id))
+    delete : obj => this.delete(url('dateo', obj.id)),
+    save : obj => obj.id ? this.dateo.patch(obj) : this.dateo.post(obj)
   };
 
   /* IMAGES */

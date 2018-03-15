@@ -11,7 +11,9 @@ const DetailView = ({dateo}) =>
     <Tags tags={dateo.tags} />
     <div className="content">{renderContentWithUrls(dateo.content, true)}</div>
 
-    {!!dateo.images && !!dateo.images.length && <ImageGrid images={dateo.images} />}
+    {!!dateo.images && !!dateo.images.length &&
+      <ImageGrid images={dateo.images} />
+    }
 
     {!!dateo.files && !!dateo.files.length &&
       <div className="files">

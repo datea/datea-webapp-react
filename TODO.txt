@@ -1,6 +1,5 @@
-
 -> format-geocoded-address : quitar el codigo postal de las direcciones.
-
+-> poder editar la dirección fuera del modo visual
 
 
 DATA:

@@ -1,13 +1,24 @@
 import './campaign-content-bar-root.scss';
 import React, {Component} from 'react';
-import {observer} from 'mobx-react';
+import cn from 'classnames';
+import {observer, inject} from 'mobx-react';
+import ButtonBase from 'material-ui/ButtonBase';
+import DatearBtn from '../../datear-btn';
+import {Tr} from '../../../i18n';
 
+const CampaignContentBarRoot = ({campaign, mode, doScrollTop, onVisualClick, showButton = true, store}) =>
+  <div className={cn('campaign-content-bar-root', `mode-${mode}`)}>
+    {showButton && <DatearBtn />}
+    <ButtonBase
+      className="bar-btn"
+      onClick={() => mode == 'content' ? doScrollTop() : onVisualClick()}
+      disableRipple={mode == 'content'}>
 
-const CampaignContentBarRoot = ({campaign, doScrollTop}) =>
-  <div className="campaign-content-bar-root">
-    <div className="campaign-ht" onClick={() => !!doScrollTop && doScrollTop()}>
-      {'#'+campaign.main_tag.tag}
-    </div>
+      <div className="campaign-ht">
+        {'#'+campaign.main_tag.tag}
+      </div>
+
+    </ButtonBase>
   </div>
 
-export default observer(CampaignContentBarRoot);
+export default inject('store')(observer(CampaignContentBarRoot));

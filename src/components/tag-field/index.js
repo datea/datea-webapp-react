@@ -6,6 +6,7 @@ import {PropTypes as MobxPropTypes} from 'mobx-react';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import Input from 'material-ui/Input';
+import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
 import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
 import CancelIcon from 'material-ui-icons/Cancel';
@@ -80,10 +81,13 @@ class IntegrationReactSelect extends React.Component {
   static propTypes= {
     defaultSuggestions: MobxPropTypes.arrayOrObservableArray,
     onChange : PropTypes.func,
-    tags : MobxPropTypes.arrayOrObservableArray
+    tags : MobxPropTypes.arrayOrObservableArray,
+    error : PropTypes.bool,
+    helperText: PropTypes.node
   };
 
   static defaultProps = {
+    error: false,
     tags : [],
     defaultSuggestions: []
   };
@@ -118,15 +122,19 @@ class IntegrationReactSelect extends React.Component {
   };
 
   render() {
-    const { classes, tags } = this.props;
+    const { classes, tags, error, helperText} = this.props;
     const { focused } = this.state;
     const currentOptions = this.getTagsFromResources(tags);
 
     return (
       <div className={classes.root}>
-        <Input
+        <TextField
           fullWidth={true}
-          inputComponent={SelectWrapped}
+          error={error}
+          helperText={helperText}
+          InputProps={{
+            inputComponent : SelectWrapped
+          }}
           inputProps={{
             classes,
             value: currentOptions,

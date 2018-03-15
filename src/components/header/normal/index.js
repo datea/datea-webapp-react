@@ -2,6 +2,7 @@ import './header-normal.scss';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
+import DateaAppBar from '../../app-bar';
 import Typography from 'material-ui/Typography';
 import cn from 'classnames';
 import AppBarLogo from '../common/app-bar-logo';
@@ -13,8 +14,6 @@ import {observer, inject} from 'mobx-react';
 import config from '../../../config';
 import SearchBar from '../../search-bar';
 import {colors} from '../../../theme/vars';
-
-const barHeight = 64;
 
 @inject('store')
 @observer
@@ -37,25 +36,23 @@ export default class Header extends React.Component {
     const {ui} = this.props.store;
     return (
       <div className="header normal">
-          <AppBar position={'static'} style={{backgroundColor: colors.yellow}}>
-            <Toolbar>
-              <div className="header-content">
-                <div className="header-left">
-                  {!ui.isLanding && <AppBarLogo onClick={this.onLogoClick} />}
-                  <MenuBtn onClick={this.toggleMainMenu} />
-                </div>
-                <div className="header-center">
-                  <div className="search-container">
-                    <SearchBar />
-                  </div>
-                </div>
-                <div className="header-right">
-                  <span className="btn"><LangSwitcher/></span>
-                  <span className="btn"><UserMenu /></span>
-                </div>
+        <DateaAppBar>
+          <div className="header-content">
+            <div className="header-left">
+              {!ui.isLanding && <AppBarLogo onClick={this.onLogoClick} />}
+              <MenuBtn onClick={this.toggleMainMenu} />
+            </div>
+            <div className="header-center">
+              <div className="search-container">
+                <SearchBar />
               </div>
-            </Toolbar>
-          </AppBar>
+            </div>
+            <div className="header-right">
+              <span className="btn"><LangSwitcher/></span>
+              <span className="btn"><UserMenu /></span>
+            </div>
+          </div>
+        </DateaAppBar>
         <MainMenu open={this.state.openMainMenu}
           onClose={this.toggleMainMenu}
           />

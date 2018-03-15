@@ -1,0 +1,23 @@
+@import '../../scss/vars';
+
+.datear-btn {
+  background-color: $yellow !important;
+
+  &:active, &:focus {
+    background-color: $yellow !important;
+  }
+  color: black;
+
+  svg.datear-icon {
+    width: 36px;
+    height: 36px;
+    position: relative;
+    top: -8px;
+  }
+  .txt {
+    position: absolute;
+    text-transform: lowercase;
+    bottom: -2px;
+    font-size: 10px;
+  }
+}

@@ -99,9 +99,6 @@ const Views = {
     name: 'datear',
     path : '/datear/:id?',
     component: <DatearTestView />,
-    onEnter: (route, params, store) => {
-      store.createDateoFormStore(params.id);
-    }
   }),
 
   profile : new Route({

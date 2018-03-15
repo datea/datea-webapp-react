@@ -19,6 +19,8 @@ export default class Campaign {
     showDateoDetail : false,
   };
 
+  @observable layoutMode = 'content';
+
   constructor(main) {
     this.main = main;
     this.map = new MapStore(this.main, 'campaign', this.onMarkerClick);
@@ -55,6 +57,10 @@ export default class Campaign {
     this.map.navigateToDateo(id);
     this.main.dateo.getDateoDetail(id);
     this.showDateoDetail = true;
+  }
+
+  @action setLayout = (layout) => {
+    this.layoutMode = layout;
   }
 
   dispose = () => {

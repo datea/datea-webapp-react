@@ -31,10 +31,6 @@ export default class DateoMainForm extends Component {
 
   toggleExpanded = () => this.setState({optionalExpanded: !this.state.optionalExpanded});
 
-  componentWillReact() {
-
-  }
-
   render() {
     const {ui, dateoForm: form} = this.props.store;
     const {optionalExpanded} = this.state;
@@ -57,7 +53,8 @@ export default class DateoMainForm extends Component {
               placeholder="Agrega contenido"
               required={true}
               rowsMax={15}
-              error={form.errors.get('content')}
+              error={!!form.errors.get('content')}
+              helperText={form.errors.get('content')}
               onChange={ev => form.setContent(ev.target.value)}
             />
           </div>
@@ -67,6 +64,8 @@ export default class DateoMainForm extends Component {
               tags={form.dateo.get('tags')}
               onChange={form.setTags}
               defaultSuggestions={['abababa', 'acacaca']}
+              error={!!form.errors.get('tags')}
+              helperText={form.errors.get('tags')}
             />
           </div>
 

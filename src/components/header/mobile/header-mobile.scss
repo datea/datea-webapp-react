@@ -4,8 +4,11 @@
 
   .header-content {
     .header-left {
-      padding-top: 3px;
+      padding-top: 0px;
       min-width: 50px;
+      .d-icon {
+        margin-top: 4px;
+      }
     }
 
     .header-right {

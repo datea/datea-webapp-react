@@ -13,6 +13,7 @@ import RouteConfig from './state/views';
 import config from './config';
 import Main from './components/main';
 import muiTheme from './theme/mui-theme';
+import DateoFormModal from './components/dateo-form-modal';
 
 const store = new DateaStore();
 startRouter(RouteConfig, store);
@@ -24,6 +25,7 @@ const App = () =>
       <Provider store={store}>
         <Main>
           <MobxRouter />
+          <DateoFormModal />
         </Main>
       </Provider>
     </MuiThemeProvider>

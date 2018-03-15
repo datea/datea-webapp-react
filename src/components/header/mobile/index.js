@@ -2,6 +2,7 @@ import './header-mobile.scss';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
+import DateaAppBar from '../../app-bar';
 import cn from 'classnames';
 import AppBarLogo from '../common/app-bar-logo';
 import LandingMenuBtn from '../common/menu-button';
@@ -12,14 +13,6 @@ import MobileMenuBtn from './mobile-menu-btn';
 import BackBtn from './back-btn';
 import SearchBar from '../../search-bar';
 import {colors} from '../../../theme/vars';
-
-const barHeight = 48;
-
-const styles = {
-  colorPrimary : {
-
-  }
-}
 
 @inject('store')
 @observer
@@ -47,21 +40,19 @@ export default class Header extends React.Component {
 
     return (
       <div className={cn('header mobile', user.isSignedIn ? 'signed-in' : 'signed-out')}>
-        <AppBar position={'static'} style={{height: barHeight, minHeight: barHeight, backgroundColor: colors.yellow}}>
-          <Toolbar style={{minHeight: barHeight, height: barHeight}}>
-            <div className="header-content">
-              <div className="header-left">
-                {headerLeft}
-              </div>
-              <div className="header-center">
-                <div className="search-container"><SearchBar /></div>
-              </div>
-              <div className="header-right">
-                <MobileMenuBtn onClick={this.toggleMenu} />
-              </div>
+        <DateaAppBar>
+          <div className="header-content">
+            <div className="header-left">
+              {headerLeft}
             </div>
-          </Toolbar>
-        </AppBar>
+            <div className="header-center">
+              <div className="search-container"><SearchBar /></div>
+            </div>
+            <div className="header-right">
+              <MobileMenuBtn onClick={this.toggleMenu} />
+            </div>
+          </div>
+        </DateaAppBar>
         <MobileMenu open={this.state.openMenu} onClose={this.toggleMenu} />
       </div>
     )

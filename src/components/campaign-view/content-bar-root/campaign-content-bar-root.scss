@@ -5,9 +5,45 @@
   height: 48px;
   line-height: 48px;
   padding: 0 24px;
+  position: relative;
   .campaign-ht {
     font-size: 22px;
     color: white;
     font-weight: 400;
+  }
+  .bar-btn {
+    text-align: left;
+    justify-content: left;
+    width: 100%;
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 0;
+    top: 0;
+    z-index: 0;
+  }
+  .datear-btn {
+    position: absolute;
+    right: 30px;
+    top: 0;
+    transform: translate(0, -40%);
+    z-index: 1;
+  }
+
+  &.mode-visual {
+    height: $contentBarHeightMobileVisual;
+    line-height: $contentBarHeightMobileVisual - 4px;
+  }
+}
+
+.campaign-mapping-layout {
+  .content-area.bar-sticky {
+    .content-bar.bar-sticky-conditional {
+      .campaign-content-bar-root .datear-btn {
+        top: auto;
+        bottom: 0;
+        transform: translate(0, 25%);
+      }
+    }
   }
 }

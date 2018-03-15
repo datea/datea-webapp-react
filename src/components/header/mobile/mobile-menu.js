@@ -43,7 +43,7 @@ export default class MobileMenu extends React.Component {
     return (
         <Drawer
           open={this.props.open}
-          anchor={router.currentView.name == 'welcome' || !user.isSignedIn ? 'left' : 'right'}
+          anchor={(router.currentView && router.currentView.name == 'welcome') || !user.isSignedIn ? 'left' : 'right'}
           className="user-drawer"
           onClose={this.props.onClose}>
 

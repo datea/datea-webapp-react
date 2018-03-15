@@ -1,0 +1,24 @@
+
+$normal-height: 64px;
+$mobile-height: 48px;
+
+.datea-app-bar {
+  &.normal {
+    height: $normal-height !important;
+    max-height: $normal-height !important;
+    .datea-app-bar-toolbar {
+      height: $normal-height !important;
+      max-height: $normal-height !important;
+      min-height: 0 !important;
+    }
+  }
+  &.mobile {
+    height: $mobile-height !important;
+    max-height: $mobile-height !important;
+    .datea-app-bar-toolbar {
+      height: $mobile-height !important;
+      max-height: $mobile-height !important;
+      min-height: 0 !important;
+    }
+  }
+}

@@ -5,14 +5,14 @@ import {getImgSrc} from '../../../utils';
 import {Tr} from '../../../i18n';
 import Button from 'material-ui/Button';
 
-const InfoBox = ({campaign, onMoreInfo}) =>
+const InfoBox = ({campaign, onMoreInfo, isMobile}) =>
   <div className="campaign-info">
     <div className="campaign-img"
       style={{backgroundImage: 'url('+getImgSrc(campaign.image.image)+')'}}
       onClick={() => !!onMoreInfo && onMoreInfo()}
     />
     <div className="box-content">
-      <div className="main-tag">{'#'+campaign.main_tag.tag}</div>
+      {!isMobile && <div className="main-tag">{'#'+campaign.main_tag.tag}</div>}
       <h3 className="campaign-title">{campaign.name}</h3>
       <div className="short-desc">{campaign.short_description}</div>
       <div className="more-info" onClick={() => !!onMoreInfo && onMoreInfo()}>

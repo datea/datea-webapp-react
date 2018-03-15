@@ -99,7 +99,6 @@ export default class MapeoStore {
     const {minZoom, maxZoom} = this.mapState;
   	var tileLayer = new L.TileLayer(tileUrl, {minZoom, maxZoom, attribution: tileAttrib, id: 'mapbox.streets'});
     this.lmap.addLayer(tileLayer);
-    this.lmap.addLayer(osm);
     this.addMapEvents();
 
     this.markerLayer = new L.markerClusterGroup({

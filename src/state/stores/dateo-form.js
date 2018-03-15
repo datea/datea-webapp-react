@@ -1,8 +1,9 @@
-import {observable, action, extendObservable} from 'mobx';
+import {observable, action, extendObservable, toJS} from 'mobx';
 import Api from '../rest-api';
 import moment from 'moment';
 import MapInputStore from './map-input';
 import {reduceIntoObjById} from '../../utils';
+import {t} from '../../i18n';
 
 
 export default class DateoFormStore {
@@ -26,6 +27,9 @@ export default class DateoFormStore {
 
   @action setContent = (value) => {
     this.dateo.set('content', value);
+    if (value) {
+      this.errors.delete('content')
+    }
   }
 
   @action setTitle = (value) => {
@@ -34,6 +38,9 @@ export default class DateoFormStore {
 
   @action setTags = (tags) => {
     this.dateo.set('tags', tags);
+    if (tags.length) {
+      this.errors.delete('tags')
+    }
   }
 
   @action setDate = (date) => {
@@ -98,6 +105,42 @@ export default class DateoFormStore {
       }
       this.dateo.set('address', place.formatted_address);
     }
+  }
+
+  /* SAVE */
+  @action save = () => {
+    let data = toJS(this.dateo);
+    const geometry = this.map.geometry;
+    if (geometry.type == 'Point' && geometry.coordinates) {
+      data.position = toJS(geometry);
+    } else if (geometry.type == 'GeometryCollection') {
+      data.geometry_collection = toJS(geometry);
+    }
+
+    // validation
+    if (!this.validate()) return;
+
+    this.main.ui.setLoading(true);
+    Api.dateo.save(data)
+    .then(dateo => {
+      this.main.openDateo({dateo, isNew: !data.id});
+    }).catch(e => {
+      this.main.ui.setLoading(false);
+      this.errors.set('main', t('DATEAR.ERROR.UNKNOWN'))
+    });
+  }
+
+  @action validate = () => {
+    this.errors.clear();
+    // needs content
+    if (!this.dateo.get('content') || !this.dateo.get('content').trim()) {
+      this.errors.set('content', t('DATEAR.ERROR.NO_CONTENT'))
+    }
+    // at least 1 tag
+    if (!this.dateo.get('tags') || !this.dateo.get('tags').length) {
+      this.errors.set('tags', t('DATEAR.ERROR.NO_TAG'))
+    }
+    return !this.errors.size
   }
 
   @action setLayout = mode => {

@@ -1,0 +1,37 @@
+
+.datear-dialog {
+  max-height: 100vh;
+  &.mobile {
+    .datear-dialog-paper {
+      max-height: 100vh !important;
+      overflow-y: hidden !important;
+      width: 100vw;
+    }
+  }
+}
+
+.datea-form-modal {
+  //height: 100vh;
+  max-height: 100vh;
+
+  .datear-app-bar-title {
+    flex: 1;
+    text-align: center;
+    .title-content {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  &.mobile {
+    .map-layout-form-container {
+      //margin-top: 48px;
+    }
+  }
+  &.normal {
+    .map-layout-form-container {
+      //margin-top: 64px;
+    }
+  }
+}
