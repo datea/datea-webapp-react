@@ -14,6 +14,7 @@ import config from './config';
 import Main from './components/main';
 import muiTheme from './theme/mui-theme';
 import DateoFormModal from './components/dateo-form-modal';
+import {MarkerDefs} from './components/marker';
 
 const store = new DateaStore();
 startRouter(RouteConfig, store);
@@ -26,6 +27,9 @@ const App = () =>
         <Main>
           <MobxRouter />
           <DateoFormModal />
+          <svg height="0" width="0" style={{padding:0, margin: 0, position: 'absolute'}}>
+            <MarkerDefs />
+          </svg>
         </Main>
       </Provider>
     </MuiThemeProvider>

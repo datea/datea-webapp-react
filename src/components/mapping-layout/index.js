@@ -2,12 +2,8 @@ import './mapping.scss';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import {inject, observer} from 'mobx-react';
-import {t, translatable} from '../../i18n';
 import {ResizeMapEvent} from '../../state/stores/map';
 
-@inject(stores => ({isMobile: stores.store.ui.isMobile}))
-@observer
 export default class MappingLayout extends Component {
 
   static propTypes = {
@@ -21,15 +17,14 @@ export default class MappingLayout extends Component {
     barStickyOnContentTopScrolled: PropTypes.bool,
     barOnlyForVisuals : PropTypes.bool,
     isMobile : PropTypes.bool,
-    forceMobile : PropTypes.bool,
     onOpenVisualClick: PropTypes.func,
-    className: PropTypes.string
+    className: PropTypes.string,
+    actions: PropTypes.object
   };
 
   static defaultProps = {
     mode: 'content',
     isMobile : true,
-    forceMobile : false,
     contentBarSticky: false,
     barOnlyForVisuals : false,
     barStickyOnContentTopScrolled: true
@@ -57,15 +52,13 @@ export default class MappingLayout extends Component {
   }
 
   onContentScroll = (data, bar) => {
-    const {mode, barSticky, barStickyOnContentTopScrolled, isMobile, forceMobile, contentBar} = this.props;
-    const mobile = forceMobile || isMobile;
+    const {mode, barSticky, barStickyOnContentTopScrolled, isMobile, contentBar} = this.props;
 
     if (!!contentBar && mode == 'content' && this.contentBarRef) {
       let makeSticky = null;
 
       if (barSticky) {
-        console.log('hey 1');
-        makeSticky = this.contentAreaRef.scrollTop > (mobile ? this.visualAreaRef.offsetHeight : 0);
+        makeSticky = this.contentAreaRef.scrollTop > (isMobile ? this.visualAreaRef.offsetHeight : 0);
       } else if (barStickyOnContentTopScrolled && this.contentTopRef) {
         if (!isMobile) {
           makeSticky = this.contentAreaRef.scrollTop > this.contentTopRef.offsetHeight - 48;
@@ -82,12 +75,12 @@ export default class MappingLayout extends Component {
 
   scrollToTop = () => {
     this.contentAreaRef.scrollTop = 0;
+    this.contentAreaRef.classList.remove('bar-sticky');
   }
 
   render() {
     const {
       isMobile,
-      forceMobile,
       mode,
       visualPane,
       contentBar,
@@ -98,18 +91,17 @@ export default class MappingLayout extends Component {
       barSticky,
       barStickyOnContentTopScrolled,
       barMode,
-      className
+      className,
+      actions
     } = this.props;
 
     const {inTransition} = this.state;
-
-    const mobile = forceMobile || isMobile;
 
     return (
       <div className={cn(
         'mapping-layout',
         `mode-${mode}`,
-        mobile ? 'mobile' : 'non-mobile',
+        isMobile ? 'mobile' : 'non-mobile',
         !!contentBar && barSticky && !barStickyOnContentTopScrolled && 'pad-bar-top',
         !!contentBar && !barSticky && barOnlyForVisuals && 'bar-only-for-visuals',
         inTransition && `in-transition in-transition-to-${mode}`,
@@ -122,7 +114,7 @@ export default class MappingLayout extends Component {
           onScroll={this.onContentScroll}
           ref={r => {this.contentAreaRef = r}}>
 
-          {mobile &&
+          {isMobile &&
             <div className="visual-overlay" onClick={onOpenVisualClick} />
           }
           {!!contentBar &&

@@ -1,4 +1,4 @@
-import {observable, action, computed, autorun, reaction, runInAction, toJS} from 'mobx';
+import {observable, action, computed, autorun, reaction, runInAction, toJS, when} from 'mobx';
 import {scaleOrdinal, schemeCategory10} from 'd3';
 import Api from '../rest-api';
 import MapStore from './map';
@@ -30,10 +30,15 @@ export default class Campaign {
     !!showLoading && this.main.ui.setLoading(true);
     Api.campaign.getList({user, slug})
     .then(res => runInAction(() => {
-      showLoading && this.main.ui.setLoading(false);
       if (res.objects.length == 1) {
         this.data.campaign = this.hydrateCampaign(res.objects[0]);
-        this.main.dateo.query({...DATEO_QUERY_DEFAULTS, tags: this.data.campaign.main_tag.tag});
+        this.main.dateo.getDateos({...DATEO_QUERY_DEFAULTS, tags: this.data.campaign.main_tag.tag})
+        .then( res => {
+          showLoading && this.main.ui.setLoading(false);
+          if (this.main.router.queryParams.dateo) {
+            this.map.navigateToDateo(this.main.router.queryParams.dateo)
+          }
+        })
       }else{
         this.main.ui.show404();
       }
@@ -50,7 +55,7 @@ export default class Campaign {
   }
 
   onMarkerClick = (id, latLng) => {
-    console.log('onMarkerClick', id, latLng);
+    this.main.openDateo({dateo: id});
   }
 
   @action onOpenDateo = (id) => {

@@ -3,7 +3,8 @@ import ReactDOMServer from 'react-dom/server';
 import {observable, action, computed, autorun, reaction, runInAction, toJS, observe} from 'mobx';
 import {centroid} from 'turf';
 import Api from '../../rest-api';
-import config, {buildMarkerIcon} from '../../../config';
+import {buildMarkerIcon} from '../../../components/marker';
+import config from '../../../config';
 import L from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 

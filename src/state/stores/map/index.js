@@ -1,4 +1,4 @@
-import {observable, action, computed, autorun, reaction, runInAction, toJS, observe} from 'mobx';
+import {observable, action, computed, autorun, reaction, runInAction, toJS, observe, when} from 'mobx';
 import L from 'leaflet';
 import config from '../../../config';
 import 'leaflet.markercluster';
@@ -25,6 +25,7 @@ export default class MapeoStore {
   };
   markers = new Map();
   @observable mapMounted = false;
+  @observable markersLoaded = false;
 
   constructor(main, mappingType, onItemClick) {
     this.main = main;
@@ -79,6 +80,7 @@ export default class MapeoStore {
         this.markerLayer.addLayers(addMarkers);
         this.fitBoundsToDateos();
       }
+      this.markersLoaded = true;
     });
   }
 
@@ -116,9 +118,21 @@ export default class MapeoStore {
   }
 
   @action navigateToDateo = (dateoId) => {
-    const marker = this.markers.get(String(dateoId));
-    !!marker && this.markerLayer.zoomToShowLayer(marker);
-
+    let marker = this.markers.get(String(dateoId));
+    if (marker) {
+      this.markerLayer.zoomToShowLayer(marker, () => {
+        this.setMap(marker.getLatLng(), this.lmap.getZoom());
+        this.focusMarker(marker);
+      });
+    } else {
+      when(() => this.markersLoaded, () => {
+        marker = this.markers.get(String(dateoId));
+        !!marker && this.markerLayer.zoomToShowLayer(marker, () => {
+          this.setMap(marker.getLatLng(), this.lmap.getZoom());
+          this.focusMarker(marker);
+        });
+      })
+    }
   }
 
   @action setMap = (center, zoom, maxBounds) => {
@@ -161,9 +175,23 @@ export default class MapeoStore {
 
   /* EVENTS */
 
-  onMarkerClick = (e) => !!this.onItemClick && this.onItemClick(e.target.options._id, e.latlng);
+  onMarkerClick = (e) => {
+    !!this.onItemClick && this.onItemClick(e.target.options._id, e.latlng);
+  }
 
   /* HELPER FUNCTIONS */
+
+  unfocusMarker() {
+    if (this.focusedMarker) {
+      this.focusedMarker.refreshIconOptions({'className': 'datea-marker-icon'});
+    }
+  }
+
+  focusMarker(marker) {
+    this.unfocusMarker();
+    this.focusedMarker = marker;
+    marker.refreshIconOptions({'className': 'datea-marker-icon selected'})
+  }
 
   getMapObj = () => {
     return !!this.lmap && this.lmap;

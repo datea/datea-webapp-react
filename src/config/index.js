@@ -1,5 +1,4 @@
 import allowedTypes from './upload-mimetypes';
-export * from './marker';
 
 const config = {
   app: {

@@ -40,6 +40,11 @@ export default class DateaStore {
   }
 
   openDateo = ({dateo, isNew = false}) => {
+    if (!!dateo && !dateo.id) {
+      dateo = this.dateo.data.dateos.get(dateo);
+    }
+    if (!dateo) return;
+
     this.dateo.data.detail = dateo;
     this.dateo.data.detail.isNew = isNew;
     const viewName = !!this.router.currentView && this.router.currentView.name;
@@ -51,6 +56,12 @@ export default class DateaStore {
     switch (viewName) {
       case 'campaign':
         this.goTo('campaign', this.router.params, queryParams);
+        if (this.campaignView.layoutMode == 'visual') {
+          this.campaignView.setLayout('content');
+          setTimeout(() => this.campaignView.map.navigateToDateo(dateo.id), 50);
+        } else {
+          this.campaignView.map.navigateToDateo(dateo.id);
+        }
         this.ui.setLoading(false);
         break;
     }

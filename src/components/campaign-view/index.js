@@ -31,6 +31,11 @@ export default class CampaignView extends Component {
     this.props.store.campaignView.map.navigateToDateo(newId);
   }
 
+  openDateoFromTeaser = (dateo) => {
+    this.props.store.openDateo({dateo});
+    !!this.mappingLayoutRef && this.mappingLayoutRef.scrollToTop();
+  }
+
   render() {
     const {campaignView, ui, router} = this.props.store;
     const {campaign} = campaignView.data;
@@ -45,6 +50,8 @@ export default class CampaignView extends Component {
 
     return (
       <MappingLayout
+        isMobile={ui.isMobile}
+        ref={r => {this.mappingLayoutRef = r;}}
         className="campaign-mapping-layout"
         visualPane={<DateaResizableMap mapStore={campaignView.map} />}
         contentBar={
@@ -69,9 +76,10 @@ export default class CampaignView extends Component {
           ? <DateoTeaserList
               dateos={dateos}
               onLoadMoreDateos={this.onLoadMoreDateos}
-              onDateoOpen={campaignView.onOpenDateo}
+              onDateoOpen={dateo => this.openDateoFromTeaser(dateo)}
               showMax={this.state.showMaxDateos} />
           : <DateoSwipeableContainer
+              isVisible={campaignView.layoutMode == 'content'}
               dateoId={router.queryParams.dateo}
               onSlideChange={this.onDetailSlide} />
         }

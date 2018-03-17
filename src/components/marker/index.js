@@ -1,3 +1,4 @@
+import './marker.scss';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import L from 'leaflet';
@@ -11,8 +12,8 @@ const MARKER_CONFIG = {
 
 const MarkerDefs = ({children}) =>
   <defs>
-    <filter id="f2" x="0" y="0" width="200%" height="200%">
-      <feDropShadow dx="40" dy="40" stdDeviation="35" floodColor="#ffffff" floodOpacity="1" />
+    <filter id="markerShadow" x="0" y="0" width="101%" height="101%">
+      <feDropShadow in="StrokePaint" dx="1" dy="1" stdDeviation="4" />
     </filter>
     <clipPath id="markerPinPath">
       <path d={MARKER_CONFIG.path} />
@@ -22,13 +23,33 @@ const MarkerDefs = ({children}) =>
 
 const DefaultMarkerIcon = () =>
   <svg width={MARKER_CONFIG.width} height={MARKER_CONFIG.height}>
-    <MarkerDefs />
     <g style={{clipPath: 'url(#markerPinPath)'}}>
       <rect height={MARKER_CONFIG.height} width={MARKER_CONFIG.width} fill={MARKER_CONFIG.defaultColor} x={0} y={0} />
       <circle cx="14.5" cy="13" r="4" fill="white" />
-      <path d={MARKER_CONFIG.path} stroke="#888888" fill="none" strokeWidth="1" />
+      <path className="marker-border" d={MARKER_CONFIG.path} stroke="#888888" fill="none" strokeWidth="1" />
     </g>
   </svg>
+
+
+const CampaignMarkerIcon = ({dateo, subTags})  => {
+  const coloredTags = dateo.tags
+                      .map(tag => typeof tag == 'string' ? tag : tag.tag)
+                      .filter(tag => !!subTags[tag]);
+  const catWidth = MARKER_CONFIG.width / coloredTags.length;
+  return (
+    <svg width={MARKER_CONFIG.width} height={MARKER_CONFIG.height}>
+      <g style={{clipPath: 'url(#markerPinPath)'}}>
+        {coloredTags.map((tag, i) =>
+          <rect key={tag} height={MARKER_CONFIG.height} width={catWidth} fill={subTags[tag].color} x={i*catWidth} y={0} />
+        )}
+      </g>
+      <g>
+        <path className="marker-border" d={MARKER_CONFIG.path} stroke="#888888" fill="none" strokeWidth="1" />
+        <circle cx="14.5" cy="13" r="4" fill="white" />
+      </g>
+    </svg>
+  )
+}
 
 
 const buildMarkerIcon = (svg) => {
@@ -43,4 +64,4 @@ const buildMarkerIcon = (svg) => {
   });
 }
 
-export {MARKER_CONFIG, MarkerDefs, DefaultMarkerIcon, buildMarkerIcon};
+export {MARKER_CONFIG, MarkerDefs, DefaultMarkerIcon, CampaignMarkerIcon, buildMarkerIcon};

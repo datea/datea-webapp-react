@@ -54,7 +54,7 @@ export default class DateoForm extends React.Component {
         className="dateo-form-layout mapping-with-input"
         onOpenVisualClick={() => form.setLayout('visual')}
         mode={form.layoutMode}
-        forceMobile={true}
+        isMobile={true}
         barOnlyForVisuals={true}
         visualPane={visualPane}
         contentBar={

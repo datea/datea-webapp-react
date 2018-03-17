@@ -20,16 +20,19 @@ export default class DateoStore {
     this.data.queryParams = params;
   }
 
-  @action getDateos(params = {}) {
-    const {showLoading, ...queryParams} = params;
+  @action getDateos = (params = {}, showLoading = false) => new Promise ((resolve, reject) => {
     !!showLoading && this.main.ui.setLoading(true);
-    Api.dateo.getList(queryParams)
+    Api.dateo.getList(params)
     .then(res => runInAction(() => {
       !!showLoading && this.main.ui.setLoading(false);
       this.data.dateos.replace(reduceIntoObjById(res.objects));
+      resolve(this.data.dateos);
     }))
-    .catch((err) => console.log(err));
-  }
+    .catch((err) => {
+      !!showLoading && this.main.ui.setLoading(false);
+      reject(err)
+    });
+  })
 
   @action getDateoDetail(id, opts = {forceUpdate: true, showLoading: true}) {
     if (!opts.forceUpdate && this.data.dateos.has(id)) {
@@ -45,7 +48,7 @@ export default class DateoStore {
     }
   }
 
-  dateoQueryRun = autorun(() => this.getDateos(this.data.queryParams));
+  //dateoQueryRun = autorun(() => this.getDateos(this.data.queryParams));
 
   @action clearDateos = () => this.data.dateos.clear();
   @action clearDetail = () => this.data.detail = {};

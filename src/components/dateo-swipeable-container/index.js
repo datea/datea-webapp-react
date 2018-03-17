@@ -26,6 +26,7 @@ export default class DateoSwipeableContainer extends Component {
   static propTypes = {
     dateoId : PropTypes.oneOfType([PropTypes.number,PropTypes.string]),
     onSlideChange : PropTypes.func,
+    isVisible: PropTypes.bool
   };
 
   state = {
@@ -51,15 +52,22 @@ export default class DateoSwipeableContainer extends Component {
     window.addEventListener('resize', this.updateSlideMinHeight);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!!nextProps.isVisible && !this.props.isVisible) {
+      setTimeout(()=> this.updateSlideMinHeight() , 500);
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateSlideMinHeight);
   }
+
 
   updateSlideMinHeight = () => {
     // am I in map layout / .content-area?
     const contentArea = this.containerRef.closest('.content-area');
     if (contentArea) {
-      const minSlideHeight = contentArea.offsetHeight - this.containerRef.offsetTop - 10;
+      const minSlideHeight = contentArea.offsetHeight - this.containerRef.offsetTop - 15;
       this.setState({slideStyle: {minHeight: `${minSlideHeight}px`}});
     }
   }

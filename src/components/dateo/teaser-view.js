@@ -15,7 +15,7 @@ const TeaserView = ({dateo, onOpen}) =>
     {!!dateo.images && !!dateo.images.length && <ImageGrid images={dateo.images} size="small" />}
     {!!onOpen &&
       <div className="actions">
-        <Button onClick={() => onOpen(dateo.id)}><Tr id="SHOW_DETAIL" /></Button>
+        <Button onClick={() => onOpen(dateo)}><Tr id="SHOW_DETAIL" /></Button>
       </div>
     }
   </div>
