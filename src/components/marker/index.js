@@ -39,9 +39,12 @@ const CampaignMarkerIcon = ({dateo, subtags})  => {
   return (
     <svg width={MARKER_CONFIG.width} height={MARKER_CONFIG.height}>
       <g style={{clipPath: 'url(#markerPinPath)'}}>
-        {coloredTags.map((tag, i) =>
+        {!!coloredTags.length && coloredTags.map((tag, i) =>
           <rect key={tag} height={MARKER_CONFIG.height} width={catWidth} fill={subtags.get(tag).color} x={i*catWidth} y={0} />
         )}
+        {!coloredTags.length &&
+          <rect height={MARKER_CONFIG.height} width={MARKER_CONFIG.width} fill={MARKER_CONFIG.defaultColor} x={0} y={0} />
+        }
       </g>
       <g>
         <path className="marker-border" d={MARKER_CONFIG.path} stroke="#888888" fill="none" strokeWidth="1" />

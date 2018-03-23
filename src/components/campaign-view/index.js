@@ -37,11 +37,17 @@ export default class CampaignView extends Component {
     !!this.mappingLayoutRef && this.mappingLayoutRef.scrollToTop();
   }
 
-  render() {
-    const {campaignView, ui, router} = this.props.store;
-    const {campaign} = campaignView.data;
-    let mode = 'list-view';
+  onEditClick = () => {
+    const {campaign} = this.props.store.campaignView.data;
+    this.props.store.goTo('campaignForm', {id: campaign.id});
+  }
 
+  render() {
+    const {campaignView, ui, router, user} = this.props.store;
+    const {campaign} = campaignView.data;
+    const showEdit = true;
+
+    let mode = 'list-view';
     if (!!router.queryParams && router.queryParams.dateo) {
       mode = 'detail-view';
     }
@@ -72,7 +78,10 @@ export default class CampaignView extends Component {
           ? <InfoBox
               campaign={campaign}
               onMoreInfo={() => console.log('on more info')}
-              isMobile={ui.isMobile} />
+              isMobile={ui.isMobile}
+              showEdit={showEdit}
+              onEditClick={this.onEditClick}
+              />
           : null
         }
         barSticky={mode == 'detail-view' && ui.isMobile == false}
