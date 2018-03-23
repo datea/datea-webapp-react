@@ -61,7 +61,8 @@ export default class DateoMainForm extends Component {
 
           <div className="field-row tag-field-row">
             <TagField
-              tags={form.dateo.get('tags')}
+              value={form.dateo.get('tags')}
+              multi={true}
               onChange={form.setTags}
               defaultSuggestions={['abababa', 'acacaca']}
               error={!!form.errors.get('tags')}

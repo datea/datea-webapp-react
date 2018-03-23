@@ -31,16 +31,16 @@ const DefaultMarkerIcon = () =>
   </svg>
 
 
-const CampaignMarkerIcon = ({dateo, subTags})  => {
+const CampaignMarkerIcon = ({dateo, subtags})  => {
   const coloredTags = dateo.tags
                       .map(tag => typeof tag == 'string' ? tag : tag.tag)
-                      .filter(tag => !!subTags[tag]);
+                      .filter(tag => subtags.has(tag));
   const catWidth = MARKER_CONFIG.width / coloredTags.length;
   return (
     <svg width={MARKER_CONFIG.width} height={MARKER_CONFIG.height}>
       <g style={{clipPath: 'url(#markerPinPath)'}}>
         {coloredTags.map((tag, i) =>
-          <rect key={tag} height={MARKER_CONFIG.height} width={catWidth} fill={subTags[tag].color} x={i*catWidth} y={0} />
+          <rect key={tag} height={MARKER_CONFIG.height} width={catWidth} fill={subtags.get(tag).color} x={i*catWidth} y={0} />
         )}
       </g>
       <g>

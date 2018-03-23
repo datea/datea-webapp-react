@@ -282,8 +282,8 @@
 	},
 
 	"CAMPAIGN_FORM" : {
-		"TITLE_CREATE" : "Crear nueva iniciativa",
-		"TITLE_EDIT" : "Administrador de Iniciativa",
+		"TITLE_CREATE" : "Crear Nuevo Mapeo",
+		"TITLE_EDIT" : "Editar Mapeo",
 		"PAGE_TITLE_EDIT" : "editar iniciativa",
 		"MENU" : {
 			"GENERAL" : "Configuración general",
@@ -379,7 +379,7 @@
  			"HELP_MSG" : "La URLs de iniciativas normalmente se compone de tu usuario y el tag principal. Como ya tienes una iniciativa con ese tag, es necesario que indiques una alternativa. Se aceptan letras, números y giones. Sin tildes, espacios, diéresis etc."
  		},
  		"SAVE" : "Guardar",
- 		"DUPLICATE_MAINTAG" : "La etiqueta ya está siendo usada en alguna iniciativa. Al menos que quieras compartirla, usa otra.",
+ 		"DUPLICATE_MAINTAG" : "La etiqueta ya está siendo usada en alguna iniciativa. Debes usar otra.",
  		"DUPLICATE_USER_MAINTAG" : "Ya has utilizado esta etiqueta en otra iniciativa. Si quieres reutilizarla, debes llenar el campo \"Componente de URL\". De otro modo mejor cámbiala.",
  		"SLUG_ERROR" : "Esta url ya esta siendo utilizada. Por favor, elige otra.",
  		"REQUIRED_FIELD" : "Campo obligatorio",
@@ -617,10 +617,12 @@
  	},
 
  	"ERROR" : {
- 		"UNKNOWN" : "Hubo un error. Por favor revisa tus datos e intenta de nuevo. Si no funciona, <a href=\"http://ayuda.datea.pe/contacto\">contáctanos</a>.",
+ 		"UNKNOWN" : "Hubo un error :( Por favor revisa tus datos e intenta de nuevo. Si no funciona, contáctanos.",
  		"NOT_FOUND" : "Oops no pudimos encontrar lo que buscabas.",
 		"UPLOAD" : "Error al subir archivo. Xfa, inténtalo de nuevo ;)",
-    "INVALID_DATE_FORMAT" : "Fecha inválida"
+    "INVALID_DATE_FORMAT" : "Fecha inválida",
+    "REQUIRED_FIELD": "Debes llenar este campo ;)",
+    "GENERAL_REQUIRED_FIELDS" : "¡Uy! Te faltó llenar campos obligatorios ;)"
  	},
 
  	"REDIRECT_MSG" : "Por favor, aguarda un momento mientras te redirigimos :)",

@@ -1,0 +1,13 @@
+
+.color-picker {
+  display: inline-flex;
+  .color-picker-btn {
+    width: 44px;
+    height: 44px;
+    .sample-color {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+    }
+  }
+}

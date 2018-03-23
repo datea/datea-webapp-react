@@ -36,7 +36,7 @@ export default class Header extends React.Component {
     const {ui} = this.props.store;
     return (
       <div className="header normal">
-        <DateaAppBar>
+        <DateaAppBar position="fixed">
           <div className="header-content">
             <div className="header-left">
               {!ui.isLanding && <AppBarLogo onClick={this.onLogoClick} />}

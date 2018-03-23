@@ -9,6 +9,7 @@ import MappingLayout from '../mapping-layout';
 import InfoBox from './info-box';
 import {DateoTeaserList} from '../dateo';
 import ContentBarRoot from './content-bar-root';
+import ContentBarDetail from './content-bar-detail';
 import DateoSwipeableContainer from '../dateo-swipeable-container';
 
 @inject('store')
@@ -41,7 +42,7 @@ export default class CampaignView extends Component {
     const {campaign} = campaignView.data;
     let mode = 'list-view';
 
-    if (router.queryParams.dateo) {
+    if (!!router.queryParams && router.queryParams.dateo) {
       mode = 'detail-view';
     }
 
@@ -55,10 +56,14 @@ export default class CampaignView extends Component {
         className="campaign-mapping-layout"
         visualPane={<DateaResizableMap mapStore={campaignView.map} />}
         contentBar={
-          <ContentBarRoot
-            campaign={campaign}
-            mode={campaignView.layoutMode}
-            onVisualClick={() => campaignView.setLayout('content')} />
+          mode == 'list-view'
+          ? <ContentBarRoot
+              campaign={campaign}
+              mode={campaignView.layoutMode}
+              onVisualClick={() => campaignView.setLayout('content')} />
+          : <ContentBarDetail
+              campaign={campaign}
+              />
         }
         mode={campaignView.layoutMode}
         onOpenVisualClick={() => campaignView.setLayout('visual')}
@@ -70,6 +75,7 @@ export default class CampaignView extends Component {
               isMobile={ui.isMobile} />
           : null
         }
+        barSticky={mode == 'detail-view' && ui.isMobile == false}
         barStickyOnContentTopScrolled={true}
         contentPane={
           mode == 'list-view'

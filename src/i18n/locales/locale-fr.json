@@ -380,7 +380,7 @@
  			"HELP_MSG" : "L'adresse URL se compose généralement de votre nom d'utilisateur et de l'étiquette principale. Si une intiative existe déjà avec cette étiquette, il faut en choisir une autre. Sont seulement acceptés les caractères alphanumériques et le tiret, sans accent, ni espace etc."
  		},
  		"SAVE" : "Sauver",
- 		"DUPLICATE_MAINTAG" : "Cette étiquette est déjà utilisée pour une autre initiative. Sauf si vous voulez la partager, il faut en choisir une autre.",
+ 		"DUPLICATE_MAINTAG" : "L'étiquette est déjà utilisée dans certaines initiatives. Vous devez en utiliser un autre.",
  		"DUPLICATE_USER_MAINTAG" : "Cette étiquette est déjà utilisée sur une autre initiative. Si vous voulez la réutiliser, vous devez remplir le champs \"Élément de l'URL\". Sinon, il vaut mieux le changer.",
  		"SLUG_ERROR" : "Cette adresse est déjà utilisée. Merci d'en choisir une autre.",
  		"REQUIRED_FIELD" : "Champs obligatoire.",
@@ -618,9 +618,11 @@
  	},
 
  	"ERROR" : {
- 		"UNKNOWN" : "Une erreur est survenue. Merci de vous identifier à nouveau. Si cela ne fonctionne pas, <a href=\"http://ayuda.datea.pe/contacto\">nous contacter</a>.",
+ 		"UNKNOWN" : "Une erreur est survenue :( Merci de vous identifier à nouveau. Si cela ne fonctionne pas, nous contacter.",
  		"NOT_FOUND" : "Il semblerait que votre contenu soit introuvable. Serait-il parti sur Mars ?",
-		"UPLOAD" : "Erreur téléchargement. S'il vous plaît essayer à nouveau ;)"
+		"UPLOAD" : "Erreur téléchargement. S'il vous plaît essayer à nouveau ;)",
+    "REQUIRED_FIELD": "Vous devez remplir ce champ ;)",
+    "GENERAL_REQUIRED_FIELDS" : "Oops! Vous n'avez pas rempli les champs obligatoires. ;)"
  	},
 
  	"REDIRECT_MSG" : "Merci de patienter... La page arrive à la vitesse de la lumière... Ou presque... :)"

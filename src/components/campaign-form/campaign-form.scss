@@ -1,0 +1,73 @@
+@import '../../scss/vars';
+
+.campaign-form {
+  padding: 0px 24px;
+
+  .form-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 30px 0 15px 0;
+  }
+
+  .field-row {
+    padding: 16px 0;
+    .field-label {
+      color: rgba(0, 0, 0, 0.87);
+      font-size: 0.875rem;
+      font-weight: 400;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      line-height: 1.46429em;
+      padding-bottom: 5px;
+    }
+    .field-help {
+      color: rgba(0, 0, 0, 0.54);
+      margin: 0;
+      font-size: 0.85rem;
+      text-align: left;
+      margin-top: 8px;
+      min-height: 1em;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      line-height: 1.3em;
+    }
+    .field-help-small {
+      color: rgba(0, 0, 0, 0.54);
+      margin: 0;
+      font-size: 0.75rem;
+      text-align: left;
+      margin-top: 8px;
+      min-height: 1em;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      line-height: 1em;
+    }
+  }
+
+  .field-row-image {
+    .image-field-zone.normal-zone {
+      min-height: 120px !important;
+      max-width: 350px !important;
+    }
+  }
+
+  .field-select .form-control {
+    min-width: 220px;
+  }
+
+  .field-row-map {
+    .map-container {
+      height: 350px;
+    }
+  }
+
+  .main-tag-field {
+    max-width: 250px;
+  }
+
+  .submit-button-row {
+    padding-bottom: 30px;
+  }
+
+  .main-error {
+    color: $red;
+    padding: 16px 0;
+  }
+}

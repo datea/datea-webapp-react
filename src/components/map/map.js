@@ -11,7 +11,7 @@ export default class DateaMap extends Component {
   };
 
   componentDidMount() {
-    this.props.mapStore.createMap(this.mapRef);
+    this.props.mapStore.setDOMElement(this.mapRef);
   }
 
   componentDidUpdate() {

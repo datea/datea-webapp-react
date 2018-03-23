@@ -22,7 +22,7 @@ export default class MapMarkerFactory {
       const mapping = this.getMapping();
 
     	dateo.tags.forEach(tag => {
-				!!mapping.subTags && mapping.subTags[tag] && labelTags.push('#'+tag);
+				!!mapping.subtags && mapping.subtags.has(tag) && labelTags.push('#'+tag);
 				tags.push(tag);
 			});
 
@@ -45,8 +45,8 @@ export default class MapMarkerFactory {
 
     const clipPath = document.location.href + '#pinpath';
     const mapping = this.getMapping();
-    let markerSVG = mapping.subTags
-                  ? <CampaignMarkerIcon dateo={dateo} subTags={mapping.subTags} />
+    let markerSVG = mapping.subtags
+                  ? <CampaignMarkerIcon dateo={dateo} subtags={mapping.subtags} />
                   : <DefaultMarkerIcon />
 
     return buildMarkerIcon(markerSVG);

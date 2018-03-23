@@ -57,6 +57,12 @@ $contentBarHeightMobileVisual: 56px;
         background-color: white;
       }
 
+      &.with-bar {
+        .content-container {
+          margin-top: $contentBarHeight
+        }
+      }
+
       &.pad-bar-top {
         .content-area {
           padding-top: $contentBarHeight;

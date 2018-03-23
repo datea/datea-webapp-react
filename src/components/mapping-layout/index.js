@@ -118,7 +118,7 @@ export default class MappingLayout extends Component {
             <div className="visual-overlay" onClick={onOpenVisualClick} />
           }
           {!!contentBar &&
-            <div className={cn('content-bar', barStickyOnContentTopScrolled && 'bar-sticky-conditional')}
+            <div className={cn('content-bar', !barSticky && barStickyOnContentTopScrolled && 'bar-sticky-conditional')}
               ref={r => {this.contentBarRef = r}}>
               {barStickyOnContentTopScrolled
                ? React.cloneElement(contentBar, {doScrollTop: this.scrollToTop})

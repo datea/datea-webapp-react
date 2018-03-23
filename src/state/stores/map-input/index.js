@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import {observable, action, computed, autorun, reaction, runInAction, toJS, observe} from 'mobx';
+import {observable, action, autorun, runInAction, toJS, when} from 'mobx';
 import {centroid} from 'turf';
 import Api from '../../rest-api';
 import {buildMarkerIcon} from '../../../components/marker';
 import config from '../../../config';
 import L from 'leaflet';
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import 'leaflet.pm';
 
 const FLY_TO_ZOOM = 16;
 
@@ -16,82 +16,137 @@ export {ResizeMapEvent};
 export default class MapeoStore {
 
   /* OBSERVABLES */
-  @observable mapState = {
-    zoom: 14,
-    center: null,
-    maxBounds : null,
-    minZoom : config.map.minZoom,
-    maxZoom: config.map.maxZoom,
-    scrollWheelZoom: false,
-    touch: true,
-    touchZoom: true,
-    mode : 'point'
+  @observable state = {
+    map : {
+      zoom: 14,
+      center: null,
+      maxBounds : null,
+      minZoom : config.map.minZoom,
+      maxZoom: config.map.maxZoom,
+      scrollWheelZoom: false,
+      touch: true,
+      touchZoom: true
+    },
+    geometry : {
+      type: 'Point',
+      coordinates : null
+    },
+    DOMElementAvailable : false
   };
   @observable mapMounted = false;
-
-  @observable geometry = {
-    type: 'Point',
-    coordinates : null
-  };
 
   constructor(main, options) {
     this.main = main;
     this.options = options;
+    if (options && options.geometryType) {
+      this.state.geometry.type = options.geometryType;
+    }
+  }
+
+  @action setDOMElement(elem) {
+    this.domElement = elem;
+    this.state.DOMElementAvailable = true;
   }
 
   /*  ACTIONS */
-  @action createMap = async (element, geometry) => {
-    let center, bounds, setInitialMarker = false;
+  @action createMap = async ({center, zoom, geometry}) => {
+    var bounds, setInitialMarker = false;
+
     if (geometry) {
-      let {center, bounds} = this.getGeometryCenterAndBounds(geometry);
+      const cab = this.getGeometryCenterAndBounds(geometry);
+      center = cab.center;
+      bounds = cab.bounds;
+      this.state.geometry = geometry;
+
+    } else if (center && zoom ) {
+      center = this.parseCenterToLatLng(center);
+      this.state.map.zoom = zoom;
     } else {
       try {
         const loc = await this.main.user.getLocation();
         center = L.latLng(loc.lat, loc.lng);
         const radius = loc.accuracy * 2 >= 200 ? loc.accuracy * 2 : 200;
         bounds = center.toBounds(radius);
-        setInitialMarker = true;
+        setInitialMarker = this.state.geometry.type == 'Point';
       } catch (e) {
         console.log('user geolocation', e);
       }
     }
-    console.log('center', center);
+    this.state.map.center = center;
 
+    when(() => this.state.DOMElementAvailable, () => {
+      this.lmap = L.map(this.domElement, this.state.map);
+      var tileUrl = config.map.tileUrl.replace('${token}', config.keys.mapbox);
+    	var tileAttrib= config.map.tileAttribution;
+      const {minZoom, maxZoom} = this.state.map;
+    	var tileLayer = new L.TileLayer(tileUrl, {minZoom, maxZoom, attribution: tileAttrib, id: 'mapbox.streets'});
+      this.lmap.addLayer(tileLayer);
+      this.addMapEvents();
+      if (bounds) {
+        this.lmap.fitBounds(bounds);
+      }
+      if (this.getType() == 'Point') {
+        this.setGeometry(null, setInitialMarker, setInitialMarker);
+      } else if (geometry){
+        this.setGeometry(geometry);
+      } else {
+        this.setGeometryType(this.getType());
+      }
 
-    const provider = new OpenStreetMapProvider();
-    const searchControl = new GeoSearchControl({
-      provider: provider,
+      this.mapMounted = true;
+      window.addEventListener('ResizeMapEvent', this.resizeMap);
     });
-
-    this.mapState.center = center;
-    this.lmap = L.map(element, this.mapState);
-    var tileUrl = config.map.tileUrl.replace('${token}', config.keys.mapbox);
-  	var tileAttrib= config.map.tileAttribution;
-    const {minZoom, maxZoom} = this.mapState;
-  	var tileLayer = new L.TileLayer(tileUrl, {minZoom, maxZoom, attribution: tileAttrib, id: 'mapbox.streets'});
-    this.lmap.addLayer(tileLayer);
-    this.addMapEvents();
-    this.mapMounted = true;
-    if (bounds) {
-      this.lmap.fitBounds(bounds);
-    }
-    if (setInitialMarker) {
-      this.setMarker(center);
-      this.reverseGeocodeMarker(center);
-    }
-    window.addEventListener('ResizeMapEvent', this.resizeMap);
   }
 
-  @action setCenter = (latLng) => { this.mapState.center = latLng };
+  @action setCenter = (latLng) => {
+    this.state.map.center = latLng
+  };
 
-  @action setMode = mode => {
-    if (this.mapState.mode != 'point' && mode == 'point') {
+  @action setGeometry = (geometry, initial = false, revGeocode = false) => {
 
-    } else if (this.mapState == 'point' && mode != 'point') {
-      this.lmap.removeLayer(this.point);
-      this.point = null;
+    geometry = geometry || {
+      type : 'Point',
+      coordinates : null
+    };
+
+    !!this.editLayer && this.lmap.removeLayer(this.editLayer);
+    this.editLayer = null;
+    this.state.geometry = geometry;
+
+    const type = this.getType();
+
+    if (type == 'Point' && initial) {
+      const {center} = this.state.map;
+      this.setMarker(center);
+      this.state.geometry.coordinates = [center.lng, center.lat];
+      !!revGeocode && this.reverseGeocodeMarker(center);
+
+    } else if (type == 'Polygon') {
+      this.createPolygonLayer(geometry);
+
+    } else if (type == 'GeometryCollection') {
+      this.createCollectionLayer(geometry);
     }
-    this.mapState.mode = mode == 'collection' ? 'collection' : 'point';
+
+    if ((geometry.coordinates && geometry.coordinates.length)
+       || (geometry.geometries && geometry.geometries.length)
+       && initial == false) {
+       this.setViewOnGeometry(geometry);
+    }
+  }
+
+  @action setGeometryType = type => {
+    !!this.editLayer && this.lmap.removeLayer(this.editLayer);
+    this.editLayer = null;
+
+    if (type == 'Point') {
+      this.setMarker(this.state.map.center);
+    } else if (type == 'Polygon') {
+      this.createPolygonLayer();
+    } else if ( type == 'GeometryCollection') {
+      this.createCollectionLayer();
+    }
+    this.state.geometry.type = type;
   }
 
   @action resizeMap = () => {
@@ -99,23 +154,15 @@ export default class MapeoStore {
   }
 
   @action setMap = (center, zoom, maxBounds) => {
-    if (typeof center == 'object') {
-      if (center.coordinates && center.coordinates.length == 2) {
-        this.mapState.center = L.latLng([...center.coordinates].reverse());
-      } else if (!!center.lat && !!center.lng) {
-        this.mapState.center = L.latLng(center);
-      }
-    }else if (Array.isArray(center)) {
-      this.mapState.center = L.latLng(center);
-    }
     if (zoom) {
-      zoom = zoom < this.mapState.minZoom ? this.mapSTate.minZoom : (zoom > this.mapState.maxZoom ? this.maxZoom : zoom);
-      this.mapState.zoom = zoom;
+      const {minZoom, maxZoom} = this.state.map;
+      zoom = zoom < minZoom ? minZoom : (zoom > maxZoom ? maxZoom : zoom);
+      this.state.map.zoom = zoom;
     }
     if (maxBounds) {
-      this.mapState.maxBounds = maxBounds;
+      this.state.map.maxBounds = maxBounds;
     }
-    this.lmap.setView(this.mapState.center, this.mapState.zoom);
+    this.lmap.setView(this.state.map.center, this.state.map.zoom);
     if (maxBounds) this.lmap.setMaxBounds(maxBounds);
   }
 
@@ -125,7 +172,7 @@ export default class MapeoStore {
       if (zoomToBounds) {
         this.lmap[action == 'set' ? 'fitBounds' : 'flyToBounds'](bounds);
       } else {
-        this.lmap[action == 'set' ? 'setView' : 'flyTo'](center, this.mapState.zoom);
+        this.lmap[action == 'set' ? 'setView' : 'flyTo'](center, this.state.map.zoom);
       }
     } else {
       // get centroid
@@ -141,12 +188,52 @@ export default class MapeoStore {
     !!this.lmap && this.lmap.remove();
   }
 
+  @action createPolygonLayer = (geometry) => {
+    !!this.editLayer && this.lmap.removeLayer(this.editLayer);
+    this.editLayer = !!geometry ? L.geoJSON(geometry) : L.geoJSON();
+    this.editLayer.addTo(this.lmap);
+    // define toolbar options
+    var options = {
+        position: 'topleft',
+        drawMarker: false,
+        drawPolyline: false,
+        drawRectangle: false,
+        drawPolygon: true, // adds button to draw a polygon
+        drawCircle: false,
+        cutPolygon: false,
+        editMode: true, // adds button to toggle edit mode for all layers
+        removalMode: true, // adds a button to remove layers
+    };
+    this.lmap.pm.addControls(options);
+  }
+
+  @action createCollectionLayer = (geometry) => {
+    !!this.editLayer && this.lmap.removeLayer(this.editLayer);
+    this.editLayer = !!geometry ? L.geoJSON(geometry) : L.geoJSON();
+    this.editLayer.addTo(this.lmap);
+    // define toolbar options
+    var options = {
+        position: 'topleft',
+        drawMarker: false,
+        drawPolyline: true,
+        drawRectangle: false,
+        drawPolygon: true, // adds button to draw a polygon
+        drawCircle: false,
+        cutPolygon: false,
+        editMode: true, // adds button to toggle edit mode for all layers
+        removalMode: true, // adds a button to remove layers
+    };
+    this.lmap.pm.addControls(options);
+  }
+
   @action setMarker = (latLng) => {
-    if (!this.point) {
-      this.point = L.marker(latLng, {
+    this.lmap.pm.removeControls();
+    if (!this.editLayer) {
+      this.editLayer = L.marker(latLng, {
         draggable: true,
         autopan: true,
-        icon: buildMarkerIcon()
+        icon: buildMarkerIcon(),
+        pmIgnore: true
       })
       .addTo(this.lmap)
       .on('moveend', ev => {
@@ -156,18 +243,18 @@ export default class MapeoStore {
         this.reverseGeocodeMarker(ev.latLng);
       })
     } else{
-      this.point.setLatLng(latLng);
+      this.editLayer.setLatLng(latLng);
     }
     this.updateMarkerGeometry(latLng);
   }
 
   @action updateMarkerGeometry = (latLng) => {
-    this.geometry.type = 'Point';
-    this.geometry.coordinates = [latLng.lng, latLng.lat];
+    this.state.geometry.type = 'Point';
+    this.state.geometry.coordinates = [latLng.lng, latLng.lat];
   }
 
   @action setViewOnMarker(latLng){
-    const {zoom} = this.mapState;
+    const {zoom} = this.state.map;
     const {maxZoom} = config.map;
     let newZoom = zoom < maxZoom ? zoom + 2 : zoom;
     newZoom = newZoom > maxZoom ? maxZoom : newZoom;
@@ -175,14 +262,6 @@ export default class MapeoStore {
   }
 
   /* HELPER FUNCTIONS */
-
-  setViewOnGeometry = (geometry) => {
-    geometry = geometry || this.geometry;
-    if (geometry && geometry.coordinates) {
-      const {bounds} = this.getGeometryCenterAndBounds(geometry);
-      this.lmap.fitBounds(bounds);
-    }
-  }
 
   getGeometryCenterAndBounds(geometry) {
     let center, bounds;
@@ -201,25 +280,25 @@ export default class MapeoStore {
     return !!this.lmap && this.lmap;
   }
 
-  addMapEvents = () => {
-    this.lmap.on('moveend', () => {
-      setTimeout(runInAction(() => {
-        this.mapState.center = this.lmap.getCenter();
-        this.mapState.zoom = this.lmap.getZoom();
-      }), 300);
-    });
-    this.lmap.on('zoomend', () => {
-      setTimeout(runInAction(() => {
-        this.mapState.zoom = this.lmap.getZoom();
-      }), 300);
-    });
-    this.lmap.on('click', ev => {
-      if (this.mapState.mode == 'point') {
-        this.setMarker(ev.latlng);
-        setTimeout(() => this.setViewOnMarker(ev.latlng), 300);
-        this.reverseGeocodeMarker(ev.latlng);
+  parseCenterToLatLng = (val) => {
+    if (typeof val == 'object') {
+      if (val.type && (val.coordinates || val.geometries)) {
+        let {center} = this.getGeometryCenterAndBounds(val);
+        return center;
+      } else if (!!val.lat && !!val.lng) {
+        return L.latLng(val);
       }
-    })
+    }else if (Array.isArray(val)) {
+      return L.latLng(val);
+    }
+  }
+
+  layersToGeometryCollection(layers = []) {
+    const geometries = layers.map(l => l.toGeoJSON().geometry);
+    return {
+      type : 'GeometryCollection',
+      geometries: geometries.length ? geometries : null
+    }
   }
 
   reverseGeocodeMarker = (latLng) => {
@@ -229,6 +308,95 @@ export default class MapeoStore {
         !!this.options.onMarkerPlacedByuser && this.options.onMarkerPlacedByuser(result);
       }
     });
+  }
+
+  /* EVENTS */
+
+  addMapEvents = () => {
+    this.lmap.on('moveend', () => {
+      setTimeout(runInAction(() => {
+        this.state.map.center = this.lmap.getCenter();
+        this.state.map.zoom = this.lmap.getZoom();
+      }), 300);
+    });
+    this.lmap.on('zoomend', () => {
+      setTimeout(runInAction(() => {
+        this.state.map.zoom = this.lmap.getZoom();
+      }), 300);
+    });
+    this.lmap.on('click', ev => {
+      if (this.getType() == 'Point') {
+        this.setMarker(ev.latlng);
+        setTimeout(() => this.setViewOnMarker(ev.latlng), 300);
+        this.reverseGeocodeMarker(ev.latlng);
+      }
+    });
+
+    this.lmap.on('pm:create', (e) => {
+      const type = this.getType();
+      if (type == 'Polygon') {
+        this.state.geometry = e.layer.toGeoJSON().geometry;
+      } else if (type == 'GeometryCollection') {
+        const layers = this.getCurrentDrawnLayers();
+        this.state.geometry = this.layersToGeometryCollection(layers);
+      }
+    });
+
+    this.lmap.on('pm:remove', (e) => {
+      const type = this.getType();
+      if (type == 'Polygon') {
+        this.state.geometry.coordinates = null;
+      } else if (type == 'GeometryCollection') {
+        const layers = this.getCurrentDrawnLayers();
+        this.state.geometry = this.layersToGeometryCollection(layers);
+      }
+    });
+
+    this.lmap.on('pm:drawstart', (e) => {
+      const type = this.getType();
+      if (type == 'Polygon') {
+        const layers = this.getCurrentDrawnLayers();
+        if (layers.length) {
+          layers.forEach(l => l.remove());
+        }
+      }
+    })
+  }
+
+  /* SOME GETTERS */
+
+  getCurrentDrawnLayers() {
+    let layers = [];
+    this.lmap.eachLayer(layer => {
+      if (layer.pm) {
+        if (!layer._layers && (!layer.pm || !layer.pm.dragging()) && (layer.isEmpty && !layer.isEmpty())) {
+          layers.push(layer);
+        }
+      }
+    });
+    return layers;
+  }
+
+  getType() {
+    return this.state.geometry.type;
+  }
+
+  getGeometry() {
+    const geometry = this.state.geometry;
+    if (!geometry || geometry.coordinates === null || geometry.geometries === null) {
+      return null;
+    }
+    return toJS(this.state.geometry);
+  }
+
+  getCenterAndZoom() {
+    return {
+      center: {
+        type: 'Point',
+        coordinates: [this.state.map.center.lng, this.state.map.center.lat]
+      },
+      zoom: this.state.map.zoom
+    };
   }
 
   dispose() {

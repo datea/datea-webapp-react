@@ -8,6 +8,14 @@
       width: 100vw;
     }
   }
+
+  &.normal {
+    .datear-dialog-paper {
+      max-height: 100vh !important;
+      overflow-y: hidden !important;
+      min-width: 650px;
+    }
+  }
 }
 
 .datea-form-modal {
@@ -31,7 +39,9 @@
   }
   &.normal {
     .map-layout-form-container {
-      //margin-top: 64px;
+      .mapping-layout.mobile {
+        height: calc(100vh - 64px);
+      }
     }
   }
 }

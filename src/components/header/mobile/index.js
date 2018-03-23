@@ -1,7 +1,5 @@
 import './header-mobile.scss';
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
 import DateaAppBar from '../../app-bar';
 import cn from 'classnames';
 import AppBarLogo from '../common/app-bar-logo';
@@ -40,7 +38,7 @@ export default class Header extends React.Component {
 
     return (
       <div className={cn('header mobile', user.isSignedIn ? 'signed-in' : 'signed-out')}>
-        <DateaAppBar>
+        <DateaAppBar position="fixed">
           <div className="header-content">
             <div className="header-left">
               {headerLeft}

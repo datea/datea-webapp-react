@@ -13,6 +13,7 @@ import CancelIcon from 'material-ui-icons/Cancel';
 import ArrowDropUpIcon from 'material-ui-icons/ArrowDropUp';
 import ClearIcon from 'material-ui-icons/Clear';
 import Chip from 'material-ui/Chip';
+import debounce from 'debounce-promise';
 import {AsyncCreatable} from 'react-select';
 import removeAccents from 'remove-accents';
 import {StripChar} from 'stripchar';
@@ -83,10 +84,14 @@ class IntegrationReactSelect extends React.Component {
     onChange : PropTypes.func,
     tags : MobxPropTypes.arrayOrObservableArray,
     error : PropTypes.bool,
-    helperText: PropTypes.node
+    helperText: PropTypes.node,
+    multi: PropTypes.bool,
+    label : PropTypes.node,
+    placeholder : PropTypes.string
   };
 
   static defaultProps = {
+    multi : true,
     error: false,
     tags : [],
     defaultSuggestions: []
@@ -96,19 +101,25 @@ class IntegrationReactSelect extends React.Component {
     focused : false
   };
 
-  getTagsFromResources = (tags) => {
-    return tags.map( tag => {
-      tag = typeof tag == 'string' ? tag : tag.tag;
-      return {label: '#'+tag, value: tag};
-    })
+  processCurrentValue = (value) => {
+    if (this.props.multi) {
+      if (!value) return [];
+      return tags.map( tag => {
+        tag = typeof tag == 'string' ? tag : tag.tag;
+        return {label: '#'+tag, value: tag};
+      })
+    } else {
+      const label = !!value ? '#'+value.replace('#') : '';
+      return {label, value};
+    }
   }
 
-  loadOptions = (search) => {
+  _loadOptions = (search) => {
     if (!search) {
       const options = this.props.defaultSuggestions.map(t => ({label:'#'+t, value: t}));
       return Promise.resolve({options});
     }else{
-      return Api.tag.autocomplete(search)
+      return Api.tag.autocomplete(search.replace('#', ''))
       .then(res => {
         let tags = res.suggestions || [];
         return {options: tags.map(tag => ({value: tag, label: `#${tag}`}))};
@@ -116,15 +127,24 @@ class IntegrationReactSelect extends React.Component {
     }
   }
 
-  handleChange = selectedOptions => {
-    const tags = selectedOptions.map( opt => opt.value);
-    !!this.props.onChange && this.props.onChange(tags);
+  loadOptions = debounce(this._loadOptions, 500, {leading: true});
+
+  handleChange = option => {
+    if (this.props.multi) {
+      const tags = option.map( opt => opt.value);
+      !!this.props.onChange && this.props.onChange(tags);
+    } else {
+      let tag = !!option ? option.value : '';
+      tag = StripChar.RSspecChar(tag.replace(/ /g, ''));
+      !!this.props.onChange && this.props.onChange(tag);
+    }
   };
 
   render() {
-    const { classes, tags, error, helperText} = this.props;
+    const { classes, value, error, helperText, multi, label, placeholder} = this.props;
     const { focused } = this.state;
-    const currentOptions = this.getTagsFromResources(tags);
+    const currentValue = this.processCurrentValue(value);
+    const hasValue = !!currentValue && (multi ? !!currentValue.length : !!currentValue.value);
 
     return (
       <div className={classes.root}>
@@ -132,13 +152,15 @@ class IntegrationReactSelect extends React.Component {
           fullWidth={true}
           error={error}
           helperText={helperText}
+          label={label}
+          placeholder={placeholder}
           InputProps={{
             inputComponent : SelectWrapped
           }}
           inputProps={{
             classes,
-            value: currentOptions,
-            multi: true,
+            value: currentValue,
+            multi,
             onChange: this.handleChange,
             placeholder: t('TAGS_PLACEHOLDER'),
             instanceId: 'react-select-chip',
@@ -147,7 +169,7 @@ class IntegrationReactSelect extends React.Component {
             loadOptions: this.loadOptions,
             onFocus: () => this.setState({focused: true}),
             onBlur : () => this.setState({focused: false}),
-            clearable : true,
+            clearable : hasValue,
             trimFilter : true
           }}
         />

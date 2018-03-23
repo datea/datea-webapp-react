@@ -16,7 +16,7 @@ export default class MainLayout extends React.Component {
       'page-content-wrap',
       !ui.layout.showFooter && 'hide-footer',
       ui.layout.docHeightMode == 'auto' && 'autoheight',
-      ui.isMobile && 'mobile-nav'
+      ui.isMobile && 'mobile'
     );
 
     return (

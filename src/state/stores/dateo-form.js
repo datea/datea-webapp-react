@@ -15,11 +15,25 @@ export default class DateoFormStore {
   constructor(main, id) {
     this.main = main;
     this.map = new MapInputStore(this.main, {
-      mode: 'dateo',
+      geometryType: 'Point',
       onMarkerPlacedByuser : this.processReverseGeocodeResult
     });
-    if (id) {
-      console.log(id);
+    if (id && id != 'new') {
+      let dateo = this.main.dateo.data.dateos.get(String(id));
+      if (dateo) {
+        this.map.createMap({geometry:  obj.position || obj.geometry_collection});
+      } else {
+        Api.dateo.getDetail(id)
+        .then(obj => {
+          this.dateo.merge(obj);
+          this.map.createMap({geometry: obj.position || obj.geometry_collection});
+        })
+        .catch((e) => {
+          console.log('que hacer si el dateo no existe?');
+        })
+      }
+    } else {
+      this.map.createMap({});
     }
   }
 
@@ -98,10 +112,10 @@ export default class DateoFormStore {
   }
 
   @action receiveGeocodeResult = place => {
-    if (this.map.mapState.mode == 'point') {
+    if (this.map.getType() == 'Point') {
       if (place.geometry) {
-        this.map.setMarker(place.geometry.location);
-        this.map.lmap.fitBounds(place.geometry.bounds);
+        //this.map.setMarker(place.geometry.location);
+        //this.map.lmap.fitBounds(place.geometry.bounds);
       }
       this.dateo.set('address', place.formatted_address);
     }
@@ -110,11 +124,14 @@ export default class DateoFormStore {
   /* SAVE */
   @action save = () => {
     let data = toJS(this.dateo);
-    const geometry = this.map.geometry;
-    if (geometry.type == 'Point' && geometry.coordinates) {
-      data.position = toJS(geometry);
+    const geometry = this.map.getGeometry();
+    if (!geometry) {
+      !!data.position && delete data.position;
+      !!data.geometry_collection && delete data.geometry_collection;
+    } else if (geometry.type == 'Point' && geometry.coordinates) {
+      data.position = geometry;
     } else if (geometry.type == 'GeometryCollection') {
-      data.geometry_collection = toJS(geometry);
+      data.geometry_collection = geometry;
     }
 
     // validation

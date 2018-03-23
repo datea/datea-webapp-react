@@ -4,16 +4,23 @@
   background-color: #5E6E66;
 
   .campaign-img {
-    height: 180px;
+    height: 210px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     cursor: pointer;
   }
 
+  &.mobile {
+    .campaign-img {
+      height: 180px;
+    }
+  }
+
   .box-content {
     padding: 16px;
     color: white;
+    position: relative;
 
     .campaign-title {
       font-size: 20px;
@@ -34,5 +41,13 @@
       color: $green;
       cursor: pointer;
     }
+
+    .datear-btn {
+      position: absolute;
+      right: 30px;
+      top: -20px;
+    }
   }
+
+
 }

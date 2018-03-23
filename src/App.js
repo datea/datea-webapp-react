@@ -5,7 +5,7 @@ import Reboot from 'material-ui/Reboot';
 import {MuiThemeProvider} from 'material-ui/styles';
 import './bootstrap.js';
 import {Provider} from 'mobx-react';
-import {MobxRouter, startRouter} from 'mobx-router';
+import {MobxRouter, startRouter} from 'mobx-router/src';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import DateaStore from './state/store';

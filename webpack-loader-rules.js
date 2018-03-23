@@ -3,7 +3,7 @@ var rules = [
   /********** JS ***********/
   {
     test: /\.js$/,
-    exclude: /node_modules/, ///node_modules\/(?!(mobx-router)\/).*/,
+    exclude: /node_modules\/(?!(mobx-router)\/).*/,
     use : {
       loader: 'babel-loader',
       options: {

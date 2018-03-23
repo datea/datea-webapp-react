@@ -28,7 +28,6 @@ export default class MainMenu extends React.Component {
   onLocaleChange = (event, index, value) => this.props.store.user.setLocale(value);
 
   render() {
-    console.log('open', this.props.open);
     return (
       <Drawer
         open={this.props.open}

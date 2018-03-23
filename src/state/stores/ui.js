@@ -63,6 +63,17 @@ export default class UiStore {
     this.layout.show404 = false;
   }
 
+  @action setLayout = (layout) => {
+    layout = layout || 'normal';
+    if (layout == 'mapping') {
+      this.layout.showFooter = false;
+      this.layout.docHeightMode = 'window';
+    } else if (layout == 'normal') {
+      this.layout.showFooter = true;
+      this.layout.docHeightMode = 'auto';
+    }
+  }
+
   /************* SLIDSHOW *****************/
   @action openSlideshow(images, index = 0) {
     this.modals.slideshow = {images, index};

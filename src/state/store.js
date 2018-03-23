@@ -1,13 +1,15 @@
 import {autorun, computed, toJS} from 'mobx';
-import {RouterStore} from 'mobx-router';
+import {RouterStore} from 'mobx-router/src';
 import DataStore from './stores/data';
 import UIStore from './stores/ui';
 import UserStore from './stores/user';
 import Views from './views';
 
 import CampaignViewStore from './stores/campaign-view';
+import CampaignFormStore from './stores/campaign-form';
 import DateoStore from './stores/dateo';
 import DateoFormStore from './stores/dateo-form';
+
 
 export default class DateaStore {
 
@@ -20,7 +22,7 @@ export default class DateaStore {
     this.campaignView = new CampaignViewStore(this);
 
     this.queryParamsAutorun = autorun( () => {
-      if (this.router.queryParams.datear) {
+      if (this.router.queryParams && this.router.queryParams.datear) {
         this.createDateoFormStore(this.router.queryParams.datear);
       }
     })
@@ -36,7 +38,7 @@ export default class DateaStore {
   cancelDateoForm = () => {
     const queryParams  = toJS(this.router.queryParams);
     delete queryParams.datear;
-    this.router.goTo(this.router.currentView, this.router.params, this, queryParams);
+    this.goTo(this.router.currentView.name, this.router.params, queryParams);
   }
 
   openDateo = ({dateo, isNew = false}) => {
@@ -67,6 +69,14 @@ export default class DateaStore {
     }
   }
 
+  closeDateo = () => {
+    const queryParams  = toJS(this.router.queryParams);
+    if (queryParams.dateo) {
+      delete queryParams.dateo;
+    }
+    this.router.goTo(this.router.currentView, this.router.params, this, queryParams);
+  }
+
   updateQueryParams = (queryParams, replace = true) => {
     if (!replace) {
       queryParams = Object.assign({}, this.router.queryParams, queryParams);
@@ -82,6 +92,11 @@ export default class DateaStore {
     this.dateoForm = new DateoFormStore(this, id);
   }
   /**********************************/
+
+  /*** CAMPAIGN FORM *****/
+  createCampaignFormStore = (id) => {
+    this.campaignForm = new CampaignFormStore(this, id);
+  }
 
 
   goTo = (view, paramsObject, queryParamsObject) => {

@@ -21,7 +21,6 @@ export default class MenuBtn extends React.Component {
       width: ui.isMobile ? '44px' : '48px',
       height: ui.isMobile ? '44px' : '48px'
     };
-    console.log('otherProps', otherProps);
     return (
       <IconButton
         className="main-menu"

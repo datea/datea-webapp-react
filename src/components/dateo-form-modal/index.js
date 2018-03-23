@@ -33,7 +33,7 @@ export default class DatearDialog extends Component {
 
   render() {
     const {router, ui} = this.props.store;
-    const isOpen = !!router.queryParams.datear;
+    const isOpen = !!router.queryParams && !!router.queryParams.datear;
 
     return (
       <div>

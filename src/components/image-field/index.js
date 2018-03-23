@@ -79,7 +79,7 @@ export default class ImageField extends React.Component {
     .attach('image', files[0])
     .on('progress', e => !!e.percent && this.setState({progress: e.percent}))
     .end((err, res) => {
-      if (!err && res.status == 200) {
+      if (!err && [200, 201].includes(res.status)) {
         this.props.onUploadSuccess && this.props.onUploadSuccess(res.body.resource);
       }else {
         this.props.onUploadError && this.props.onUploadError(err, res);
@@ -131,7 +131,7 @@ export default class ImageField extends React.Component {
           {this.state.uploading &&
             <div className="progress-wrap">
               <div className="progress">
-                <CircularProgress style={{color: colors.greyMid}} size={50} variant="determinate" value={this.state.progress} />
+                <CircularProgress style={{color: colors.greyMid}} size={44} variant="static" value={this.state.progress} />
               </div>
             </div>
           }

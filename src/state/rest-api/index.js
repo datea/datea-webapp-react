@@ -20,7 +20,8 @@ class Api {
     getDetail : id => this.get(url('campaign', id)),
     post : obj => this.post(url('campaign'), obj),
     patch : obj => this.patch(url('campaign', obj.id), obj),
-    delete : obj => this.delete(url('campaign', obj.id))
+    delete : obj => this.delete(url('campaign', obj.id)),
+    save : obj => obj.id ? this.campaign.patch(obj) : this.campaign.post(obj)
   };
 
   /* DATEOS */
@@ -53,6 +54,10 @@ class Api {
     getDetail : id => this.get(url('tag'), id),
     post : obj => this.post(url('tag'), obj),
     autocomplete : search => this.get(url('tag/autocomplete'), {q : search})
+  };
+
+  category = {
+    getList : () => this.get(url('category'))
   };
 
   /* URL INFO */

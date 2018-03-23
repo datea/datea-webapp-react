@@ -19,6 +19,7 @@ const styles = theme => ({
       border: 0,
       height: 'auto',
       background: 'transparent',
+      minHeight: 20,
       '&:hover': {
         boxShadow: 'none',
       },

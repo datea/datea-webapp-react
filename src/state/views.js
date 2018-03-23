@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route} from 'mobx-router';
+import {Route} from 'mobx-router/src';
 import {toJS} from 'mobx';
 
 import config from '../config';
@@ -17,7 +17,7 @@ import ActivationPage from '../components/account/activation-page';
 import AccountSettings from '../components/account/settings';
 import Profile from '../components/profile';
 import CampaignView from '../components/campaign-view';
-import DatearTestView from '../components/dateo-form';
+import CampaignManagerView from '../components/campaign-manager-view';
 
 const Views = {
 
@@ -48,6 +48,7 @@ const Views = {
     component: <LoginPage />,
     beforeEnter: (route, params, store) => store.user.setLastLoggedOutView(),
     onEnter : (route, params, store) => {
+      store.ui.setLayout('normal');
       store.user.isSignedIn && store.router.goTo(Views.home, {}, store);
     }
   }),
@@ -58,6 +59,7 @@ const Views = {
     component : <RegisterPage />,
     beforeEnter: (route, params, store) => store.user.setLastLoggedOutView(),
     onEnter : (route, params, store) => {
+      store.ui.setLayout('normal');
       store.user.isSignedIn && store.router.goTo(Views.home, {}, store)
     }
   }),
@@ -66,27 +68,39 @@ const Views = {
     name : 'registerFormPage',
     path: '/register-form',
     component : <RegisterFormPage />,
+    onEnter : (route, params, store) => {
+      store.ui.setLayout('normal');
+    }
   }),
 
   activate : new Route({
     name : 'activate',
     path: '/activation/:outcome',
     component: <ActivationPage />,
-    onEnter: (route, params, store) => store.user.isSignedIn && store.goTo('home')
+    onEnter: (route, params, store) => {
+      store.ui.setLayout('normal');
+      store.user.isSignedIn && store.goTo('home')
+    }
   }),
 
   recoverPass : new Route({
     name : 'recoverPass',
     path: '/recover-password',
     component: <RecoverPasswordPage />,
-    onEnter: (route, params, store) => store.user.isSignedIn && store.goTo('home')
+    onEnter: (route, params, store) => {
+      store.ui.setLayout('normal');
+      store.user.isSignedIn && store.goTo('home')
+    }
   }),
 
   recoverPassConfirm : new Route({
     name: 'recoverPassConfirm',
     path: '/recover-password/confirm/:uid/:token',
     component: <RecoverPasswordConfirmPage />,
-    onEnter: (route, params, store) => store.user.isSignedIn && store.goTo('home')
+    onEnter: (route, params, store) => {
+      store.ui.setLayout('normal');
+      store.user.isSignedIn && store.goTo('home')
+    }
   }),
 
   settings : new Route({
@@ -95,30 +109,42 @@ const Views = {
     component: <AccountSettings />,
   }),
 
-  datear : new Route({
-    name: 'datear',
-    path : '/datear/:id?',
-    component: <DatearTestView />,
+  /* CAMPAIGN EDIT */
+  campaignForm : new Route({
+    name : 'campaignForm',
+    path: '/mapeo/:id',
+    component : <CampaignManagerView />,
+    onEnter: (route, params, store) => {
+      store.ui.setLayout('normal');
+      store.createCampaignFormStore(params.id);
+    }
   }),
 
   profile : new Route({
     name : 'profile',
     path: '/:username',
-    component: <Profile />
+    component: <Profile />,
+    onEnter: (route, params, store) => {
+      store.ui.setLayout('normal');
+    }
   }),
 
   profileDateos : new Route({
     name : 'profileDateos',
     path: '/:username/dateos',
-    component: <Profile />
+    component: <Profile />,
+    onEnter: (route, params, store) => {
+      store.ui.setLayout('mapping');
+    }
   }),
 
   /* CAMPAIGNS - TAGS */
   campaign : new Route({
     name : 'campaign',
-    path: '/:username/:campaignSlug',
+    path: '/:username/:slug',
     component : <CampaignView />,
     onEnter: (route, params, store) => {
+      store.ui.setLayout('mapping');
       store.campaignView.loadView(params.username, params.slug)
     }
   }),
@@ -127,7 +153,10 @@ const Views = {
   notFound : new Route({
     name : 'notFound',
     path: '*',
-    component: <Error404 errorId="NOT_FOUND" />
+    component: <Error404 errorId="NOT_FOUND" />,
+    onEnter: (route, params, store) => {
+      store.ui.setLayout('normal');
+    }
   })
 }
 

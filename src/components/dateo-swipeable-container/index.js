@@ -35,7 +35,7 @@ export default class DateoSwipeableContainer extends Component {
 
   dateoIdToIndex = (id) => {
     if (id) {
-      let idx = this.props.store.dateo.data.dateos.keys().indexOf(id);
+      let idx = this.props.store.dateo.data.dateos.keys().indexOf(String(id));
       return idx != -1 ? idx : 0;
     }else{
       return 0;
@@ -77,6 +77,7 @@ export default class DateoSwipeableContainer extends Component {
     return (
       <div className="dateo-swipeable-container" ref={ref => {this.containerRef = ref}}>
         <VirtualizeSwipeableViews
+          index={idx}
           enableMouseEvents
           resistance
           animateHeight

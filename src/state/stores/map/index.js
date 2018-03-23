@@ -24,6 +24,7 @@ export default class MapeoStore {
     scrollWheelZoom: false
   };
   markers = new Map();
+  @observable DOMElementAvailable = false;
   @observable mapMounted = false;
   @observable markersLoaded = false;
 
@@ -86,29 +87,52 @@ export default class MapeoStore {
 
   /*  ACTIONS */
 
-  @action createMap = async (element) => {
-    if (!this.center) {
+  @action setDOMElement = (elem) => {
+    this.domElement = elem;
+    this.DOMElementAvailable = true;
+  }
+
+  @action createMap = async ({center, zoom, geometry}) => {
+
+    let bounds;
+
+    if (geometry) {
+      const cab = this.getGeometryCenterAndBounds(geometry);
+      center = cab.center;
+      bounds = cab.bounds;
+    } else if (center && zoom) {
+      center = this.parseCenterToLatLng(center);
+      this.mapState.zoom = zoom;
+    } else {
       try {
         const loc = await this.main.user.getLocation();
+        center = L.latLng(loc.lat, loc.lng);
+        const radius = loc.accuracy * 2 >= 200 ? loc.accuracy * 2 : 200;
+        bounds = center.toBounds(radius);
         this.mapState.center = L.latLng(loc.lat, loc.lng);
       } catch (e) {
+        console.log('no user location');
       }
     }
+    this.mapState.center = center;
 
-    this.lmap = L.map(element, this.mapState);
-    var tileUrl = config.map.tileUrl.replace('${token}', config.keys.mapbox);
-  	var tileAttrib= config.map.tileAttribution;
-    const {minZoom, maxZoom} = this.mapState;
-  	var tileLayer = new L.TileLayer(tileUrl, {minZoom, maxZoom, attribution: tileAttrib, id: 'mapbox.streets'});
-    this.lmap.addLayer(tileLayer);
-    this.addMapEvents();
+    when(() => this.DOMElementAvailable, () => {
+      this.lmap = L.map(this.domElement, this.mapState);
+      var tileUrl = config.map.tileUrl.replace('${token}', config.keys.mapbox);
+    	var tileAttrib= config.map.tileAttribution;
+      const {minZoom, maxZoom} = this.mapState;
+    	var tileLayer = new L.TileLayer(tileUrl, {minZoom, maxZoom, attribution: tileAttrib, id: 'mapbox.streets'});
+      this.lmap.addLayer(tileLayer);
+      this.addMapEvents();
 
-    this.markerLayer = new L.markerClusterGroup({
-      iconCreateFunction : this.clusterFactory.buildClusterIcon
+      this.markerLayer = new L.markerClusterGroup({
+        iconCreateFunction : this.clusterFactory.buildClusterIcon,
+        pmIgnore: true
+      });
+      this.lmap.addLayer(this.markerLayer);
+      this.mapMounted = true;
+      this.initAutoRunCycle();
     });
-    this.lmap.addLayer(this.markerLayer);
-    this.initAutoRunCycle();
-    this.mapMounted = true;
   }
 
   @action setCenter = (latLng) => { this.mapState.center = latLng };
@@ -180,6 +204,32 @@ export default class MapeoStore {
   }
 
   /* HELPER FUNCTIONS */
+
+  getGeometryCenterAndBounds(geometry) {
+    let center, bounds;
+    if (geometry.type == 'Point') {
+      center = L.latLng([...geometry.coordinates].reverse());
+      bounds = center.toBounds(200);
+    } else {
+      bounds = geometry.coordinates.map( p => [...p].reverse());
+      const cent = centroid(geometry);
+      center = L.latLng(cent.coordinates.reverse());
+    }
+    return {center, bounds};
+  }
+
+  parseCenterToLatLng = (val) => {
+    if (typeof val == 'object') {
+      if (val.type && (val.coordinates || val.geometries)) {
+        let {center} = this.getGeometryCenterAndBounds(val);
+        return center;
+      } else if (!!val.lat && !!val.lng) {
+        return L.latLng(val);
+      }
+    }else if (Array.isArray(val)) {
+      return L.latLng(val);
+    }
+  }
 
   unfocusMarker() {
     if (this.focusedMarker) {

@@ -33,10 +33,10 @@ export default class ClusterPieFactory {
 		  dataObj  = {},
       mapping  = this.getMapping();
 
-    if (mapping.subTags) {
+    if (mapping.subtags) {
   		children.forEach(marker => {
   			marker.options._tags.forEach(tag => {
-  				if (tag != mapping.main_tag.tag && !!mapping.subTags[tag]) {
+  				if (tag != mapping.main_tag.tag && mapping.subtags.has(tag)) {
   					if (!!dataObj[tag]) {
   						dataObj[tag].value ++;
   						dataObj[tag].ids.push( marker.options._id );
@@ -81,7 +81,7 @@ export default class ClusterPieFactory {
       .append( 'svg:g' )
       .attr( 'transform', 'translate('+radius+','+radius+')' );
 
-    if (mapping.subTags) {
+    if (mapping.subtags) {
       const arc  = d3.arc().outerRadius(radius).innerRadius(0);
       const pie  = d3.pie().value( sData => sData.value);
       const arcs = vis.selectAll( 'g._sqCellSlice' ).data( pie ).enter().append( 'svg:g' ).attr( 'class', 'slice' );
@@ -90,7 +90,7 @@ export default class ClusterPieFactory {
         if ( slice.data.tag === 'Otros' ) {
           return CLUSTER_OPTIONS.defaultColor1;
         } else {
-          return mapping.subTags[slice.data.tag].color;
+          return mapping.subtags.get(slice.data.tag).color;
         }
       })
       .attr( 'data-svg-slice-id', slice => slice.data.ids)

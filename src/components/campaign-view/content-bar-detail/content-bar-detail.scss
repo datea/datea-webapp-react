@@ -1,0 +1,77 @@
+@import '../../../scss/vars';
+
+.campaign-content-bar-detail {
+  background-color: $greyDark;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 8px;
+  position: relative;
+  display: flex;
+  color: white;
+  fill: white;
+
+  .left-btn, .right-btn {
+    flex-basis: 50px;
+    flex-grow: 0;
+    flex-shrink : 0;
+    text-align: center;
+    .dateo-nav-btn {
+      color: white;
+      svg {
+        fill: white !important;
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+
+  .center-content {
+    flex-grow: 10;
+    flex-shrink: 1;
+    text-align: center;
+    position: relative;
+    .go-back-btn {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      display: block !important;
+      //padding-bottom: 3px;
+      padding-top: 5px;
+      .campaign-ht {
+        display: block;
+        font-size: 18px;
+        line-height: 18px;
+        height: 18px;
+        font-weight: 500;
+      }
+      .back-hint-holder {
+        //display:  none;
+        position: relative;
+        height: 15px;
+        font-size: 12px;
+        line-height: 15px;
+        text-align: center;
+        /*.down-icon {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          fill: white;
+          //width: 20px;
+          //height: 20px;
+        }*/
+      }
+    }
+  }
+
+  .datear-btn-container {
+    position: absolute;
+    right: 20px;
+    bottom: -45px;
+  }
+
+}
