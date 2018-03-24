@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Api from '../rest-api';
 import MapStore from './map';
 import config from '../../config';
-import {reduceIntoObjById} from '../../utils';
+import {reduceIntoObjById, cleanObject} from '../../utils';
 import {chartColors} from '../../config/colors';
 
 const getColor = (i) => {
@@ -36,20 +36,73 @@ export default class Campaign {
     .then(res => runInAction(() => {
       if (res.objects.length == 1) {
         this.data.campaign = this.hydrateCampaign(res.objects[0]);
+        this.initDateoQueryAutorun();
         const {boundary: geometry, center, zoom} = this.data.campaign;
         this.map.createMap({center, zoom, geometry});
-        this.main.dateo.getDateos({...DATEO_QUERY_DEFAULTS, tags: this.data.campaign.main_tag.tag})
-        .then( res => {
-          showLoading && this.main.ui.setLoading(false);
-          if (this.main.router.queryParams && this.main.router.queryParams.dateo) {
-            this.map.navigateToDateo(this.main.router.queryParams.dateo)
-          }
-        })
       }else{
         this.main.ui.show404();
       }
     }))
     .catch((err) => console.log(err));
+  }
+
+  initDateoQueryAutorun = () => {
+    let firstRun = true;
+    this.disposeDateoQueryAutorun = reaction(
+      () => {
+        const {datear, dateo, ...params} = this.main.router.queryParams;
+        return params || {};
+      },
+      () => {
+        console.log('query dateos');
+        this.queryDateos();
+      },
+      true
+    );
+  }
+
+  getCurrentDateoQueryParams = () => {
+    const {router} = this.main;
+    const {datear, dateo, ...params} = !!router.queryParams ? toJS(router.queryParams) : {};
+    return params;
+  }
+
+  @action setQueryParams = (newParams, replace = true) => {
+    const {router} = this.main;
+    const {datear, dateo, ...currentParams} = router.queryParams ? toJS(router.queryParams) : {};
+    let params;
+    if (!replace) {
+      newParams = {...currentParams, ...newParams};
+    }
+    if (dateo) {
+      newParams.dateo = dateo;
+    }
+    this.main.goTo('campaign', this.main.router.params, cleanObject(newParams));
+  }
+
+  queryDateos = () => {
+    let params = this.getCurrentDateoQueryParams();
+    params.narrow_on_tags = this.data.campaign.main_tag.tag;
+    params.limit = this.main.ui.isMobile ? 100 : 200;
+    if (params.tags) {
+      params.tags = decodeURIComponent(params.tags);
+    }
+    console.log('this.queryDateos() params', params);
+    this.main.dateo.getDateos(params, true)
+    .then( res => {
+      this.main.ui.setLoading(false);
+      const openDateoId = this.main.router.queryParams && this.main.router.queryParams.dateo;
+      if (openDateoId && this.main.dateo.data.dateos.has(String(openDateoId))) {
+        this.map.navigateToDateo(openDateoId);
+      } else {
+        const ids = this.main.dateo.data.dateos.keys();
+        if (ids.length) {
+          this.main.openDateo(ids[0]);
+        } else if (openDateoId) {
+          this.main.closeDateo();
+        }
+      }
+    })
   }
 
   hydrateCampaign = (campaign) => {
@@ -100,6 +153,7 @@ export default class Campaign {
   }
 
   dispose = () => {
+    !!this.disposeDateoQueryAutorun && this.disposeDateoQueryAutorun();
     this.map.dispose();
     this.main.dateo.clearDateos();
     this.data.campaign = null;

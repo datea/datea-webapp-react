@@ -146,6 +146,9 @@ const Views = {
     onEnter: (route, params, store) => {
       store.ui.setLayout('mapping');
       store.campaignView.loadView(params.username, params.slug)
+    },
+    onExit: (route, params, store) => {
+      store.campaignView.dispose();
     }
   }),
 

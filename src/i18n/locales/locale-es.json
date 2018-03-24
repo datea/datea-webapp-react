@@ -34,6 +34,7 @@
   "NO_RESULTS" : "No hay resultados",
   "DONE" : "¡Listo!",
   "CLEAR" : "borrar",
+  "CLEAR_SELECTION" : "borrar selección",
 
   "DATEO_FORM" : {
     "ADDITIONAL_FIELDS" : "Datos adicionales (opcional)",

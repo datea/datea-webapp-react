@@ -44,17 +44,20 @@ export default class CampaignView extends Component {
   }
 
   render() {
-    const {campaignView, ui, router, user} = this.props.store;
+    const {campaignView, ui, router, user, dateo} = this.props.store;
     const {campaign} = campaignView.data;
+    const {dateos} = dateo.data;
     const showEdit = true;
 
     let mode = 'list-view';
-    if (!!router.queryParams && router.queryParams.dateo) {
+    if (!!router.queryParams
+        && router.queryParams.dateo
+        && dateos.has(String(router.queryParams.dateo))
+    ){
       mode = 'detail-view';
     }
 
     if (!campaign || !campaign.id) return <span />
-    const {dateos} = this.props.store.dateo.data;
 
     return (
       <MappingLayout

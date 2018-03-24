@@ -35,6 +35,7 @@
   "NO_RESULTS" : "Aucun résultat",
   "DONE" : "Prêt!",
   "CLEAR": "effacer",
+  "CLEAR_SELECTION" : "supprimer la sélection",
 
   "DATEO_FORM" : {
     "ADDITIONAL_FIELDS" : "Informations supplémentaires (optionnel)",

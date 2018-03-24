@@ -192,7 +192,6 @@ export default class CampaignFormStore {
         });
       })
       .catch(e => {
-        console.log(e);
         this.main.ui.setLoading(false);
         this.errors.set('main', t('ERROR.UNKNOWN'));
       })

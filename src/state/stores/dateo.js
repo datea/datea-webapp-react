@@ -24,6 +24,7 @@ export default class DateoStore {
     !!showLoading && this.main.ui.setLoading(true);
     Api.dateo.getList(params)
     .then(res => runInAction(() => {
+      console.log(res);
       !!showLoading && this.main.ui.setLoading(false);
       this.data.dateos.replace(reduceIntoObjById(res.objects));
       resolve(this.data.dateos);
