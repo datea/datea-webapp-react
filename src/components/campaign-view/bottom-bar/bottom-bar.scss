@@ -1,0 +1,36 @@
+@import '../../../scss/vars';
+$barHeight: 44px;
+
+.campaign-legend-bar {
+  background-color: $greyLightBg;
+  max-height: $barHeight;
+  transition: max-height 0.3s ease;
+  overflow: hidden;
+  padding: 0 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .ht-btn {
+    height: $barHeight;
+    line-height: $barHeight;
+    display: inline-flex;
+    padding: 0 9px 0 3px;
+
+    .color-sample {
+      margin-right: 5px;
+      width: 16px;
+      height: 16px;
+      border-radius: 25%;
+    }
+
+    &.active {
+      background-color: #fafafa;
+    }
+  }
+
+  &.show-full {
+    max-height: $barHeight * 3;
+  }
+}

@@ -7,6 +7,8 @@ $transitionDuration: 0.3s;
 $contentBarHeightVisual : 56px;
 $contentBarHeightMobileVisual: 56px;
 
+$bottomBarHeight: 44px;
+
 .mapping-layout {
   position: relative;
 
@@ -67,6 +69,21 @@ $contentBarHeightMobileVisual: 56px;
         .content-area {
           padding-top: $contentBarHeight;
         }
+      }
+    }
+
+    &.with-bottom-bar {
+      .content-area, .visual-area  {
+        margin-bottom: $bottomBarHeight;
+      }
+
+      .bottom-bar {
+        z-index: 1001;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: $bottomBarHeight;
       }
     }
 

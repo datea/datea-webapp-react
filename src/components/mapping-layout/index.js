@@ -91,6 +91,7 @@ export default class MappingLayout extends Component {
       barSticky,
       barStickyOnContentTopScrolled,
       barMode,
+      bottomBar,
       className,
       actions
     } = this.props;
@@ -105,6 +106,7 @@ export default class MappingLayout extends Component {
         !!contentBar && barSticky && !barStickyOnContentTopScrolled && 'pad-bar-top',
         !!contentBar && !barSticky && barOnlyForVisuals && 'bar-only-for-visuals',
         inTransition && `in-transition in-transition-to-${mode}`,
+        !!bottomBar && !isMobile && 'with-bottom-bar',
         className
         )}>
         <div className="visual-area" ref={r => {this.visualAreaRef = r}}>
@@ -133,6 +135,11 @@ export default class MappingLayout extends Component {
           }
           <div className="content-container">{contentPane}</div>
         </div>
+        {!isMobile && bottomBar &&
+          <div className="bottom-bar">
+            {bottomBar}
+          </div>
+        }
       </div>
     );
   }

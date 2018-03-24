@@ -11,6 +11,7 @@ import {DateoTeaserList} from '../dateo';
 import ContentBarRoot from './content-bar-root';
 import ContentBarDetail from './content-bar-detail';
 import DateoSwipeableContainer from '../dateo-swipeable-container';
+import LegendBar from './bottom-bar';
 
 @inject('store')
 @observer
@@ -97,6 +98,11 @@ export default class CampaignView extends Component {
               isVisible={campaignView.layoutMode == 'content'}
               dateoId={router.queryParams.dateo}
               onSlideChange={this.onDetailSlide} />
+        }
+        bottomBar={
+          campaign.subtags && campaign.subtags.size
+          ? <LegendBar />
+          : null
         }
       />
     );
