@@ -2,7 +2,7 @@ import './mapping.scss';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import {ResizeMapEvent} from '../../state/stores/map';
+import {ResizeMapEvent} from '../../state/stores/map/map';
 
 export default class MappingLayout extends Component {
 

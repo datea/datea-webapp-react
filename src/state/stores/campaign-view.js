@@ -3,7 +3,7 @@ import {scaleOrdinal, schemeCategory10} from 'd3';
 import _ from 'lodash';
 import qs from 'qs';
 import Api from '../rest-api';
-import MapStore from './map';
+import MapStore from './map/map';
 import config from '../../config';
 import {reduceIntoObjById, cleanObject} from '../../utils';
 import {chartColors} from '../../config/colors';

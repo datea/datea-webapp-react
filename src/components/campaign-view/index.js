@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import cn from 'classnames';
 import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../i18n';
-import MapStore from '../../state/stores/map';
 import DateaResizableMap from '../map';
 import MappingLayout from '../mapping-layout';
 import InfoBox from './info-box';

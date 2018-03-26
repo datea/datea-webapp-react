@@ -4,7 +4,7 @@ import {StripChar} from 'stripchar';
 import _ from 'lodash';
 import debounce from 'debounce-promise';
 import Api from '../rest-api';
-import MapInputStore from './map-input';
+import MapInputStore from './map/input-map';
 import config from '../../config';
 import {chartColors} from '../../config/colors';
 import {t} from '../../i18n';

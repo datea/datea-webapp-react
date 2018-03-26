@@ -1,7 +1,7 @@
 import {observable, action, extendObservable, toJS} from 'mobx';
 import Api from '../rest-api';
 import moment from 'moment';
-import MapInputStore from './map-input';
+import MapInputStore from './map/input-map';
 import {reduceIntoObjById} from '../../utils';
 import {t} from '../../i18n';
 
