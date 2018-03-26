@@ -1,4 +1,4 @@
-import {autorun, computed, toJS} from 'mobx';
+import {autorun, reaction, computed, toJS} from 'mobx';
 import {RouterStore} from 'mobx-router/src';
 import DataStore from './stores/data';
 import UIStore from './stores/ui';
@@ -20,12 +20,7 @@ export default class DateaStore {
     this.data = new DataStore(this);
     this.dateo = new DateoStore(this);
     this.campaignView = new CampaignViewStore(this);
-
-    this.queryParamsAutorun = autorun( () => {
-      if (this.router.queryParams && this.router.queryParams.datear) {
-        this.createDateoFormStore(this.router.queryParams.datear);
-      }
-    })
+    this.initListenToDateoForm();
   }
 
   /* DATEO FORM MAIN ACTIONS: TODO EVALUATE WHERE TO PUT THIS */
@@ -41,14 +36,34 @@ export default class DateaStore {
     this.goTo(this.router.currentView.name, this.router.params, queryParams);
   }
 
+  initListenToDateoForm = () => {
+    this.listenDateoForm = reaction(
+      () => this.router.queryParams && this.router.queryParams.datear,
+      dateoId => {
+        if (dateoId) {
+          this.dateoForm = new DateoFormStore(this, dateoId);
+        } else if (this.dateoForm) {
+          this.dateoForm.dispose();
+          this.dateoForm = null;
+        }
+      }
+    );
+  }
+
   openDateo = ({dateo, isNew = false}) => {
-    if (!!dateo && !dateo.id) {
-      dateo = this.dateo.data.dateos.get(dateo);
+    if (!dateo) return;
+    if (!!dateo && ['string', 'number']. includes(typeof (dateo))) {
+      dateo = this.dateo.data.dateos.get(String(dateo));
     }
     if (!dateo) return;
 
-    this.dateo.data.detail = dateo;
-    this.dateo.data.detail.isNew = isNew;
+    const dateoId = String(dateo.id);
+
+    if (!this.dateo.data.dateos.has(dateoId)) {
+      dateo.isNew = isNew;
+      this.dateo.data.dateos.set(dateoId, dateo);
+    }
+
     const viewName = !!this.router.currentView && this.router.currentView.name;
     const queryParams = toJS(this.router.queryParams);
     queryParams.dateo = dateo.id;
@@ -57,13 +72,8 @@ export default class DateaStore {
     }
     switch (viewName) {
       case 'campaign':
+        this.campaignView.setLayout('content');
         this.goTo('campaign', this.router.params, queryParams);
-        if (this.campaignView.layoutMode == 'visual') {
-          this.campaignView.setLayout('content');
-          setTimeout(() => this.campaignView.map.navigateToDateo(dateo.id), 50);
-        } else {
-          this.campaignView.map.navigateToDateo(dateo.id);
-        }
         this.ui.setLoading(false);
         break;
     }
@@ -77,6 +87,21 @@ export default class DateaStore {
     this.router.goTo(this.router.currentView, this.router.params, this, queryParams);
   }
 
+  getDatearContext() {
+    if (this.router.currentView.name == 'campaign') {
+      return {
+        type: 'campaign',
+        data : this.campaignView.data.campaign
+      }
+    } else {
+      return {
+        type : 'user',
+        data : this.user.data
+      }
+    }
+    return null;
+  }
+
   updateQueryParams = (queryParams, replace = true) => {
     if (!replace) {
       queryParams = Object.assign({}, this.router.queryParams, queryParams);
@@ -84,13 +109,6 @@ export default class DateaStore {
     this.goTo(this.router.currentView, this.router.params, queryParams);
   }
 
-  createDateoFormStore = (id) => {
-    if (this.dateoForm) {
-      this.dateoForm.dispose();
-      this.dateoForm = null;
-    }
-    this.dateoForm = new DateoFormStore(this, id);
-  }
   /**********************************/
 
   /*** CAMPAIGN FORM *****/

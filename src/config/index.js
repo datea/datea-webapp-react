@@ -33,7 +33,7 @@ const config = {
       'image/svg+xml'
     ]
   },
-  map : {
+  mapOpts : {
     minZoom : 2,
     maxZoom: 18,
     /*tileUrl : 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

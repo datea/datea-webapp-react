@@ -64,7 +64,7 @@ export default class DateoMainForm extends Component {
               value={form.dateo.get('tags')}
               multi={true}
               onChange={form.setTags}
-              defaultSuggestions={['abababa', 'acacaca']}
+              defaultSuggestions={form.suggestedTags}
               error={!!form.errors.get('tags')}
               helperText={form.errors.get('tags')}
             />

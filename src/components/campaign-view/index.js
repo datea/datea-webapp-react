@@ -44,18 +44,13 @@ export default class CampaignView extends Component {
   }
 
   render() {
-    const {campaignView, ui, router, user, dateo} = this.props.store;
-    const {campaign} = campaignView.data;
+    const {campaignView, ui, user, dateo} = this.props.store;
+    const {campaign, showDateoDetail} = campaignView.data;
     const {dateos} = dateo.data;
     const showEdit = true;
+    console.log('render main campaign view');
 
-    let mode = 'list-view';
-    if (!!router.queryParams
-        && router.queryParams.dateo
-        && dateos.has(String(router.queryParams.dateo))
-    ){
-      mode = 'detail-view';
-    }
+    let mode = showDateoDetail ? 'detail-view' : 'list-view';
 
     if (!campaign || !campaign.id) return <span />
 
@@ -99,7 +94,7 @@ export default class CampaignView extends Component {
               showMax={this.state.showMaxDateos} />
           : <DateoSwipeableContainer
               isVisible={campaignView.layoutMode == 'content'}
-              dateoId={router.queryParams.dateo}
+              dateoId={showDateoDetail}
               onSlideChange={this.onDetailSlide} />
         }
         bottomBar={

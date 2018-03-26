@@ -104,7 +104,7 @@ class IntegrationReactSelect extends React.Component {
   processCurrentValue = (value) => {
     if (this.props.multi) {
       if (!value) return [];
-      return tags.map( tag => {
+      return value.map( tag => {
         tag = typeof tag == 'string' ? tag : tag.tag;
         return {label: '#'+tag, value: tag};
       })

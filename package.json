@@ -87,7 +87,7 @@
     "mobx-router": "https://github.com/datea/mobx-router.git",
     "moment": "^2.20.1",
     "node-polyglot": "^2.2.2",
-    "prop-types": "^15.6.0",
+    "prop-types": "^15.6.1",
     "qs": "^6.5.1",
     "react": "^16.2.0",
     "react-color": "^2.14.0",

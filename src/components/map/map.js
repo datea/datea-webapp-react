@@ -14,10 +14,6 @@ export default class DateaMap extends Component {
     this.props.mapStore.setDOMElement(this.mapRef);
   }
 
-  componentDidUpdate() {
-
-  }
-
   shouldComponentUpdate(newProps) {
     if (this.props.width != newProps.width) return true;
     if (this.props.height != newProps.height) return true;

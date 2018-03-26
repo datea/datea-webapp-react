@@ -17,8 +17,8 @@ export default class MapeoStore {
     zoom: 14,
     center: null,
     maxBounds : null,
-    minZoom : config.map.minZoom,
-    maxZoom: config.map.maxZoom,
+    minZoom : config.mapOpts.minZoom,
+    maxZoom: config.mapOpts.maxZoom,
     touch: true,
     touchZoom: true,
     scrollWheelZoom: false
@@ -118,8 +118,8 @@ export default class MapeoStore {
 
     when(() => this.DOMElementAvailable, () => {
       this.lmap = L.map(this.domElement, this.mapState);
-      var tileUrl = config.map.tileUrl.replace('${token}', config.keys.mapbox);
-    	var tileAttrib= config.map.tileAttribution;
+      var tileUrl = config.mapOpts.tileUrl.replace('${token}', config.keys.mapbox);
+    	var tileAttrib= config.mapOpts.tileAttribution;
       const {minZoom, maxZoom} = this.mapState;
     	var tileLayer = new L.TileLayer(tileUrl, {minZoom, maxZoom, attribution: tileAttrib, id: 'mapbox.streets'});
       this.lmap.addLayer(tileLayer);

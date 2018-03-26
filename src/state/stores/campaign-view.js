@@ -1,6 +1,7 @@
 import {observable, action, computed, autorun, reaction, runInAction, toJS, when} from 'mobx';
 import {scaleOrdinal, schemeCategory10} from 'd3';
 import _ from 'lodash';
+import qs from 'qs';
 import Api from '../rest-api';
 import MapStore from './map';
 import config from '../../config';
@@ -36,7 +37,7 @@ export default class Campaign {
     .then(res => runInAction(() => {
       if (res.objects.length == 1) {
         this.data.campaign = this.hydrateCampaign(res.objects[0]);
-        this.initDateoQueryAutorun();
+        this.initReactions();
         const {boundary: geometry, center, zoom} = this.data.campaign;
         this.map.createMap({center, zoom, geometry});
       }else{
@@ -46,12 +47,11 @@ export default class Campaign {
     .catch((err) => console.log(err));
   }
 
-  initDateoQueryAutorun = () => {
-    let firstRun = true;
-    this.disposeDateoQueryAutorun = reaction(
+  initReactions = () => {
+    this.disposeDateoQueryReaction = reaction(
       () => {
         const {datear, dateo, ...params} = this.main.router.queryParams;
-        return params || {};
+        return qs.stringify(params || {});
       },
       () => {
         console.log('query dateos');
@@ -59,6 +59,27 @@ export default class Campaign {
       },
       true
     );
+
+    this.disposeDetailViewReaction = reaction(
+      () => {
+        const {queryParams} = this.main.router;
+        if (queryParams && queryParams.dateo && this.main.dateo.data.dateos.has(String(queryParams.dateo))) {
+          return queryParams.dateo;
+        }else {
+          return false;
+        }
+      },
+      dateoId => {
+        !!dateoId && setTimeout(() => this.map.navigateToDateo(dateoId), 50);
+        this.data.showDateoDetail = dateoId;
+      },
+      true
+    );
+  }
+
+  disposeReactions = () =>  {
+    !!this.disposeDateoQueryReaction && this.disposeDateoQueryReaction();
+    !!this.disposeDetailViewReaction && this.disposeDetailViewReaction();
   }
 
   getCurrentDateoQueryParams = () => {
@@ -87,21 +108,21 @@ export default class Campaign {
     if (params.tags) {
       params.tags = decodeURIComponent(params.tags);
     }
-    console.log('this.queryDateos() params', params);
     this.main.dateo.getDateos(params, true)
     .then( res => {
       this.main.ui.setLoading(false);
       const openDateoId = this.main.router.queryParams && this.main.router.queryParams.dateo;
       if (openDateoId && this.main.dateo.data.dateos.has(String(openDateoId))) {
         this.map.navigateToDateo(openDateoId);
-      } else {
+      }
+      /*} else {
         const ids = this.main.dateo.data.dateos.keys();
         if (ids.length) {
           this.main.openDateo(ids[0]);
         } else if (openDateoId) {
           this.main.closeDateo();
         }
-      }
+      }*/
     })
   }
 
@@ -142,18 +163,12 @@ export default class Campaign {
     this.main.openDateo({dateo: id});
   }
 
-  @action onOpenDateo = (id) => {
-    this.map.navigateToDateo(id);
-    this.main.dateo.getDateoDetail(id);
-    this.showDateoDetail = true;
-  }
-
   @action setLayout = (layout) => {
     this.layoutMode = layout;
   }
 
   dispose = () => {
-    !!this.disposeDateoQueryAutorun && this.disposeDateoQueryAutorun();
+    this.disposeReactions();
     this.map.dispose();
     this.main.dateo.clearDateos();
     this.data.campaign = null;

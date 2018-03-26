@@ -10,6 +10,7 @@ export default class DateoFormStore {
 
   @observable dateo = new Map();
   @observable errors = new Map();
+  @observable suggestedTags = [];
   @observable layoutMode = 'content';
 
   constructor(main, id) {
@@ -18,6 +19,7 @@ export default class DateoFormStore {
       geometryType: 'Point',
       onMarkerPlacedByuser : this.processReverseGeocodeResult
     });
+
     if (id && id != 'new') {
       let dateo = this.main.dateo.data.dateos.get(String(id));
       if (dateo) {
@@ -33,8 +35,11 @@ export default class DateoFormStore {
         })
       }
     } else {
-      this.map.createMap({});
+      setTimeout( () => {
+        this.map.createMap({});
+      }, 100);
     }
+    this.buildTagSuggestions();
   }
 
   /* SETTERS */
@@ -114,28 +119,72 @@ export default class DateoFormStore {
   @action receiveGeocodeResult = place => {
     if (this.map.getType() == 'Point') {
       if (place.geometry) {
-        //this.map.setMarker(place.geometry.location);
-        //this.map.lmap.fitBounds(place.geometry.bounds);
+        this.map.setMarker(place.geometry.location);
+        this.map.lmap.fitBounds(place.geometry.bounds);
       }
       this.dateo.set('address', place.formatted_address);
     }
   }
 
-  /* SAVE */
-  @action save = () => {
+  @action buildTagSuggestions = () => {
+    //get context first
+    const context = this.main.getDatearContext();
+    if (!context) return;
+
+    let tags = [];
+    if (context.type == 'user') {
+      if (context.data.tags_followed) {
+        tags = tags.concat(context.data.tags_followed.map(t => t.tag));
+      }
+    } else if (context.type == 'campaign') {
+      if (context.data.subtags) {
+        tags = tags.concat(context.data.subtags.values().map(t => t.tag));
+      }
+    }
+    this.suggestedTags.replace(tags);
+  }
+
+  dehydrate = () => {
+
     let data = toJS(this.dateo);
+
+    // geometry
     const geometry = this.map.getGeometry();
     if (!geometry) {
       !!data.position && delete data.position;
       !!data.geometry_collection && delete data.geometry_collection;
     } else if (geometry.type == 'Point' && geometry.coordinates) {
       data.position = geometry;
+      if (data.geometry_collection) {
+        delete data.geometry_collection;
+      }
     } else if (geometry.type == 'GeometryCollection') {
+      if (data.position) {
+        delete data.position;
+      }
       data.geometry_collection = geometry;
     }
 
+    // add
+    const context = this.main.getDatearContext();
+    if (context && context.type == 'campaign') {
+      // add main tag to tags
+      if (data.tags) {
+        data.tags.unshift(context.data.main_tag.tag);
+      } else {
+        data.tags = [context.data.main_tag.tag];
+      }
+      // add campaign id
+      data.campaign = context.data.id;
+    }
+    return data;
+  }
+
+  /* SAVE */
+  @action save = () => {
     // validation
     if (!this.validate()) return;
+    const data = this.dehydrate();
 
     this.main.ui.setLoading(true);
     Api.dateo.save(data)
@@ -163,7 +212,10 @@ export default class DateoFormStore {
   @action setLayout = mode => {
     this.layoutMode = mode;
     if (mode == 'content') {
+      this.map.hidePMControls();
       setTimeout(() => this.map.setViewOnGeometry(), 350);
+    } else {
+      this.map.showPMControls();
     }
   }
 
@@ -174,5 +226,6 @@ export default class DateoFormStore {
 
   @action dispose = () => {
     //dispose here anything
+    this.map.dispose();
   }
 }

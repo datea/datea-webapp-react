@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import {observable, action, autorun, runInAction, toJS, when} from 'mobx';
-import {centroid} from 'turf';
+import {centroid, bbox} from 'turf';
 import Api from '../../rest-api';
 import {buildMarkerIcon} from '../../../components/marker';
 import config from '../../../config';
@@ -15,14 +15,16 @@ export {ResizeMapEvent};
 
 export default class MapeoStore {
 
+  lmap = null;
+
   /* OBSERVABLES */
   @observable state = {
-    map : {
+    mapOpts : {
       zoom: 14,
       center: null,
       maxBounds : null,
-      minZoom : config.map.minZoom,
-      maxZoom: config.map.maxZoom,
+      minZoom : config.mapOpts.minZoom,
+      maxZoom: config.mapOpts.maxZoom,
       scrollWheelZoom: false,
       touch: true,
       touchZoom: true
@@ -60,7 +62,7 @@ export default class MapeoStore {
 
     } else if (center && zoom ) {
       center = this.parseCenterToLatLng(center);
-      this.state.map.zoom = zoom;
+      this.state.mapOpts.zoom = zoom;
     } else {
       try {
         const loc = await this.main.user.getLocation();
@@ -72,13 +74,13 @@ export default class MapeoStore {
         console.log('user geolocation', e);
       }
     }
-    this.state.map.center = center;
+    this.state.mapOpts.center = center;
 
     when(() => this.state.DOMElementAvailable, () => {
-      this.lmap = L.map(this.domElement, this.state.map);
-      var tileUrl = config.map.tileUrl.replace('${token}', config.keys.mapbox);
-    	var tileAttrib= config.map.tileAttribution;
-      const {minZoom, maxZoom} = this.state.map;
+      this.lmap = L.map(this.domElement, this.state.mapOpts);
+      var tileUrl = config.mapOpts.tileUrl.replace('${token}', config.keys.mapbox);
+    	var tileAttrib= config.mapOpts.tileAttribution;
+      const {minZoom, maxZoom} = this.state.mapOpts;
     	var tileLayer = new L.TileLayer(tileUrl, {minZoom, maxZoom, attribution: tileAttrib, id: 'mapbox.streets'});
       this.lmap.addLayer(tileLayer);
       this.addMapEvents();
@@ -99,7 +101,7 @@ export default class MapeoStore {
   }
 
   @action setCenter = (latLng) => {
-    this.state.map.center = latLng
+    this.state.mapOpts.center = latLng
   };
 
   @action setGeometry = (geometry, initial = false, revGeocode = false) => {
@@ -112,11 +114,12 @@ export default class MapeoStore {
     !!this.editLayer && this.lmap.removeLayer(this.editLayer);
     this.editLayer = null;
     this.state.geometry = geometry;
+    this.removePmDrawnLayers();
 
     const type = this.getType();
 
     if (type == 'Point' && initial) {
-      const {center} = this.state.map;
+      const {center} = this.state.mapOpts;
       this.setMarker(center);
       this.state.geometry.coordinates = [center.lng, center.lat];
       !!revGeocode && this.reverseGeocodeMarker(center);
@@ -138,15 +141,16 @@ export default class MapeoStore {
   @action setGeometryType = type => {
     !!this.editLayer && this.lmap.removeLayer(this.editLayer);
     this.editLayer = null;
+    this.state.geometry = {type};
+    this.removePmDrawnLayers();
 
     if (type == 'Point') {
-      this.setMarker(this.state.map.center);
+      this.setMarker(this.state.mapOpts.center);
     } else if (type == 'Polygon') {
       this.createPolygonLayer();
     } else if ( type == 'GeometryCollection') {
       this.createCollectionLayer();
     }
-    this.state.geometry.type = type;
   }
 
   @action resizeMap = () => {
@@ -155,37 +159,50 @@ export default class MapeoStore {
 
   @action setMap = (center, zoom, maxBounds) => {
     if (zoom) {
-      const {minZoom, maxZoom} = this.state.map;
+      const {minZoom, maxZoom} = this.state.mapOpts;
       zoom = zoom < minZoom ? minZoom : (zoom > maxZoom ? maxZoom : zoom);
-      this.state.map.zoom = zoom;
+      this.state.mapOpts.zoom = zoom;
     }
     if (maxBounds) {
-      this.state.map.maxBounds = maxBounds;
+      this.state.mapOpts.maxBounds = maxBounds;
     }
-    this.lmap.setView(this.state.map.center, this.state.map.zoom);
+    this.lmap.setView(this.state.mapOpts.center, this.state.mapOpts.zoom);
     if (maxBounds) this.lmap.setMaxBounds(maxBounds);
   }
 
   @action setViewOnGeometry(geometry, zoomToBounds = true, action = 'set') {
+    geometry = geometry || this.state.geometry;
+    if (!this.isValidGeometry(geometry)) return;
+
     const {center, bounds} = this.getGeometryCenterAndBounds(geometry);
     if (geometry.type == 'Point') {
       if (zoomToBounds) {
         this.lmap[action == 'set' ? 'fitBounds' : 'flyToBounds'](bounds);
       } else {
-        this.lmap[action == 'set' ? 'setView' : 'flyTo'](center, this.state.map.zoom);
+        this.lmap[action == 'set' ? 'setView' : 'flyTo'](center, this.state.mapOpts.zoom);
       }
     } else {
       // get centroid
       if (zoomToBounds) {
-        this.lmap[action == 'set' ? 'fitBounds' : 'flyToBounds'](boundsArray);
+        this.lmap[action == 'set' ? 'fitBounds' : 'flyToBounds'](bounds);
       }else{
         this.lmap[action == 'set' ? 'setView' : 'flyTo'](center);
       }
     }
   }
 
-  @action destroyMap = () => {
-    !!this.lmap && this.lmap.remove();
+  setPMControlOptions = (options) => {
+    this.pmControlOptions = options;
+  }
+
+  showPMControls = () => {
+    if (this.pmControlOptions) {
+      !!this.lmap && this.lmap.pm.addControls(this.pmControlOptions);
+    }
+  }
+
+  hidePMControls = () => {
+    !!this.lmap && this.lmap.pm.removeControls();
   }
 
   @action createPolygonLayer = (geometry) => {
@@ -193,7 +210,7 @@ export default class MapeoStore {
     this.editLayer = !!geometry ? L.geoJSON(geometry) : L.geoJSON();
     this.editLayer.addTo(this.lmap);
     // define toolbar options
-    var options = {
+    this.setPMControlOptions({
         position: 'topleft',
         drawMarker: false,
         drawPolyline: false,
@@ -203,8 +220,8 @@ export default class MapeoStore {
         cutPolygon: false,
         editMode: true, // adds button to toggle edit mode for all layers
         removalMode: true, // adds a button to remove layers
-    };
-    this.lmap.pm.addControls(options);
+    });
+    this.showPMControls();
   }
 
   @action createCollectionLayer = (geometry) => {
@@ -212,7 +229,7 @@ export default class MapeoStore {
     this.editLayer = !!geometry ? L.geoJSON(geometry) : L.geoJSON();
     this.editLayer.addTo(this.lmap);
     // define toolbar options
-    var options = {
+    this.setPMControlOptions({
         position: 'topleft',
         drawMarker: false,
         drawPolyline: true,
@@ -222,12 +239,13 @@ export default class MapeoStore {
         cutPolygon: false,
         editMode: true, // adds button to toggle edit mode for all layers
         removalMode: true, // adds a button to remove layers
-    };
-    this.lmap.pm.addControls(options);
+    });
+    this.showPMControls();
   }
 
   @action setMarker = (latLng) => {
-    this.lmap.pm.removeControls();
+    this.hidePMControls();
+
     if (!this.editLayer) {
       this.editLayer = L.marker(latLng, {
         draggable: true,
@@ -242,20 +260,22 @@ export default class MapeoStore {
         this.setViewOnMarker(coords);
         this.reverseGeocodeMarker(ev.latLng);
       })
-    } else{
+    } else {
       this.editLayer.setLatLng(latLng);
     }
     this.updateMarkerGeometry(latLng);
   }
 
   @action updateMarkerGeometry = (latLng) => {
-    this.state.geometry.type = 'Point';
-    this.state.geometry.coordinates = [latLng.lng, latLng.lat];
+    this.state.geometry = {
+      type : 'Point',
+      coordinates : [latLng.lng, latLng.lat]
+    };
   }
 
   @action setViewOnMarker(latLng){
-    const {zoom} = this.state.map;
-    const {maxZoom} = config.map;
+    const {zoom} = this.state.mapOpts;
+    const {maxZoom} = config.mapOpts;
     let newZoom = zoom < maxZoom ? zoom + 2 : zoom;
     newZoom = newZoom > maxZoom ? maxZoom : newZoom;
     this.lmap.setView(latLng, newZoom);
@@ -263,15 +283,29 @@ export default class MapeoStore {
 
   /* HELPER FUNCTIONS */
 
+  isValidGeometry(geom) {
+    if (!geom || !geom.type) return false;
+    if (geom.type == 'Point') {
+      if (geom.coordinates && geom.coordinates.length == 2) {
+        return true;
+      }
+    } else if (geom.type == 'Polygon') {
+      if (geom.coordinates) return true;
+    } else if (geom.type == 'GeometryCollection') {
+      if (geom.geometries) return true;
+    }
+  }
+
   getGeometryCenterAndBounds(geometry) {
     let center, bounds;
     if (geometry.type == 'Point') {
       center = L.latLng([...geometry.coordinates].reverse());
       bounds = center.toBounds(200);
     } else {
-      bounds = geometry.coordinates.map( p => [...p].reverse());
+      let extent = bbox(geometry);
+      bounds = [[extent[1], extent[0]], [extent[3], extent[2]]];
       const cent = centroid(geometry);
-      center = L.latLng(cent.coordinates.reverse());
+      center = L.latLng(cent.geometry.coordinates.reverse());
     }
     return {center, bounds};
   }
@@ -315,13 +349,13 @@ export default class MapeoStore {
   addMapEvents = () => {
     this.lmap.on('moveend', () => {
       setTimeout(runInAction(() => {
-        this.state.map.center = this.lmap.getCenter();
-        this.state.map.zoom = this.lmap.getZoom();
+        this.state.mapOpts.center = this.lmap.getCenter();
+        this.state.mapOpts.zoom = this.lmap.getZoom();
       }), 300);
     });
     this.lmap.on('zoomend', () => {
       setTimeout(runInAction(() => {
-        this.state.map.zoom = this.lmap.getZoom();
+        this.state.mapOpts.zoom = this.lmap.getZoom();
       }), 300);
     });
     this.lmap.on('click', ev => {
@@ -355,10 +389,7 @@ export default class MapeoStore {
     this.lmap.on('pm:drawstart', (e) => {
       const type = this.getType();
       if (type == 'Polygon') {
-        const layers = this.getCurrentDrawnLayers();
-        if (layers.length) {
-          layers.forEach(l => l.remove());
-        }
+        this.removePmDrawnLayers();
       }
     })
   }
@@ -377,6 +408,13 @@ export default class MapeoStore {
     return layers;
   }
 
+  removePmDrawnLayers() {
+    const layers = this.getCurrentDrawnLayers();
+    if (layers.length) {
+      layers.forEach(l => l.remove());
+    }
+  }
+
   getType() {
     return this.state.geometry.type;
   }
@@ -393,15 +431,14 @@ export default class MapeoStore {
     return {
       center: {
         type: 'Point',
-        coordinates: [this.state.map.center.lng, this.state.map.center.lat]
+        coordinates: [this.state.mapOpts.center.lng, this.state.mapOpts.center.lat]
       },
-      zoom: this.state.map.zoom
+      zoom: this.state.mapOpts.zoom
     };
   }
 
   dispose() {
-    this.disposeDateoObserver();
-    this.lmap.remove();
+    !!this.lmap && this.lmap.remove();
     this.lmap = null;
     window.removeEventListener('ResizeMapEvent', this.resizeMap);
     this.mapMounted = false;

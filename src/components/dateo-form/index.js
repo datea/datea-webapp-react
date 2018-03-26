@@ -12,6 +12,7 @@ import MainDateoForm from './main-form';
 import MappingLayout from '../mapping-layout';
 import DateaResizableMap from '../map';
 import GeoSearch from '../geo-search';
+import MapModeSelector from './map-mode-selector';
 
 @inject('store')
 @translatable
@@ -24,6 +25,7 @@ export default class DateoForm extends React.Component {
 
   render() {
     const form = this.props.store.dateoForm;
+    const isMobile = this.props.store.ui.isMobile;
 
     const visualPane = (
       <div className={cn('visual-area-dateo-form', `mode-${form.layoutMode}`)}>
@@ -44,6 +46,11 @@ export default class DateoForm extends React.Component {
             <div className="icon-content">
               <EditIcon />
             </div>
+          </div>
+        }
+        {!isMobile && form.layoutMode == 'visual' &&
+          <div className="draw-mode-selector">
+            <MapModeSelector />
           </div>
         }
       </div>
