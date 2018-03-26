@@ -67,6 +67,7 @@ export default class CampaignView extends Component {
               onVisualClick={() => campaignView.setLayout('content')} />
           : <ContentBarDetail
               campaign={campaign}
+              onBackClick={() => campaignView.showOverview()}
               />
         }
         mode={campaignView.layoutMode}

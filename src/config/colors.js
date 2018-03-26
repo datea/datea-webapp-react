@@ -29,3 +29,6 @@ const chartColors = [
   material.blueGrey['300']
 ]
 export {chartColors};
+
+const defaultLayerColor = '#28BC45';
+export {defaultLayerColor}

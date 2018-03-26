@@ -18,7 +18,8 @@ export default class ContentBarDetail extends Component {
   static propTypes = {
     campaign : PropTypes.object,
     store : PropTypes.object,
-    mode : PropTypes.string
+    mode : PropTypes.string,
+    onBackClick : PropTypes.func
   };
 
   onClickNav = (direction) => {
@@ -36,12 +37,8 @@ export default class ContentBarDetail extends Component {
     this.props.store.openDateo({dateo: nextId});
   }
 
-  goBackToList = () => {
-    this.props.store.closeDateo();
-  }
-
   render() {
-    const {campaign, mode} = this.props;
+    const {campaign, mode, onBackClick} = this.props;
     return (
         <div className={cn('campaign-content-bar-detail', `mode-${mode}`)}>
           <div className="left-btn">
@@ -50,7 +47,7 @@ export default class ContentBarDetail extends Component {
             </IconButton>
           </div>
           <div className="center-content">
-            <ButtonBase onClick={this.goBackToList} className="go-back-btn">
+            <ButtonBase onClick={onBackClick} className="go-back-btn">
               <div className="campaign-ht">
                 {'#'+campaign.main_tag.tag}
               </div>

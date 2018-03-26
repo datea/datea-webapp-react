@@ -70,7 +70,7 @@ export default class Campaign {
         }
       },
       dateoId => {
-        !!dateoId && setTimeout(() => this.map.navigateToDateo(dateoId), 50);
+        !!dateoId && setTimeout(() => this.map.navigateToLayer(dateoId), 50);
         this.data.showDateoDetail = dateoId;
       },
       true
@@ -113,7 +113,7 @@ export default class Campaign {
       this.main.ui.setLoading(false);
       const openDateoId = this.main.router.queryParams && this.main.router.queryParams.dateo;
       if (openDateoId && this.main.dateo.data.dateos.has(String(openDateoId))) {
-        this.map.navigateToDateo(openDateoId);
+        this.map.navigateToLayer(openDateoId);
       }
       /*} else {
         const ids = this.main.dateo.data.dateos.keys();
@@ -165,6 +165,11 @@ export default class Campaign {
 
   @action setLayout = (layout) => {
     this.layoutMode = layout;
+  }
+
+  @action showOverview = () => {
+    this.main.closeDateo();
+    this.map.fitBoundsToLayers();
   }
 
   dispose = () => {
