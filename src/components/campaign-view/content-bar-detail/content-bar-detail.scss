@@ -15,21 +15,6 @@
     line-height: $contentBarHeightMobileVisual - 4px;
   }
 
-  .left-btn, .right-btn {
-    flex-basis: 50px;
-    flex-grow: 0;
-    flex-shrink : 0;
-    text-align: center;
-    .dateo-nav-btn {
-      color: white;
-      svg {
-        fill: white !important;
-        width: 30px;
-        height: 30px;
-      }
-    }
-  }
-
   .center-content {
     flex-grow: 10;
     flex-shrink: 1;
@@ -38,52 +23,63 @@
     .go-back-btn {
       position: absolute;
       width: 100%;
-      text-align: center;
+      text-align: left;
       top: 0;
       right: 0;
       left: 0;
       bottom: 0;
-      display: block !important;
+      display: flex !important;
       //padding-bottom: 3px;
       padding-top: 0px;
+      .back-icon {
+        flex-basis: 30px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        svg {
+          position: relative;
+          top: 1px;
+          width: 22px;
+          height: 22px;
+        }
+      }
       .campaign-ht {
-        display: block;
-        font-size: 18px;
+        flex-basis: 80%;
+        flex-grow: 1;
+        flex-shrink: 1;
+        font-size: 22px;
+        font-weight: 400;
         line-height: 18px;
         height: 18px;
         font-weight: 500;
       }
-      .back-hint-holder {
-        //display:  none;
-        position: relative;
-        height: 15px;
-        font-size: 12px;
-        line-height: 15px;
-        text-align: center;
-        /*.down-icon {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          fill: white;
-          //width: 20px;
-          //height: 20px;
-        }*/
-      }
     }
   }
 
-  .datear-btn-container {
+  .datear-btn {
     position: absolute;
     right: 16px;
-    bottom: -65px;
-    display: none;
+    bottom: 0;
+    transform: translate(0, 25%);
+    z-index: 1;
   }
 
   &.mobile {
-    .datear-btn-container {
-      top: -65px;
+    .datear-btn {
+      bottom: auto;
+      top: 0;
+      transform: translate(0, -40%);
     }
   }
+}
 
+.campaign-mapping-layout {
+  .content-area.bar-sticky {
+    .content-bar.bar-sticky-conditional {
+      .campaign-content-bar-detail .datear-btn {
+        top: auto;
+        bottom: 0;
+        transform: translate(0, 25%);
+      }
+    }
+  }
 }

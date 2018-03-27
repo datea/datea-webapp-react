@@ -1,8 +1,82 @@
 
 .dateo-swipeable-container {
-  height: 300px;
+
+  background-color: white;
   .scrollable-slide {
+    z-index: 1;
     height: inherit;
-    //overflow-y: auto;
+    background-color: white;
+  }
+
+  .nav-btn {
+    z-index: 2;
+    position: absolute;
+    top: 45%;
+    width: 22px;
+    height: 44px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+
+    .dateo-nav-btn {
+      position: absolute;
+      top: 0;
+      width: 44px;
+      height: 44px;
+      svg {
+        transition: all 0.2s ease;
+      }
+      background-color: #eee;
+    }
+    &.nav-left {
+      left: 0;
+      .dateo-nav-btn {
+        right: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+        svg {
+          position: relative;
+          right: -8px;
+        }
+      }
+    }
+    &.nav-right {
+      right: 0;
+      .dateo-nav-btn {
+        left: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+        svg {
+          position: relative;
+          left: -8px;
+        }
+      }
+    }
+  }
+
+  &:not(.mobile) {
+    .nav-btn {
+      &.nav-left:hover {
+        width: 44px;
+        .dateo-nav-btn svg {
+          right: 0px;
+        }
+      }
+      &.nav-right:hover {
+        width: 44px;
+        .dateo-nav-btn svg {
+          left: 0px;
+        }
+      }
+    }
+  }
+
+  &.mobile {
+    .nav-btn {
+      top: 60%;
+    }
   }
 }

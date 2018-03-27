@@ -100,12 +100,12 @@ $bottomBarHeight: 44px;
 
     @media (max-width: $md-break) {
       .visual-area {
-        flex-basis: 60%;
+        flex-basis: 55%;
       }
       .content-area {
-        flex-basis: 40%;
+        flex-basis: 45%;
         .content-bar {
-          width: 40%;
+          width: 45%;
         }
       }
     }
@@ -148,7 +148,7 @@ $bottomBarHeight: 44px;
       }
       .content-container {
         box-sizing: border-box;
-        padding: 16px;
+        padding: 0;
         background-color: white;
       }
 

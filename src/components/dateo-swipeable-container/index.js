@@ -1,10 +1,14 @@
+import './swipeable-container.scss';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import {observer, inject, PropTypes as MobxPropTypes} from 'mobx-react';
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import ChevronRightIcon from 'material-ui-icons/ChevronRight';
+import IconButton from 'material-ui/IconButton';
 import {DateoDetail} from '../dateo';
-
 
 const VirtualizeSwipeableViews = virtualize(SwipeableViews);
 
@@ -45,6 +49,19 @@ export default class DateoSwipeableContainer extends Component {
     this.props.store.updateQueryParams({dateo: this.indexToDateoId(idx)});
   }
 
+  onClickNav = (currentId, direction) => {
+    const dateos = this.props.store.dateo.data.dateos;
+    const dateoIds = dateos.keys();
+    const idx = dateoIds.indexOf(String(currentId));
+    let nextId;
+    if (direction == 'next') {
+      nextId = dateoIds.length > idx + 1 ? dateoIds[idx + 1] : dateoIds[0];
+    } else {
+      nextId = idx > 0 ? dateoIds[idx -1] : dateoIds[dateoIds.length - 1];
+    }
+    this.props.store.openDateo({dateo: nextId});
+  }
+
   componentDidMount() {
     this.updateSlideMinHeight();
     window.addEventListener('resize', this.updateSlideMinHeight);
@@ -70,13 +87,24 @@ export default class DateoSwipeableContainer extends Component {
   }
 
   render() {
-    const {router} = this.props.store;
+    const {router, ui} = this.props.store;
     const dateoId = router.queryParams && router.queryParams.dateo;
     if (!dateoId) return <span />
 
     const idx = this.dateoIdToIndex(dateoId);
     return (
-      <div className="dateo-swipeable-container" ref={ref => {this.containerRef = ref}}>
+      <div className={cn('dateo-swipeable-container', ui.isMobile && 'mobile')}
+          ref={ref => {this.containerRef = ref}}>
+        <div className="nav-btn nav-left">
+          <IconButton className="dateo-nav-btn" onClick={() => this.onClickNav(dateoId, 'prev')}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <div className="nav-btn nav-right">
+          <IconButton className="dateo-nav-btn" onClick={() => this.onClickNav(dateoId, 'next')}>
+            <ChevronRightIcon />
+          </IconButton>
+        </div>
         <VirtualizeSwipeableViews
           index={idx}
           enableMouseEvents
