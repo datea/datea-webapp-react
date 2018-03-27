@@ -24,8 +24,6 @@ const DateoRenderer = inject('store')(observer(dateoRenderer));
 export default class DateoSwipeableContainer extends Component {
 
   static propTypes = {
-    dateoId : PropTypes.oneOfType([PropTypes.number,PropTypes.string]),
-    onSlideChange : PropTypes.func,
     isVisible: PropTypes.bool
   };
 
@@ -44,7 +42,7 @@ export default class DateoSwipeableContainer extends Component {
   indexToDateoId = (idx) => this.props.store.dateo.data.dateos.keys()[idx]
 
   onChangeIndex = (idx) => {
-    !!this.props.onSlideChange && this.props.onSlideChange(this.indexToDateoId(idx))
+    this.props.store.updateQueryParams({dateo: this.indexToDateoId(idx)});
   }
 
   componentDidMount() {
@@ -62,7 +60,6 @@ export default class DateoSwipeableContainer extends Component {
     window.removeEventListener('resize', this.updateSlideMinHeight);
   }
 
-
   updateSlideMinHeight = () => {
     // am I in map layout / .content-area?
     const contentArea = this.containerRef.closest('.content-area');
@@ -73,7 +70,11 @@ export default class DateoSwipeableContainer extends Component {
   }
 
   render() {
-    const idx = this.dateoIdToIndex(this.props.dateoId);
+    const {router} = this.props.store;
+    const dateoId = router.queryParams && router.queryParams.dateo;
+    if (!dateoId) return <span />
+
+    const idx = this.dateoIdToIndex(dateoId);
     return (
       <div className="dateo-swipeable-container" ref={ref => {this.containerRef = ref}}>
         <VirtualizeSwipeableViews

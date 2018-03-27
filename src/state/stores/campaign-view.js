@@ -23,8 +23,17 @@ export default class Campaign {
     campaign : {},
     showDateoDetail : false,
   };
-
   @observable layoutMode = 'content';
+
+  @computed get contentViewMode() {
+    return this.data.showDateoDetail ? 'detail-view' : 'list-view';
+  }
+
+  @computed get isEditable() {
+    const {user} = this.main;
+    const {campaign} = this.data;
+    return campaign && campaign.user && user && user.data && user.data.id == campaign.user.id;
+  }
 
   constructor(main) {
     this.main = main;

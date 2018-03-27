@@ -119,7 +119,7 @@ export default class MapeoStore {
       addIds.forEach( id => {
         const dateo = dateos.get(id);
         const color = this.getGeometryColor(dateo);
-        const layer = L.geoJSON(dateo.geometry_collection, {
+        const layer = L.geoJSON(toJS(dateo.geometry_collection), {
           style : {color},
           onEachFeature: (feat, layer) => {
               layer.options = {_id: id};

@@ -10,6 +10,11 @@
   color: white;
   fill: white;
 
+  &.mode-visual {
+    height: $contentBarHeightMobileVisual;
+    line-height: $contentBarHeightMobileVisual - 4px;
+  }
+
   .left-btn, .right-btn {
     flex-basis: 50px;
     flex-grow: 0;
@@ -40,7 +45,7 @@
       bottom: 0;
       display: block !important;
       //padding-bottom: 3px;
-      padding-top: 5px;
+      padding-top: 0px;
       .campaign-ht {
         display: block;
         font-size: 18px;
@@ -70,8 +75,15 @@
 
   .datear-btn-container {
     position: absolute;
-    right: 20px;
-    bottom: -45px;
+    right: 16px;
+    bottom: -65px;
+    display: none;
+  }
+
+  &.mobile {
+    .datear-btn-container {
+      top: -65px;
+    }
   }
 
 }

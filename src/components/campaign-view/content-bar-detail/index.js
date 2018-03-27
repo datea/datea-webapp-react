@@ -38,9 +38,9 @@ export default class ContentBarDetail extends Component {
   }
 
   render() {
-    const {campaign, mode, onBackClick} = this.props;
+    const {campaign, mode, onBackClick, isMobile} = this.props;
     return (
-        <div className={cn('campaign-content-bar-detail', `mode-${mode}`)}>
+        <div className={cn('campaign-content-bar-detail', `mode-${mode}`, isMobile && 'mobile')}>
           <div className="left-btn">
             <IconButton className="dateo-nav-btn" onClick={() => this.onClickNav('prev')}>
               <ChevronLeftIcon />
@@ -61,10 +61,10 @@ export default class ContentBarDetail extends Component {
               <ChevronRightIcon />
             </IconButton>
           </div>
-          {/*
+
           <div className="datear-btn-container">
             <DatearBtn />
-          </div>*/}
+          </div>
         </div>
     );
   }

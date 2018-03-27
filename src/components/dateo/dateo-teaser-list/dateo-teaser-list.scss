@@ -1,6 +1,13 @@
 @import '../../../scss/vars';
 
 .dateo-teaser-list {
+  background-color: white;
+  padding-top: 20px;
+  h4.title {
+    padding: 0 16px;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
 
   .dateo-teaser {
     padding-bottom: 25px;

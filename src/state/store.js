@@ -1,4 +1,4 @@
-import {autorun, reaction, computed, toJS} from 'mobx';
+import {autorun, reaction, computed, observable, toJS} from 'mobx';
 import {RouterStore} from 'mobx-router/src';
 import DataStore from './stores/data';
 import UIStore from './stores/ui';
@@ -12,6 +12,8 @@ import DateoFormStore from './stores/dateo-form';
 
 
 export default class DateaStore {
+
+  @observable datearMode = 'closed';
 
   constructor() {
     this.router = new RouterStore();
@@ -27,6 +29,7 @@ export default class DateaStore {
   openDateoForm = (id) => {
     const queryParams  = toJS(this.router.queryParams);
     queryParams.datear = id || 'new';
+    console.log('queryParams', queryParams);
     this.router.goTo(this.router.currentView, this.router.params, this, queryParams);
   }
 
@@ -39,12 +42,16 @@ export default class DateaStore {
   initListenToDateoForm = () => {
     this.listenDateoForm = reaction(
       () => this.router.queryParams && this.router.queryParams.datear,
-      dateoId => {
-        if (dateoId) {
-          this.dateoForm = new DateoFormStore(this, dateoId);
-        } else if (this.dateoForm) {
-          this.dateoForm.dispose();
-          this.dateoForm = null;
+        val => {
+        if (val) {
+          this.dateoForm = new DateoFormStore(this, val);
+          this.datearMode = val;
+        } else {
+          this.datearMode = 'closed';
+          if (this.dateoForm) {
+            this.dateoForm.dispose();
+            this.dateoForm = null;
+          }
         }
       }
     );
@@ -58,11 +65,6 @@ export default class DateaStore {
     if (!dateo) return;
 
     const dateoId = String(dateo.id);
-
-    if (!this.dateo.data.dateos.has(dateoId)) {
-      dateo.isNew = isNew;
-      this.dateo.data.dateos.set(dateoId, dateo);
-    }
 
     const viewName = !!this.router.currentView && this.router.currentView.name;
     const queryParams = toJS(this.router.queryParams);

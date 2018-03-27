@@ -255,6 +255,10 @@ export default class UserStore {
     this.location = loc;
   }
 
+  isEditable = (obj) => {
+    return this.isSignedIn && !!obj && !!obj.user && obj.user.id == this.data.id;
+  }
+
   setLastLoggedOutView() {
     const {router} = this.main;
     const viewDesc = {

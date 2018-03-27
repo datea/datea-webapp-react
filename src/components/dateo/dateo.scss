@@ -16,9 +16,22 @@
 
 .dateo-detail {
   max-width: 400px;
+  position: relative;
+  padding: 16px;
+  .author-header {
+    position: relative;
+    z-index: 1;
+  }
+  .edit-btn {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    z-index: 2;
+  }
 }
 
 .dateo-teaser {
+  padding: 16px;
   .actions {
     text-align: right;
   }

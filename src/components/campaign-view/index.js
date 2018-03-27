@@ -27,11 +27,6 @@ export default class CampaignView extends Component {
     this.setState({showMaxDateos: this.state.showMaxDateos + 20});
   }
 
-  onDetailSlide = (newId) => {
-    this.props.store.updateQueryParams({dateo: newId});
-    this.props.store.campaignView.map.navigateToDateo(newId);
-  }
-
   openDateoFromTeaser = (dateo) => {
     this.props.store.openDateo({dateo});
     !!this.mappingLayoutRef && this.mappingLayoutRef.scrollToTop();
@@ -44,13 +39,10 @@ export default class CampaignView extends Component {
 
   render() {
     const {campaignView, ui, user, dateo} = this.props.store;
-    const {campaign, showDateoDetail} = campaignView.data;
+    const {campaign} = campaignView.data;
     const {dateos} = dateo.data;
-    const showEdit = true;
+
     console.log('render main campaign view');
-
-    let mode = showDateoDetail ? 'detail-view' : 'list-view';
-
     if (!campaign || !campaign.id) return <span />
 
     return (
@@ -60,33 +52,37 @@ export default class CampaignView extends Component {
         className="campaign-mapping-layout"
         visualPane={<DateaResizableMap mapStore={campaignView.map} />}
         contentBar={
-          mode == 'list-view'
+          campaignView.contentViewMode == 'list-view'
           ? <ContentBarRoot
               campaign={campaign}
               mode={campaignView.layoutMode}
               onVisualClick={() => campaignView.setLayout('content')} />
           : <ContentBarDetail
               campaign={campaign}
-              onBackClick={() => campaignView.showOverview()}
-              />
+              mode={campaignView.layoutMode}
+              isMobile={ui.isMobile}
+              onBackClick={
+                () => campaignView.layoutMode == 'visual'
+                      ? campaignView.setLayout('content')
+                      : campaignView.showOverview() } />
         }
         mode={campaignView.layoutMode}
         onOpenVisualClick={() => campaignView.setLayout('visual')}
         contentTopPane={
-          mode == 'list-view'
+          campaignView.contentViewMode == 'list-view'
           ? <InfoBox
               campaign={campaign}
               onMoreInfo={() => console.log('on more info')}
               isMobile={ui.isMobile}
-              showEdit={showEdit}
+              showEdit={campaignView.isEditable}
               onEditClick={this.onEditClick}
               />
           : null
         }
-        barSticky={mode == 'detail-view' && ui.isMobile == false}
+        barSticky={campaignView.contentViewMode == 'detail-view' && ui.isMobile == false}
         barStickyOnContentTopScrolled={true}
         contentPane={
-          mode == 'list-view'
+          campaignView.contentViewMode == 'list-view'
           ? <DateoTeaserList
               dateos={dateos}
               onLoadMoreDateos={this.onLoadMoreDateos}
@@ -94,8 +90,7 @@ export default class CampaignView extends Component {
               showMax={this.state.showMaxDateos} />
           : <DateoSwipeableContainer
               isVisible={campaignView.layoutMode == 'content'}
-              dateoId={showDateoDetail}
-              onSlideChange={this.onDetailSlide} />
+              />
         }
         bottomBar={
           campaign.subtags && campaign.subtags.size

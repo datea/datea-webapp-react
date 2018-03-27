@@ -23,12 +23,13 @@ export default class DateoFormStore {
     if (id && id != 'new') {
       let dateo = this.main.dateo.data.dateos.get(String(id));
       if (dateo) {
-        this.map.createMap({geometry:  obj.position || obj.geometry_collection});
+        this.dateo.merge(dateo);
+        this.map.createMap({geometry:  toJS(dateo.position || dateo.geometry_collection)});
       } else {
         Api.dateo.getDetail(id)
         .then(obj => {
           this.dateo.merge(obj);
-          this.map.createMap({geometry: obj.position || obj.geometry_collection});
+          this.map.createMap({geometry: toJS(obj.position || obj.geometry_collection)});
         })
         .catch((e) => {
           console.log('que hacer si el dateo no existe?');
@@ -188,8 +189,10 @@ export default class DateoFormStore {
 
     this.main.ui.setLoading(true);
     Api.dateo.save(data)
-    .then(dateo => {
-      this.main.openDateo({dateo, isNew: !data.id});
+    .then(model => {
+      model.isNew = !data.id;
+      this.main.dateo.data.dateos.set(String(model.id), model);
+      this.main.openDateo({dateo: model, isNew: !data.id});
     }).catch(e => {
       this.main.ui.setLoading(false);
       this.errors.set('main', t('DATEAR.ERROR.UNKNOWN'))

@@ -26,7 +26,7 @@ export default class DateoStore {
     .then(res => runInAction(() => {
       console.log(res);
       !!showLoading && this.main.ui.setLoading(false);
-      this.data.dateos.replace(reduceIntoObjById(res.objects));
+      this.data.dateos.replace(res.objects.map( d => [d.id, d]));
       resolve(this.data.dateos);
     }))
     .catch((err) => {

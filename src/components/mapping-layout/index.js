@@ -63,7 +63,7 @@ export default class MappingLayout extends Component {
         if (!isMobile) {
           makeSticky = this.contentAreaRef.scrollTop > this.contentTopRef.offsetHeight - 48;
         } else {
-          makeSticky = this.contentAreaRef.scrollTop > (this.visualAreaRef.offsetHeight + this.contentTopRef.offsetHeight);
+          makeSticky = this.contentAreaRef.scrollTop > (this.visualAreaOverlayRef.offsetHeight + this.contentTopRef.offsetHeight);
         }
       }
 
@@ -112,12 +112,16 @@ export default class MappingLayout extends Component {
         <div className="visual-area" ref={r => {this.visualAreaRef = r}}>
           {visualPane}
         </div>
-        <div className={cn('content-area', !!contentBar ? 'with-bar' : 'without-bar')}
+        <div className={cn(
+            'content-area',
+            !!contentBar ? 'with-bar' : 'without-bar',
+            !!contentTopPane && !!contentBar && barStickyOnContentTopScrolled && 'pad-bar-top-when-sticky',
+          )}
           onScroll={this.onContentScroll}
           ref={r => {this.contentAreaRef = r}}>
 
           {isMobile &&
-            <div className="visual-overlay" onClick={onOpenVisualClick} />
+            <div className="visual-overlay" onClick={onOpenVisualClick} ref={r => {this.visualAreaOverlayRef = r}}/>
           }
           {!!contentBar &&
             <div className={cn('content-bar', !barSticky && barStickyOnContentTopScrolled && 'bar-sticky-conditional')}
