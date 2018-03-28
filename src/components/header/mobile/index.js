@@ -38,7 +38,7 @@ export default class Header extends React.Component {
 
     return (
       <div className={cn('header mobile', user.isSignedIn ? 'signed-in' : 'signed-out')}>
-        <DateaAppBar position="fixed">
+        <DateaAppBar position="fixed" colorName={ui.isLanding ? 'yellow': 'white'}>
           <div className="header-content">
             <div className="header-left">
               {headerLeft}

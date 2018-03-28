@@ -5,7 +5,9 @@ import TwitterLogin from 'react-twitter-auth/lib/react-twitter-auth-component';
 import DIcon from '../../../icons';
 import {observer, inject} from 'mobx-react';
 import Button from 'material-ui/Button';
+import urlJoin from 'url-join';
 import {t, translatable} from '../../../i18n';
+import config from '../../../config';
 
 class TwitterLoginButton extends TwitterLogin {
 
@@ -24,8 +26,8 @@ class TwitterLoginButton extends TwitterLogin {
 const TwitterLoginButtonWithActions = (props) => {
     const {onSuccess, onFailure, onError, store, ...otherProps} = props;
     return <TwitterLoginButton
-            loginUrl="http://localhost:8000/api/v2/account/twitter-login"
-            requestTokenUrl="http://localhost:8000/api/v2/account/twitter-request-token"
+            loginUrl={urlJoin(config.api.url, '/account/twitter-login')}
+            requestTokenUrl={urlJoin(config.api.url,'/account/twitter-request-token')}
             {...otherProps}
             store={store}
             onSuccess={result => result.json().then(body => store.user.loadSocialUser(body))}

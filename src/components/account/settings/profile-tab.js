@@ -89,6 +89,7 @@ export default class ProfileForm extends React.Component {
                 validations="isUrl" />
             </div>
 
+            {/*
             <div className="info-row">{t('SETTINGS_PAGE.FOLLOW_FIELDS_TITLE')}</div>
 
             <div className="input-row">
@@ -119,7 +120,7 @@ export default class ProfileForm extends React.Component {
                 className="url-yt-field form-field"
                 label={t('SETTINGS_PAGE.YOUTUBE_URL_LABEL')}
                 validations="isUrl" />
-            </div>
+            </div>*/}
 
             <div className="form-btns">
               <Button variant="raised"

@@ -3,15 +3,16 @@ import allowedTypes from './upload-mimetypes';
 const config = {
   app: {
     name : 'datea',
-    //url  : 'http://datea.pe',
-    url : 'http://127.0.0.1:9000'
+    url  : 'https://test.datea.pe',
+    //url : 'http://127.0.0.1:9000'
   },
 	api : {
 		//url    : 'https://api.datea.io/api/v2/',
 		//imgUrl : 'http://api.datea.io'
-		url    : 'http://127.0.0.1:8000/api/v2/',
-		imgUrl : 'http://127.0.0.1:8000'
+		url    : 'https://api2.datea.pe/api/v2/',
+		imgUrl : 'https://api2.datea.pe'
 	},
+  landingPath : 'welcome',
 
   facebookAppId: '222271061161837',
 

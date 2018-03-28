@@ -23,10 +23,10 @@ export default class UiStore {
     return this.activeBreakpoint == 'xs'
   }
   @computed get isLanding() {
-    return this.path == '/'+config.landingPath;
+    return !!this.main && !!this.main.router && this.main.router.currentView.name == 'welcome';
   }
   @computed get isHome() {
-    return this.path == '/';
+    return !!this.main && !!this.main.router && this.main.router.currentView.name == 'home';
   }
 
   constructor(main) {

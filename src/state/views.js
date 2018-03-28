@@ -19,6 +19,11 @@ import Profile from '../components/profile';
 import CampaignView from '../components/campaign-view';
 import CampaignManagerView from '../components/campaign-manager-view';
 
+
+const customUrls = {
+  //localhost : 'admindatero'
+};
+
 const Views = {
 
   /* HOME */
@@ -27,8 +32,13 @@ const Views = {
     path : '/',
     component : <Home />,
     onEnter : (route, params, store) => {
-      store.ui.setLayout('normal');
-      !store.user.isSignedIn && store.router.goTo(Views.welcome, {}, store);
+      if (customUrls[location.hostname]) {
+        store.goTo('profile', {username: customUrls[location.hostname]});
+        return false;
+      } else {
+        store.ui.setLayout('normal');
+        !store.user.isSignedIn && store.goTo('welcome');
+      }
     }
   }),
 
@@ -38,8 +48,13 @@ const Views = {
     path : '/welcome',
     component : <Landing />,
     onEnter: (route, params, store) => {
-      store.ui.setLayout('normal');
-      store.user.isSignedIn && store.router.goTo(Views.home, {}, store);
+      if (customUrls[location.hostname]) {
+        store.goTo('profile', {username: customUrls[location.hostname]});
+        return false;
+      } else {
+        store.ui.setLayout('normal');
+        store.user.isSignedIn && store.goTo('home');
+      }
     }
   }),
 
