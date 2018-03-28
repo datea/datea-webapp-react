@@ -3,6 +3,8 @@
 	"DATERO" : "Utilisateur",
 	"DATEOS" : "Marqueurs",
 	"DATEAR" : "Cartographier",
+  "MAPPINGS" : "Cartes",
+  "MY_MAPPINGS" : "Mes cartes",
 	"GOTO_DETAIL" : "Voir en détail",
 	"USER" : "Utilisateur",
 	"PASSWORD" : "Mot de passe",

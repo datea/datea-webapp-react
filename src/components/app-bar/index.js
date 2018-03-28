@@ -26,7 +26,7 @@ DateaAppBar.propTypes = {
 };
 
 DateaAppBar.defaultProps = {
-  colorName: 'yellow',
+  colorName: 'white',
   position: 'static'
 };
 

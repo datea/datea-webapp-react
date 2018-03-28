@@ -1,0 +1,53 @@
+.profile-head-container {
+  background-color: white;
+  padding: 24px;
+  .profile-head {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+
+    .picture {
+      padding-top: 5px;
+      flex-basis : 120px;
+      flex-shrink: 0;
+      flex-grow: 0;
+      align-self: center;
+    }
+    .user-info {
+      padding-left: 16%;
+      flex-basis : 80%;
+      flex-shrink: 1;
+      flex-grow: 2;
+
+      .username-wrap {
+        line-height: 28px;
+        .username {
+          display: inline-block;
+          vertical-align: middle;
+          font-size: 24px;
+          font-weight: 300;
+        }
+        .edit-btn {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+
+      .fullname {
+        margin-bottom: 5px;
+      }
+      .user-msg {
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      .stat-box {
+        .stat {
+          display: inline-block;
+          margin-right: 15px;
+        }
+      }
+    }
+  }
+}

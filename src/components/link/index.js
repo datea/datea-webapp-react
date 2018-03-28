@@ -5,7 +5,7 @@ import {inject} from 'mobx-react';
 import Views from '../../state/views';
 
 const DateaLink = ({view, params, queryParams, store, children, title, className, style}) => {
-  if (!Views[view]) return <a href={view}>[nr] {children}</a>;
+  if (!Views[view]) return <span>{children}</span>;
   return (
     <Link view={Views[view]}
       params={params}

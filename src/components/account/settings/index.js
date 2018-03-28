@@ -7,16 +7,14 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
-//import Formsy from 'formsy-react';
-//import FormsyText from 'formsy-material-ui/lib/FormsyText';
 import DIcon from '../../../icons';
 import SettingsIcon from 'material-ui-icons/Settings';
 import config from '../../../config';
 import {colors} from '../../../theme/vars';
 
-//import AccountTab from './account-tab';
-//import ProfileTab from './profile-tab';
-//import NotificationsTab from './notifications-tab';
+import AccountTab from './account-tab';
+import ProfileTab from './profile-tab';
+import NotificationsTab from './notifications-tab';
 
 const TABS = ['account', 'profile', 'notifications'];
 
@@ -103,11 +101,9 @@ export default class AccountSettings extends React.Component {
               <Tab label={t('SETTINGS_PAGE.NOTIFY.TAB')} style={tabBtnStyle} />
             </Tabs>
             <div className="tab-content">
-              {/*
               {tab == 0 && <AccountTab />}
               {tab == 1 && <ProfileTab />}
               {tab == 2 && <NotificationsTab />}
-              */}
             </div>
           </div>
         </AccountFormContainer>

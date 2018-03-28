@@ -1,5 +1,4 @@
 import {observable, action, computed, autorun, reaction, runInAction, toJS, when} from 'mobx';
-import {scaleOrdinal, schemeCategory10} from 'd3';
 import _ from 'lodash';
 import qs from 'qs';
 import Api from '../rest-api';
@@ -59,8 +58,12 @@ export default class Campaign {
   initReactions = () => {
     this.disposeDateoQueryReaction = reaction(
       () => {
-        const {datear, dateo, ...params} = this.main.router.queryParams;
-        return qs.stringify(params || {});
+        if (this.main.router.queryParams) {
+          const {datear, dateo, ...params} = this.main.router.queryParams;
+          return qs.stringify(params || {});
+        } else {
+          return false;
+        }
       },
       () => {
         console.log('query dateos');

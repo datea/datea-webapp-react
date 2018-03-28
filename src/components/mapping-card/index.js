@@ -1,29 +1,22 @@
 import './mapping-card.scss';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {inject} from 'mobx-react';
 import Typography from 'material-ui/Typography';
-import Card, {CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import Card, {CardActions, CardHeader, CardContent, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import DIcon from '../../icons';
 import {getImgSrc} from '../../utils';
 
-
+@inject('store')
 export default class MappingCard extends Component {
 
   static propTypes = {
     mapping : PropTypes.object
   };
 
-  static contextTypes = {
-    router: PropTypes.object
-  };
-
   goToMapping = (ev) => {
-    const m = this.props.mapping;
-    if (m.type == 'tag') {
-      this.context.router.push('/tag/'+m.tag);
-    }else{
-      this.context.router.push('/'+m.user.username+'/'+m.slug);
-    }
+    const {store, mapping} = this.props;
+    store.goTo('campaign', {username: mapping.user.username, slug: mapping.slug })
   }
 
   render() {
@@ -43,7 +36,7 @@ export default class MappingCard extends Component {
 
     return (
       <Card onClick={this.goToMapping}>
-        <CardMedia image={img} />
+        {img}
         <CardContent>
           <Typography variant="headline" component="h3">{title}</Typography>
           <Typography variant="subheading" component="p">{subtitle}</Typography>

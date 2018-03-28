@@ -7,6 +7,7 @@ import Views from './views';
 
 import CampaignViewStore from './stores/campaign-view';
 import CampaignFormStore from './stores/campaign-form';
+import ProfileViewStore from './stores/profile-view';
 import DateoStore from './stores/dateo';
 import DateoFormStore from './stores/dateo-form';
 
@@ -21,7 +22,6 @@ export default class DateaStore {
     this.user = new UserStore(this);
     this.data = new DataStore(this);
     this.dateo = new DateoStore(this);
-    this.campaignView = new CampaignViewStore(this);
     this.initListenToDateoForm();
   }
 
@@ -29,7 +29,6 @@ export default class DateaStore {
   openDateoForm = (id) => {
     const queryParams  = toJS(this.router.queryParams);
     queryParams.datear = id || 'new';
-    console.log('queryParams', queryParams);
     this.router.goTo(this.router.currentView, this.router.params, this, queryParams);
   }
 
@@ -111,7 +110,16 @@ export default class DateaStore {
     this.goTo(this.router.currentView, this.router.params, queryParams);
   }
 
-  /**********************************/
+  /****** CAMPAIGN *******/
+  createCampaignViewStore = () => {
+    this.campaignView = new CampaignViewStore(this);
+    return this.campaignView;
+  }
+
+  disposeCampaignViewStore = () => {
+    !!this.campaignView && this.campaignView.dispose();
+    this.campaignView = null;
+  }
 
   /*** CAMPAIGN FORM *****/
   createCampaignFormStore = (id) => {
@@ -122,5 +130,10 @@ export default class DateaStore {
   goTo = (view, paramsObject, queryParamsObject) => {
     view = typeof(view) == 'string' ? Views[view] : view;
     this.router.goTo(view, paramsObject, this, queryParamsObject);
+  }
+
+  /************** PROFILE *******************/
+  createProfileStore = (username) => {
+    this.profileView = new ProfileViewStore(this, username);
   }
 }

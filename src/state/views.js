@@ -27,6 +27,7 @@ const Views = {
     path : '/',
     component : <Home />,
     onEnter : (route, params, store) => {
+      store.ui.setLayout('normal');
       !store.user.isSignedIn && store.router.goTo(Views.welcome, {}, store);
     }
   }),
@@ -37,6 +38,7 @@ const Views = {
     path : '/welcome',
     component : <Landing />,
     onEnter: (route, params, store) => {
+      store.ui.setLayout('normal');
       store.user.isSignedIn && store.router.goTo(Views.home, {}, store);
     }
   }),
@@ -107,6 +109,10 @@ const Views = {
     name: 'settings',
     path: '/settings/:page?',
     component: <AccountSettings />,
+    onEnter: (route, params, store) => {
+      store.ui.setLayout('normal');
+      return !store.user.isSignedIn
+    }
   }),
 
   /* CAMPAIGN EDIT */
@@ -125,7 +131,12 @@ const Views = {
     path: '/:username',
     component: <Profile />,
     onEnter: (route, params, store) => {
+      console.log('on enter profile', params.username);
+      store.createProfileStore(params.username);
       store.ui.setLayout('normal');
+    },
+    onExit: (route, params, store) => {
+      !!store.profileView && !!store.profileView.dispose && store.profileView.dispose();
     }
   }),
 
@@ -145,10 +156,11 @@ const Views = {
     component : <CampaignView />,
     onEnter: (route, params, store) => {
       store.ui.setLayout('mapping');
-      store.campaignView.loadView(params.username, params.slug)
+      const campaignView = store.createCampaignViewStore();
+      campaignView.loadView(params.username, params.slug)
     },
     onExit: (route, params, store) => {
-      store.campaignView.dispose();
+      store.disposeCampaignViewStore();
     }
   }),
 

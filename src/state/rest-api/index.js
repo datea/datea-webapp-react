@@ -14,6 +14,12 @@ class Api {
     getList : (params = {}) => this.get(url('mapping'), params)
   };
 
+  /* USER */
+  user = {
+    getList : (params = {}) => this.get(url('user'), params),
+    getDetail : id => this.get(url('user', id))
+  }
+
   /* CAMPAIGNS */
   campaign = {
     getList : (params = {}) => this.get(url('campaign'), params),

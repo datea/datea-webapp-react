@@ -2,6 +2,8 @@
 	"DATEROS" : "dateros",
 	"DATERO" : "datero",
 	"DATEOS" : "dateos",
+  "MAPPINGS" : "Mapeos",
+  "MY_MAPPINGS" : "Mis Mapeos",
 	"GOTO_DETAIL" : "ver detalle",
 	"USER" : "usuario",
 	"PASSWORD" : "contraseña",

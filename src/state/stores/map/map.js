@@ -58,8 +58,7 @@ export default class MapeoStore {
 
       this.updateMarkers(dateos);
       this.updateGeometryCollections(dateos);
-
-      this.fitBoundsToLayers();
+      //this.fitBoundsToLayers();
       this.layersLoaded = true;
     });
   }
@@ -266,11 +265,13 @@ export default class MapeoStore {
       boundList.push(this.geometryCollectionLayer.getBounds());
     }
 
+    console.log('boundList', boundList);
     if (boundList.length) {
       let bounds;
       boundList.forEach( b => {
         bounds = bounds ? bounds.extend(b) : b;
       })
+      console.log('final bounds', bounds);
       !!this.lmap && this.lmap.fitBounds(bounds);
     }
   }
@@ -340,11 +341,13 @@ export default class MapeoStore {
   }
 
   dispose() {
-    this.disposeDateoObserver();
-    this.markers.remove();
-    this.lmap.remove();
+    !!this.disposeDateoAutorun && this.disposeDateoAutorun();
+    !!this.markerLayer && this.markerLayer.remove();
+    !!this.geometryCollectionLayer && this.geometryCollectionLayer.remove();
+    !!this.lmap && this.lmap.remove();
     this.lmap = null;
-    this.markers = null;
+    this.markerLayer = null;
+    this.geometryCollectionLayer = null;
     window.removeEventListener('ResizeMapEvent', this.resizeMap);
     this.mapMounted = false;
   }
