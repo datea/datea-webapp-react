@@ -1,4 +1,5 @@
 import {observable, action, computed, autorun, reaction, runInAction, toJS, when} from 'mobx';
+import urlJoin from 'url-join';
 import Api from '../rest-api';
 import config from '../../config';
 
@@ -13,10 +14,10 @@ export default class ProfileView {
   }
 
   @computed get image() {
-    return this.data.user.image ? config.api.imgUrl+this.data.user.image : '';
+    return this.data.user.image ? urlJoin(config.api.imgUrl, this.data.user.image) : '';
   }
   @computed get largeImage() {
-    return this.data.user.image_large ? config.api.imgUrl+this.data.user.image_large : '';
+    return this.data.user.image_large ? urlJoin(config.api.imgUrl, this.data.user.image_large) : '';
   }
   @computed get mappings() {
     return this.data.mappingsCreated.concat(this.data.mappingsFollowed);

@@ -1,7 +1,7 @@
 import './scss/app-main.scss';
 import 'typeface-roboto';
 import React from 'react';
-import Reboot from 'material-ui/Reboot';
+import CssBaseline from 'material-ui/CssBaseline';
 import {MuiThemeProvider} from 'material-ui/styles';
 import './bootstrap.js';
 import {Provider} from 'mobx-react';
@@ -22,7 +22,7 @@ startRouter(RouteConfig, store);
 const App = () =>
   <MuiPickersUtilsProvider utils={MomentUtils}>
     <MuiThemeProvider theme={muiTheme}>
-      <Reboot />
+      <CssBaseline />
       <Provider store={store}>
         <Main>
           <MobxRouter />

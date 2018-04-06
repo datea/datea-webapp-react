@@ -21,7 +21,9 @@ export default class RecoverPasswordConfirmPage extends React.Component {
       canSubmit : false,
       success   : false,
       error     : '',
-      errorCode : null
+      errorCode : null,
+      pass : '',
+      passConfirm : ''
     };
     this.email = '';
   }
@@ -36,12 +38,14 @@ export default class RecoverPasswordConfirmPage extends React.Component {
 
   submit = () => {
     this.setState({error: false});
-    const params = {
-      uid      : this.props.params.uid,
-      token    : this.props.params.token,
+    const {params} = this.props.router;
+    if (!queryParams) return;
+    const data = {
+      uid      : params.uid,
+      token    : params.token,
       password : this.refs.passConfirmForm.getModel().password
     }
-    this.props.store.user.confirmResetPassword(params)
+    this.props.store.user.confirmResetPassword(data)
     .then(res => this.setState({success: true}))
     .catch(err => {
       switch (err.response.status) {
@@ -56,6 +60,13 @@ export default class RecoverPasswordConfirmPage extends React.Component {
       }
     })
   };
+
+  // avoid autofill to hover on label
+  componentDidMount() {
+    const event = new Event('input', { bubbles: true });
+    this.passRef.dispatchEvent(event);
+    this.passConfirmRef.dispatchEvent(event);
+  }
 
   renderRecoverForm() {
     return (
@@ -81,10 +92,14 @@ export default class RecoverPasswordConfirmPage extends React.Component {
                 type="password"
                 fullWidth={true}
                 required
+                autoComplete="off"
                 className="password-field"
                 label={t('PASSW_PAGE.PASS_LABEL')}
                 validations={{matchRegexp: config.validation.password.regex}}
                 validationErrors={{matchRegexp : t('REGISTER_FORM_PAGE.PASS_DESC')}}
+                inputProps={{ref : ref => {this.passRef = ref }}}
+                value={this.state.pass}
+                onChange={ev => this.setState({pass: event.target.value})}
                 />
             </div>
 
@@ -93,11 +108,15 @@ export default class RecoverPasswordConfirmPage extends React.Component {
                 name="passwordConfirm"
                 type="password"
                 required
+                autoComplete="off"
                 fullWidth={true}
                 className="password-confirm-field"
                 label={t('PASSW_PAGE.REPEAT_LABEL')}
                 validations="equalsField:password"
                 validationErrors={{equalsField : t('REGISTER_FORM_PAGE.PASS_REPEAT_ERROR')}}
+                inputProps={{ref : ref => {this.passConfirmRef = ref }}}
+                value={this.state.passConfirm}
+                onChange={ev => this.setState({passConfirm: event.target.value})}
                 />
             </div>
 

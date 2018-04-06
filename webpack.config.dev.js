@@ -1,3 +1,4 @@
+require('dotenv').config();
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack           = require('webpack');
 var path              = require('path');
@@ -29,7 +30,12 @@ var config = {
   module: { rules: loaderRules },
   plugins: [
     new webpack.LoaderOptionsPlugin({ debug: true}),
-    new webpack.DefinePlugin({ __DEV__: 'true'}),
+    new webpack.DefinePlugin({
+      __DEV__: 'true',
+      API_URL: JSON.stringify(process.env.API_URL_DEV || 'http://localhost:8000/api/v2'),
+      MEDIA_URL : JSON.stringify(process.env.MEDIA_URL_DEV || 'http://localhost:8000'),
+      WEB_URL: JSON.stringify(process.env.WEB_URL_DEV || 'http://localhost:9000')
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // BETTER CONSOLE OUTPUT FOR ERRORS
     new HtmlWebpackPlugin({

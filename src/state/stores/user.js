@@ -21,13 +21,13 @@ export default class UserStore {
     return !!this.apiKey && !!this.data.id && this.data.status == 1;
   }
   @computed get image() {
-    return this.data.image ? config.api.imgUrl+this.data.image : '';
+    return this.data.image ? urlJoin(config.api.imgUrl, this.data.image) : '';
   }
   @computed get smallImage() {
-    return this.data.image_small ? config.api.imgUrl+this.data.image_small : '';
+    return this.data.image_small ? urlJoin(config.api.imgUrl, this.data.image_small) : '';
   }
   @computed get largeImage() {
-    return this.data.image_large ? config.api.imgUrl+this.data.image_large : '';
+    return this.data.image_large ? urlJoin(config.api.imgUrl, this.data.image_large) : '';
   }
 
   lastLoggedOutURL = {view: 'home'};

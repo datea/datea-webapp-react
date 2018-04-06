@@ -1,16 +1,14 @@
 import allowedTypes from './upload-mimetypes';
+import urlJoin from 'url-join';
 
 const config = {
   app: {
     name : 'datea',
-    url  : 'https://test.datea.pe',
-    //url : 'http://127.0.0.1:9000'
+    url  : WEB_URL, // see .env and webpack config for this
   },
 	api : {
-		//url    : 'https://api.datea.io/api/v2/',
-		//imgUrl : 'http://api.datea.io'
-		url    : 'https://api2.datea.pe/api/v2/',
-		imgUrl : 'https://api2.datea.pe'
+		url    : API_URL,
+		imgUrl : MEDIA_URL
 	},
   landingPath : 'welcome',
 

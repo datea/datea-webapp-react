@@ -15,7 +15,11 @@ export default class LoginForm extends React.Component {
     super(props, context);
     this.state = {
       canSubmit : false,
-      errorMsg  : false
+      errorMsg  : false,
+      user : '',
+      pass : '',
+      userAF : false,
+      passAF : false
     }
   }
 
@@ -59,9 +63,24 @@ export default class LoginForm extends React.Component {
     document.querySelector('.username-field input').blur();
   }
 
+  componentDidMount() {
+    setTimeout(() => {
+      try {
+        let autofillState = {userAF: false, passAF: false};
+        if (this.userRef.matches(':-webkit-autofill')) {
+          autofillState.userAF = true;
+        }
+        if (this.passRef.matches(':-webkit-autofill')) {
+          autofillState.passAF = true;
+        }
+        this.setState(autofillState);
+      } catch (e) {}
+    }, 100)
+  }
+
   render() {
     return (
-      <div className="login-form">
+      <div className="login-form" ref={ref => {this.containerRef = ref}}>
 
         {this.state.errorMsg &&
           <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.errorMsg}}></div>}
@@ -79,6 +98,10 @@ export default class LoginForm extends React.Component {
                 className="username-field"
                 fullWidth={true}
                 label={t('LOGIN_PAGE.USER_PH')}
+                InputLabelProps={{shrink: !!this.state.user || this.state.userAF}}
+                inputProps={{ref : ref => {this.userRef = ref}}}
+                value={this.state.user}
+                onChange={ev => this.setState({user: ev.target.value, userAF: false})}
                 validations="isExisty" />
             </div>
             <div className="input-row">
@@ -89,7 +112,12 @@ export default class LoginForm extends React.Component {
                 className="password-field"
                 type="password"
                 label={t('PASSWORD')}
-                validations="minLength:1" />
+                InputLabelProps={{shrink: !!this.state.pass || this.state.passAF}}
+                validations="minLength:1"
+                value={this.state.pass}
+                onChange={ev => this.setState({pass: ev.target.value, passAF: false})}
+                inputProps={{ref : ref => {this.passRef = ref}}}
+                />
             </div>
             <div className="form-btns">
               <Button variant="raised"

@@ -25,7 +25,11 @@ export default class RegisterFormPage extends React.Component {
     this.state = {
       canSubmit : false,
       success   : false,
-      error     : false
+      error     : false,
+      user      : '',
+      email     : '',
+      pass      : '',
+      passConfirm : ''
     }
   }
 
@@ -34,6 +38,21 @@ export default class RegisterFormPage extends React.Component {
   disableSubmit = () => this.setState({canSubmit: false});
   notifyFormError = (e) => console.log('form error', e);
   resetError = () => this.setState({error: false});
+
+  // avoid autofill to hover on label
+  componentDidMount() {
+    setTimeout(() => {
+      try {
+        let newState = {};
+        ['user', 'email', 'pass', 'passConfirm'].forEach(field => {
+          if (this[`${field}Ref`].matches(':-webkit-autofill')) {
+              newState[`${field}AF`] = true;
+          }
+        })
+        !!Object.keys(newState).length && this.setState(newState);
+      } catch (e) {}
+    }, 100)
+  }
 
   blurTextInputs = () => {
     document.querySelector('.password-confirm-field input').blur();
@@ -102,7 +121,11 @@ export default class RegisterFormPage extends React.Component {
                     className="username-field"
                     inputProps={{onBlur:this.validateUsernameOnServer}}
                     label={t('REGISTER_FORM_PAGE.USERNAME_LABEL')}
+                    InputLabelProps={{shrink: this.state.user || this.state.userAF}}
                     validations={'isAlphanumeric,minLength:'+minUnameL+',maxLength:'+maxUnameL}
+                    inputProps={{ref : ref => {this.userRef = ref }}}
+                    value={this.state.user}
+                    onChange={ev => this.setState({user: event.target.value, userAF: false})}
                     validationErrors={{
                       isAlphanumeric : t('REGISTER_FORM_PAGE.USERNAME_ALPHANUM'),
                       minLength: t('REGISTER_FORM_PAGE.USERNAME_LENGTH'),
@@ -118,8 +141,12 @@ export default class RegisterFormPage extends React.Component {
                     inputProps={{onBlur:this.validateEmailOnServer}}
                     className="email-field"
                     label={t('REGISTER_FORM_PAGE.EMAIL_LABEL')}
+                    InputLabelProps={{shrink: this.state.email || this.state.emailAF}}
                     validations="isEmail"
                     validationErrors={{isEmail : t('ACCOUNT_MSG.EMAIL_INVALID')}}
+                    inputProps={{ref : ref => {this.emailRef = ref }}}
+                    value={this.state.email}
+                    onChange={ev => this.setState({email: event.target.value, emailAF: false})}
                     />
                 </div>
 
@@ -131,8 +158,12 @@ export default class RegisterFormPage extends React.Component {
                     fullWidth={true}
                     className="password-field"
                     label={t('REGISTER_FORM_PAGE.PASS_LABEL')}
+                    InputLabelProps={{shrink: this.state.pass || this.state.passAF}}
                     validations={{matchRegexp: config.validation.password.regex}}
                     validationErrors={{matchRegexp : t('REGISTER_FORM_PAGE.PASS_DESC')}}
+                    inputProps={{ref : ref => {this.passRef = ref }}}
+                    value={this.state.pass}
+                    onChange={ev => this.setState({pass: event.target.value, passAF: false})}
                     />
                 </div>
 
@@ -144,8 +175,12 @@ export default class RegisterFormPage extends React.Component {
                     fullWidth={true}
                     className="password-confirm-field"
                     label={t('REGISTER_FORM_PAGE.REPEAT_PASS')}
+                    InputLabelProps={{shrink: this.state.passConfirm || this.state.passConfirmAF}}
                     validations="equalsField:password"
                     validationErrors={{equalsField : t('REGISTER_FORM_PAGE.PASS_REPEAT_ERROR')}}
+                    inputProps={{ref : ref => {this.passConfirmRef = ref }}}
+                    value={this.state.passConfirm}
+                    onChange={ev => this.setState({passConfirm: event.target.value, passConfirmAF: false})}
                     />
                 </div>
 

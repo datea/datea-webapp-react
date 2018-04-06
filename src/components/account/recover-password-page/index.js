@@ -19,9 +19,20 @@ export default class RecoverPasswordPage extends React.Component {
       canSubmit : false,
       success : false,
       error : '',
-      resubmitted: false
+      resubmitted: false,
+      email : '',
+      emailAF: false
     };
     this.email = '';
+  }
+
+  // avoid autofill to hover on label
+  componentDidMount() {
+    setTimeout(() => {
+      try {
+        this.userRef.matches(':-webkit-autofill') && this.setState({emailAF: true});
+      } catch (e) {}
+    }, 100)
   }
 
   enableSubmit = () => this.setState({canSubmit: true});
@@ -82,7 +93,11 @@ export default class RecoverPasswordPage extends React.Component {
                     className="email-field"
                     fullWidth={true}
                     label={t('LOGIN_PAGE.EMAIL_PH')}
+                    InputLabelProps={{shrink: !!this.state.email || this.state.emailAF}}
                     validations="isEmail"
+                    inputProps={{ref : ref => {this.emailRef = ref}}}
+                    onChange={ev => this.setState({email: ev.target.value, emailAF :false})}
+                    value={this.state.email}
                     validationErrors={{isEmail : t('ACCOUNT_MSG.EMAIL_INVALID')}}
                     />
                 </div>
