@@ -35,7 +35,7 @@ export default class MobileMenu extends React.Component {
     const {store} = this.props;
     this.props.onClose();
     store.user.signOut();
-    setTimeout(() => store.goTo('welcome'));
+    store.goTo('welcome');
   }
 
   render() {

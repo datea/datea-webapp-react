@@ -164,7 +164,6 @@ export default class AccountTab extends React.Component {
           <div className="show-pass-container">
             {/*labelStyle={{color: "#888", fontWeight: 300, textTransform: 'none', paddingLeft:0, paddingRight:0}}*/}
             <Button
-              hoverColor="transparent"
               onClick={this.toggleShowPassword}
               >
               {t('SETTINGS_PAGE.'+(this.state.showChangePassword ? 'HIDE' : 'SHOW')+'_CHANGE_PASSWORD')}

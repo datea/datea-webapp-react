@@ -22,6 +22,9 @@
       margin-bottom: 24px;
       margin-left: auto;
       margin-right: auto;
+      &.left {
+        margin-left: 0;
+      }
     }
 
     .account-paper {

@@ -40,7 +40,7 @@ export default class UserMenu extends React.Component {
   logout = () => {
     const {store} = this.props;
     store.user.signOut();
-    setTimeout(() => store.goTo('welcome'));
+    store.goTo('welcome');
     this.closeDrawer();
   }
 

@@ -77,7 +77,7 @@
 
   @media (max-width: $xs-break) {
     .input-row, .form-btns, .show-pass-container, .info-row {
-      text-align: center;
+      text-align: left;
     }
     .account-paper {
       padding: 7px;
@@ -90,7 +90,7 @@
 
   .form-btns {
     padding-top: 25px;
-    text-align: center;
+    text-align: left;
   }
 
   .settings-tab-content {
@@ -105,8 +105,13 @@
         }
       }
 
+      &.account-tab {
+        padding-top: 40px;
+      }
+
       &.notifications-tab {
           .info-row {
+            text-align: left;
             padding-top: 15px;
             padding-bottom: 20px;
           }

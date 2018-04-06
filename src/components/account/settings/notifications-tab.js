@@ -2,6 +2,7 @@ import React from 'react';
 import Button from 'material-ui/Button';
 import Formsy from 'formsy-react';
 import FormsyCheckbox from 'formsy-material-ui/lib/FormsyCheckbox';
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import {observer, inject} from 'mobx-react';
 import {t, translatable} from '../../../i18n';
 
@@ -39,52 +40,65 @@ export default class ProfileForm extends React.Component {
           onValidSubmit={this.submit}
           >
 
-            <div className="info-row">{t('SETTINGS_PAGE.NOTIFY.DESC')}</div>
+            <div className="info-row left">{t('SETTINGS_PAGE.NOTIFY.DESC')}</div>
 
-            <div className="checkbox-row">
-              <FormsyCheckbox
-                name="notify_settings.interaction"
-                value={user.data.notify_settings.interaction}
-                className="form-checkbox"
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <FormsyCheckbox
+                    name="notify_settings.interaction"
+                    value={user.data.notify_settings.interaction}
+                    className="form-checkbox"
+                    />
+                }
                 label={t('SETTINGS_PAGE.NOTIFY.MY_CONTENT')}
-                />
-            </div>
+              />
 
-            <div className="checkbox-row">
-              <FormsyCheckbox
-                name="notify_settings.conversations"
-                value={user.data.notify_settings.conversations}
-                className="form-checkbox"
+              <FormControlLabel
+                control={
+                  <FormsyCheckbox
+                    name="notify_settings.conversations"
+                    value={user.data.notify_settings.conversations}
+                    className="form-checkbox"
+                    />
+                }
                 label={t('SETTINGS_PAGE.NOTIFY.THREADS')}
-                />
-            </div>
+              />
 
-            <div className="checkbox-row">
-              <FormsyCheckbox
-                name="notify_settings.tags_dateos"
-                value={user.data.notify_settings.tags_dateos}
-                className="form-checkbox"
+              <FormControlLabel
+                control={
+                  <FormsyCheckbox
+                    name="notify_settings.tags_dateos"
+                    value={user.data.notify_settings.tags_dateos}
+                    className="form-checkbox"
+                    />
+                }
                 label={t('SETTINGS_PAGE.NOTIFY.DATEOS_IN_TAGS')}
-                />
-            </div>
+              />
 
-            <div className="checkbox-row">
-              <FormsyCheckbox
-                name="notify_settings.tags_reports"
-                value={user.data.notify_settings.tags_reports}
-                className="form-checkbox"
+              <FormControlLabel
+                control={
+                  <FormsyCheckbox
+                    name="notify_settings.tags_reports"
+                    value={user.data.notify_settings.tags_reports}
+                    className="form-checkbox"
+                    />
+                }
                 label={t('SETTINGS_PAGE.NOTIFY.CAMPAIGN_MSG')}
-                />
-            </div>
+              />
 
-            <div className="checkbox-row">
-              <FormsyCheckbox
-                name="notify_settings.site_news"
-                value={user.data.notify_settings.site_news}
-                className="form-checkbox"
+              <FormControlLabel
+                control={
+                  <FormsyCheckbox
+                    name="notify_settings.site_news"
+                    value={user.data.notify_settings.site_news}
+                    className="form-checkbox"
+                    />
+                }
                 label={t('SETTINGS_PAGE.NOTIFY.NEWSLETTER')}
-                />
-            </div>
+              />
+
+            </FormGroup>
 
             <div className="form-btns">
               <Button variant="raised"

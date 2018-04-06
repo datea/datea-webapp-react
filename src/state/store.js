@@ -127,7 +127,7 @@ export default class DateaStore {
   }
 
 
-  goTo = (view, paramsObject, queryParamsObject) => {
+  goTo = (view, paramsObject = {}, queryParamsObject = {}) => {
     view = typeof(view) == 'string' ? Views[view] : view;
     this.router.goTo(view, paramsObject, this, queryParamsObject);
   }

@@ -77,7 +77,7 @@ export default class AccountSettings extends React.Component {
   render() {
     const {user, ui, router} = this.props.store;
     const tabBtnStyle = {fontSize : (ui.isMobile ? '0.75rem' : '0.9rem')};
-    let page = router.params.page;
+    let page = router.params && router.params.page || TABS[0];
     if (user.data.status == 0) page = 'email-confirm';
 
     let tab = TABS.indexOf(page);
