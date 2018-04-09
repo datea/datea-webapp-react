@@ -42,7 +42,6 @@ export default class CampaignView extends Component {
     const {campaign} = campaignView.data;
     const {dateos} = dateo.data;
 
-    console.log('render main campaign view');
     if (!campaign || !campaign.id) return <span />
 
     return (

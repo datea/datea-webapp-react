@@ -12,7 +12,7 @@ import LangSwitcher from './lang-switcher';
 import MainMenu from './main-menu';
 import {observer, inject} from 'mobx-react';
 import config from '../../../config';
-import SearchBar from '../../search-bar';
+import SearchBar from '../../search-bar2';
 import {colors} from '../../../theme/vars';
 
 @inject('store')

@@ -3,6 +3,7 @@ import {RouterStore} from 'mobx-router/src';
 import DataStore from './stores/data';
 import UIStore from './stores/ui';
 import UserStore from './stores/user';
+import SearchBar from './stores/search-bar';
 import Views from './views';
 
 import CampaignViewStore from './stores/campaign-view';
@@ -22,6 +23,7 @@ export default class DateaStore {
     this.user = new UserStore(this);
     this.data = new DataStore(this);
     this.dateo = new DateoStore(this);
+    this.searchBar = new SearchBar(this);
     this.initListenToDateoForm();
   }
 

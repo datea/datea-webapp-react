@@ -4,6 +4,7 @@
 	"DATEOS" : "dateos",
   "MAPPINGS" : "Mapeos",
   "MY_MAPPINGS" : "Mis Mapeos",
+  "MY_DATEOS" : "Mis Dateos",
 	"GOTO_DETAIL" : "ver detalle",
 	"USER" : "usuario",
 	"PASSWORD" : "contraseña",

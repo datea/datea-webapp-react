@@ -176,6 +176,9 @@ const Views = {
     },
     onExit: (route, params, store) => {
       store.disposeCampaignViewStore();
+    },
+    shouldTriggerHooksOnSameView : ({currentParams, currentQueryParams, nextParams, nextQueryParams}) => {
+      return currentParams.username != nextParams.username || currentParams.slug != nextParams.slug;
     }
   }),
 

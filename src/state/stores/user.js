@@ -50,7 +50,8 @@ export default class UserStore {
       moment.locale(this.locale);
       localStorage.setItem('locale', this.locale);
     });
-    this.startLocationTracker()
+    this.startLocationTracker();
+    setTimeout(() => console.log(toJS(this.data)), 3000);
   }
 
   startLocationTracker() {

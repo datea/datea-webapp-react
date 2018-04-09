@@ -11,7 +11,9 @@ class Api {
   /* MAPPINGS */
   // to get campaigns for a user: params.followed_by_tags = USER.data.id
   mapping = {
-    getList : (params = {}) => this.get(url('mapping'), params)
+    getList : (params = {}) => this.get(url('mapping'), params),
+    autocomplete : search => this.get(url('mapping/autocomplete'), {q: search}),
+    autocompleteInside : (narrowOn, search) => this.get(url('mapping/autocomplete-inside-mapping'), {q: search, narrow_on: narrowOn})
   };
 
   /* USER */

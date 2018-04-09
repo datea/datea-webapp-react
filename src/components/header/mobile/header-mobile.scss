@@ -5,17 +5,30 @@
   .header-content {
     .header-left {
       padding-top: 0px;
-      min-width: 50px;
       .d-icon {
         margin-top: 4px;
+      }
+      .header-back-btn-icon {
+        width  : 38px;
+        height : 38px;
+        position: relative;
+        top : 1px;
+        fill: black;
+      }
+    }
+
+    .header-center {
+      box-sizing: border-box;
+      .search-container {
+        box-sizing: border-box;
       }
     }
 
     .header-right {
-      min-width: 50px;
       text-align: right;
-      position: relative;
-      right: -8px;
+      .header-mobile-menu-icon {
+        fill: black;
+      }
     }
   }
 

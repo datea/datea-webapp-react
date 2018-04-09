@@ -8,16 +8,16 @@ import {observer} from 'mobx-react';
 import UserAvatar from '../../user-avatar';
 import {Tr} from '../../../i18n';
 
-const ProfileHead = ({profile, onEditClick}) =>
-  <div className="profile-head-container">
+const ProfileHead = ({profile, onEditClick, isMobile}) =>
+  <div className={cn('profile-head-container', isMobile && 'mobile')}>
     <div className="profile-head">
       <div className="picture">
-        <UserAvatar size={128} src={profile.largeImage} />
+        <UserAvatar size={isMobile ? 80: 128} src={profile.largeImage} />
       </div>
       <div className="user-info">
           <div className="username-wrap">
             <div className="username">{profile.data.user.username}</div>
-            {!!profile.data.isOwn &&
+            {!!profile.data.isOwn && !isMobile &&
               <IconButton className="edit-icon" onClick={onEditClick}>
                 <EditIcon />
               </IconButton>

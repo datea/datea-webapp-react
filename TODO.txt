@@ -1,13 +1,51 @@
--> format-geocoded-address : quitar el codigo postal de las direcciones.
--> poder editar la dirección fuera del modo visual
+debug:
+- credentials after register are ok?
+
+móvil:
+- boton de ir para atrás
+
+dateo:
+- apoyar
+- seguir
+- comentarios
+- detectar urls
+
+mapeo:
+- info window
+- dateo stats con opción de cargar mas
+- seguir
+- visualización de imágenes
+- visualización de charts
+- download de csv
+
+mapeo manager:
+
+datear:
+- format-geocoded-address : quitar el codigo postal de las direcciones.
+- poder editar la dirección fuera del modo visual
+- boundary de campaña
+- detectar hashtags en texto
+- opción de seguir los tags que estas dateando?
+
+busqueda mapeo:
+- autocomplete -> tags y usuarios
+- mostrar filtros
+- filtros de mapeo: tags, moderación, dateos cargados (mobil con menos por defecto)
+
+busqueda general
+- poner enlaces inciales
+- revisar autocomplete y rutas
+
+css
+- arreglar barra móvil
+- solo poner sombra a app bar cuando esta escrolleado
+
+share:
+- preparar server rendering para llenado de meta tags
+- boton de share
 
 
-DATA:
-  - hydrate campaign with subtags Map with tag as key
-  - lastLoggedOutURL con nuevo router
-
-
-
+/** OLD, pero pendiente **/
 crear componentes:
 
 Basicos:
@@ -22,17 +60,6 @@ Basicos:
   -> model ?
   -> url
 
-<AuthorInfo />
-  -> author model
-  -> subtitle
-
-<Dateo />
-  -> model
-  -> presentation: 'teaser', 'detail', 'image'
-  -> onMapPinClick
-  -> onOpenClick
-  -> onEditClick
-
   <UrlView />
     -> url
 
@@ -43,37 +70,3 @@ Basicos:
     -> File Objects
 
   -> transladar todas las urls a al texto del dateo, abajo
-
-
-<Mapa/>
-  -> dateos
-  -> kmls
-  -> onPointSelect
-  -> getPointColors ?
-  -> zoomToDateo ?
-  -> zoom
-  -> center
-  -> fitBounds ?
-
-<MapInput />
-  -> onPointSet
-  -> onPointDelete
-  -> center
-  -> zoom
-  -> enable
-
-
-Mapeo:
-  <Mapping>
-    <SubTags />
-    <MappingView>
-      -> isMobile
-      -> dateos
-      -> type: 'campaign, tag'
-      -> model: campaign or tag
-
-    <MapControl />
-      -> type: 'campaign', 'tag'
-      -> dateos
-      -> query
-      -> filters

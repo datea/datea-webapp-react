@@ -8,19 +8,9 @@ import {inject} from 'mobx-react';
 export default class BackButton extends React.Component {
 
   render() {
-    const btnStyle ={
-      padding: 0,
-      margin: 0
-    };
-    const iconStyle = {
-      width  : 38,
-      height : 38,
-      position: 'relative',
-      top : '1px'
-    };
     return (
-      <IconButton onClick={() => window.history.back()} style={btnStyle}>
-        <ChevronLeft style={iconStyle} />
+      <IconButton onClick={() => window.history.back()}>
+        <ChevronLeft className="header-back-btn-icon" />
       </IconButton>
     )
   }

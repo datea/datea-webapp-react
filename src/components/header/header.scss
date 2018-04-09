@@ -19,18 +19,22 @@
 
     .header-left {
       text-align: left;
-      flex-basis: 15%;
-      min-width: 100px;
+      flex-basis: 48px;
+      flex-shrink: 0;
+      flex-grow: 0;
     }
 
     .header-center {
-      flex-grow: 10;
-      flex-basis: 70%;
+      flex-grow: 2;
+      flex-shrink: 2;
+      flex-basis: 50%;
     }
 
     .header-right {
       text-align: right;
-      flex-basis: 15%;
+      flex-basis: 48px;
+      flex-shrink: 0;
+      flex-grow: 0;
     }
   }
 

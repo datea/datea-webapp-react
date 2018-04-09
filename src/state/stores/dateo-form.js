@@ -193,6 +193,9 @@ export default class DateoFormStore {
       model.isNew = !data.id;
       this.main.dateo.data.dateos.set(String(model.id), model);
       this.main.openDateo({dateo: model, isNew: !data.id});
+      if (model.isNew) {
+        this.main.user.data.dateo_count++;
+      }
     }).catch(e => {
       this.main.ui.setLoading(false);
       this.errors.set('main', t('DATEAR.ERROR.UNKNOWN'))

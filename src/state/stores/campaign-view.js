@@ -66,7 +66,6 @@ export default class Campaign {
         }
       },
       () => {
-        console.log('query dateos');
         this.queryDateos();
       },
       true

@@ -21,11 +21,11 @@ export default class Profile extends Component {
   }
 
   render() {
-    const {profileView : profile} = this.props.store;
+    const {profileView : profile, ui} = this.props.store;
     if (!profile) return <span />
     return (
       <div className="profile">
-        <ProfileHead profile={profile} onEditClick={this.onEditProfile} />
+        <ProfileHead profile={profile} onEditClick={this.onEditProfile} isMobile={ui.isMobile} />
         <div className="profile-content">
           <Button className="create-mapping-btn" onClick={this.onCreateMapping}>Crear Mapeo</Button>
           <h3 className="profile-content-title"><Tr id="MY_MAPPINGS" /></h3>

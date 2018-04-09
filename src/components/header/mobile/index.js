@@ -9,7 +9,7 @@ import {observer, inject} from 'mobx-react';
 import config from '../../../config';
 import MobileMenuBtn from './mobile-menu-btn';
 import BackBtn from './back-btn';
-import SearchBar from '../../search-bar';
+import SearchBar from '../../search-bar2';
 import {colors} from '../../../theme/vars';
 
 @inject('store')

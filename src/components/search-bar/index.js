@@ -11,6 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import AutocompleteList from './autocomplete-list';
 import Avatar from 'material-ui/Avatar';
 import {t, translatable} from '../../i18n';
+import {getImgSrc} from '../../utils';
 import DIcon from '../../icons';
 
 @inject('store')
@@ -44,7 +45,8 @@ export default class SearchBar extends Component {
         if (this.clearPressed) {
           this.clearPressed = false;
         } else {
-          this.setState({focused, acSelectIndex: -1});
+          this.props.store.searchBar.resetAc();
+          this.setState({focused});
         }
         focused && setTimeout(() => this.doAutoComplete());
       }, 300);
@@ -66,6 +68,7 @@ export default class SearchBar extends Component {
     let state = {acSelectIndex : -1};
     if (query && query.length >= 2) {
       data.searchAutoComplete(query).then(res => {
+        console.log('ac results', res);
         state.acResults = this.createAcResultItems(res, this.state.query);
         this.setState(state);
       });
@@ -123,7 +126,7 @@ export default class SearchBar extends Component {
     const futurePos = this.state.acSelectIndex + num;
     if (futurePos < totalResults && futurePos > -1) {
       this.setState({acSelectIndex: futurePos});
-    }else if (futurePos == -1 && this.state.acSelectIndex != -1) {
+    } else if (futurePos == -1 && this.state.acSelectIndex != -1) {
       this.setState({acSelectIndex : -1});
     }
   }

@@ -1,6 +1,7 @@
 .profile-head-container {
   background-color: white;
   padding: 24px;
+
   .profile-head {
     max-width: 600px;
     margin-left: auto;
@@ -48,6 +49,22 @@
           margin-right: 15px;
         }
       }
+    }
+  }
+
+  &.mobile {
+    .profile-head {
+      .picture {
+        padding-top: 5px;
+        flex-basis : 80px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        align-self: center;
+      }
+    }
+
+    .user-info {
+      padding-left: 20px;
     }
   }
 }

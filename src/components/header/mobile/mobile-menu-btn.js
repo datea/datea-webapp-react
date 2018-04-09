@@ -25,23 +25,10 @@ export default class UserMenu extends React.Component {
           style={{marginTop: 6, paddingLeft: 0, paddingRight: 0}}
         >{label}</Button>
       )
-      /*
-        labelStyle={{
-        fontSize: '1rem',
-        paddingRight: 6,
-        paddingLeft: 6
-                }}*/
     }else {
-      /*
-      const iconStyle = {
-        width  : 30,
-        height : 30,
-        position: 'relative',
-        top : '-3px'
-      };*/
       return (
         <IconButton onClick={this.props.onClick}>
-          <MoreIcon />
+          <MoreIcon className="header-mobile-menu-icon" />
         </IconButton>
       );
     }

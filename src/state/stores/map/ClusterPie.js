@@ -81,7 +81,7 @@ export default class ClusterPieFactory {
       .append( 'svg:g' )
       .attr( 'transform', 'translate('+radius+','+radius+')' );
 
-    if (mapping.subtags) {
+    if (mapping.subtags && mapping.subtags.size) {
       const arc  = d3.arc().outerRadius(radius).innerRadius(0);
       const pie  = d3.pie().value( sData => sData.value);
       const arcs = vis.selectAll( 'g._sqCellSlice' ).data( pie ).enter().append( 'svg:g' ).attr( 'class', 'slice' );
