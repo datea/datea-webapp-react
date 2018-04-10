@@ -7,6 +7,7 @@ import {observer, inject} from 'mobx-react';
 import {toJS} from 'mobx';
 import ButtonBase from 'material-ui/ButtonBase';
 import DeleteIcon from 'material-ui-icons/Delete';
+import ColorSample from '../../color-sample';
 import {Tr} from '../../../i18n';
 
 @inject('store')
@@ -84,7 +85,7 @@ export default class CampaignLegendBar extends Component {
             key={tag.tag}
             className={cn('ht-btn', activeTags.includes(tag.tag) && 'active')}
             onClick={() => this.onTagClick(tag.tag)}>
-            <div className="color-sample" style={{backgroundColor: tag.color}} />
+            <ColorSample color={tag.color} />
             <div className="ht">{'#'+tag.tag}</div>
           </ButtonBase>
         )}

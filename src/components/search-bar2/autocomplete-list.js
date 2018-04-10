@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { ListItemText, ListSubheader, ListItemAvatar} from 'material-ui/List';
+import { ListItemText, ListSubheader, ListItemAvatar, ListItemIcon} from 'material-ui/List';
 import {MenuItem, MenuList} from 'material-ui/Menu';
 import Divider from 'material-ui/Divider';
 import {observer, inject} from 'mobx-react';
@@ -7,6 +7,7 @@ import cn from 'classnames';
 import scroll from 'scroll';
 import UserAvatar from '../user-avatar';
 import CampaignAvatar from '../campaign-avatar';
+import ColorSample from '../color-sample';
 
 @inject('store')
 @observer
@@ -34,6 +35,7 @@ export default class AutocompleteList extends Component {
         onClick={() => this.props.store.searchBar.onAcItemClick(item)}
         className={'search-list-item search-ac-item-'+item.index} >
           {!!leftImg && <ListItemAvatar>{leftImg}</ListItemAvatar>}
+          {!!item.colorSample && <ListItemIcon><ColorSample color={item.colorSample}/></ListItemIcon>}
           <ListItemText primary={primaryText} secondary={secondaryText} />
       </MenuItem>
     );

@@ -149,7 +149,8 @@ export default class Campaign {
         return {
           tag : tag.tag,
           order : campaign.settings.subtags[tag.tag].order,
-          color : campaign.settings.subtags[tag.tag].color
+          color : campaign.settings.subtags[tag.tag].color,
+          dateo_count : tag.dateo_count
         }
       })
     } else {
@@ -157,7 +158,8 @@ export default class Campaign {
         return {
           tag: tag.tag,
           order : i,
-          color: getColor(i)
+          color: getColor(i),
+          dateo_count : tag.dateo_count
         }
       })
     }

@@ -14,6 +14,7 @@ import Avatar from 'material-ui/Avatar';
 import {t, translatable} from '../../i18n';
 import {getImgSrc} from '../../utils';
 import DIcon from '../../icons';
+import SearchModeSelector from './mode-selector';
 
 @inject('store')
 @translatable
@@ -24,10 +25,8 @@ export default class SearchBar extends Component {
     router: PropTypes.object
   };
 
-  static defaultProps = {
-    iconSize : 30
-  };
-  mouseHover   = false;
+  mouseHover = false;
+  insideMenuOpen = false;
   clearPressed = false;
 
   constructor(props, context) {
@@ -39,21 +38,28 @@ export default class SearchBar extends Component {
 
   setFocus = (focused) => {
     const {searchBar} = this.props.store;
-    if (this.mouseHover && this.state.focused) {
-      setTimeout(() => {
-        if (this.clearPressed) {
-          this.clearPressed = false;
-        } else {
+
+    setTimeout(() => {
+      console.log('insideMenuOpen', this.insideMenuOpen);
+      if (this.mouseHover && this.state.focused && !this.insideMenuOpen) {
+        console.log('here 1');
+        setTimeout(() => {
+          if (this.clearPressed) {
+            this.clearPressed = false;
+          } else {
+            searchBar.resetAcIndex();
+            this.setState({focused});
+          }
+          focused && setTimeout(() => searchBar.doAutoComplete());
+        }, 300);
+      } else {
+        if (!this.insideMenuOpen) {
           searchBar.resetAcIndex();
           this.setState({focused});
+          focused && searchBar.doAutoComplete();
         }
-        focused && setTimeout(() => searchBar.doAutoComplete());
-      }, 300);
-    } else {
-      searchBar.resetAcIndex();
-      this.setState({focused});
-      focused && searchBar.doAutoComplete();
-    }
+      }
+    });
   }
 
   handleChange = (ev) => this.props.store.searchBar.setSearch(ev.target.value);
@@ -80,6 +86,14 @@ export default class SearchBar extends Component {
     this.searchFieldRef.focus();
   }
 
+  onOpenInsideMenu = () => {
+    this.insideMenuOpen = true;
+  }
+
+  onCloseInsideMenu = () => {
+    this.insideMenuOpen = true;
+  }
+
   render() {
     const {ui, searchBar} = this.props.store;
     const barClass = cn(
@@ -89,7 +103,7 @@ export default class SearchBar extends Component {
     );
     const inputStyle = {
         paddingLeft  : 44,
-        paddingRight : 44,
+        paddingRight : this.state.focused && !!searchBar.search ? 44 : 0,
         lineHeight   : '35px',
     };
 
@@ -98,12 +112,18 @@ export default class SearchBar extends Component {
         onMouseEnter={() => this.mouseHover = true}
         onMouseLeave={() => this.mouseHover = false}>
         <div className="search-box">
-          <SearchIcon className="search-icon"
-            style={{width: this.props.iconSize, height: this.props.iconSize}} />
+          {searchBar.modeIsSwitcheable
+            ? <SearchModeSelector
+                mode={searchBar.mode}
+                onModeSelect={searchBar.switchMode}
+                onOpen={this.onOpenInsideMenu}
+                onClose={this.onCloseInsideMenu} />
+            : <SearchIcon className="search-icon no-switch" />
+          }
           <TextField inputRef={ref => {this.searchFieldRef = ref}}
             name="mainSearch"
             className="main-search-textfield"
-            placeholder={this.state.focused ? 'Buscar mapeos' : ''}
+            placeholder={searchBar.mode == 'global' ? t('SEARCHBOX.GLOBAL_PH') : t('SEARCHBOX.LOCAL_PH')}
             fullWidth={true}
             onFocus={()=> this.setFocus(true)}
             onBlur={()=> this.setFocus(false)}

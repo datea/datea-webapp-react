@@ -14,6 +14,7 @@ export default class SearchBarStore {
   @observable search = '';
   @observable acSelectIndex = -1;
   @observable mode = 'global';
+  @observable modeIsSwitcheable = false;
   @observable loading = false;
 
   @computed get numAcResults() {
@@ -58,6 +59,7 @@ export default class SearchBarStore {
       },
       (mapping) => {
         this.mode = !!mapping ? 'mapeo' : 'global';
+        this.modeIsSwitcheable = !!mapping;
       }
     )
   }
@@ -69,6 +71,7 @@ export default class SearchBarStore {
 
   @action switchMode = mode => {
     this.mode = mode;
+    this.clear();
   }
 
   @action onEnter = () => {
@@ -80,7 +83,7 @@ export default class SearchBarStore {
       const {route} = this.getAcIndexRoute(this.acSelectIndex);
       this.search = '';
       this.acSelectIndex = -1;
-      this.main.goTo(route.view, route.params);
+      this.goTo(route);
     }
   }
 
@@ -88,7 +91,7 @@ export default class SearchBarStore {
     this.search = '';
     this.acSelectIndex = -1;
     console.log('item', item);
-    this.main.goTo(item.route.view, item.route.params);
+    this.goTo(item.route);
   }
 
   @action resetAcIndex = () => {
@@ -123,7 +126,6 @@ export default class SearchBarStore {
   @action autocompleteOnMapeo = () => {
     if (!this.main.router.currentView) return;
 
-    this.loading = true;
     let narrowOn;
     switch (this.main.router.currentView.name) {
       case 'campaign':
@@ -139,6 +141,7 @@ export default class SearchBarStore {
         return;
     }
 
+    this.loading = true;
     Api.mapping.autocompleteInside(narrowOn, this.search)
     .then(res => runInAction(() => {
       console.log('res', res);
@@ -282,7 +285,29 @@ export default class SearchBarStore {
   }
 
   createDefaultMapeoSuggestions() {
-    return [];
+    if (!this.main.router.currentView) return [];
+    const viewName = this.main.router.currentView.name;
+    if (viewName == 'campaign') {
+      const {subtags} = this.main.campaignView.data.campaign;
+      if (subtags && subtags.size) {
+        return [{
+          subheader : t('SEARCH_FILTER.FILTER_TAG'),
+          items : subtags.values().map((tag, index) => ({
+            index,
+            primaryText : '#'+tag.tag,
+            secondaryText : tag.dateo_count+' '+t('DATEOS'),
+            type :'tag',
+            leftImg : 'none',
+            colorSample : tag.color,
+            route : {
+              queryParams : {q: '#'+tag.tag}
+            }
+          }))
+        }]
+      } else {
+        return [];
+      }
+    }
   }
 
   searchValid = () => !!this.search.trim() && this.search.trim().length >=2;
