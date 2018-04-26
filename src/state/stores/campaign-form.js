@@ -1,5 +1,4 @@
 import {observable, action, computed, autorun, reaction, runInAction, toJS, when} from 'mobx';
-import {scaleOrdinal, schemeCategory10} from 'd3';
 import {StripChar} from 'stripchar';
 import _ from 'lodash';
 import debounce from 'debounce-promise';

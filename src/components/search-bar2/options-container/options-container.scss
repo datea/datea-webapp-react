@@ -1,0 +1,31 @@
+
+.searchbar-tabs {
+  min-height: 44px !important;
+  .searchbar-tab {
+    width: 50%;
+    height: 44px !important;
+    .tab-label {
+      color: #999;
+      //text-transform: none;
+    }
+    &:not([aria-selected="true"]) {
+      background-color: #cecece;
+      color: #aaa;
+      .tab-label {
+        color: #777;
+      }
+    }
+  }
+  .searchbar-tab-indicator {
+    display: none;
+  }
+}
+
+.searchbar-options-content {
+  border-top: 1px solid rgb(224, 224, 224);
+  position: relative;
+  width: 100%;
+  background-color: white;
+  overflow-y: auto;
+  padding: 0;
+}

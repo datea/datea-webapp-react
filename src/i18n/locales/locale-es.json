@@ -58,7 +58,7 @@
 
 	"SEARCHBOX" : {
     "GLOBAL_SEARCH" : "Busqueda general",
-    "LOCAL_SEARCH" : "Buscar en este mapeo",
+    "LOCAL_SEARCH" : "En este mapeo",
 		"GLOBAL_PH" : "Buscar mapeos",
     "LOCAL_PH" : "Buscar en mapeo",
 		"DATEOS_WITH_QUERY" : "Buscar dateos con:",

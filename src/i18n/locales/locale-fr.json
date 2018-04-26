@@ -59,7 +59,7 @@
 
 	"SEARCHBOX" : {
     "GLOBAL_SEARCH" : "Recherche générale",
-    "LOCAL_SEARCH" : "Rechercher dans cette cartographie",
+    "LOCAL_SEARCH" : "Dans cette cartographie",
     "GLOBAL_PH" : "Rechercher des cartes",
     "LOCAL_PH" : "Rechercher dans cette cartographie",
 		"DATEOS_WITH_QUERY" : "Buscar dateos con:",

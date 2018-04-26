@@ -1,6 +1,6 @@
 import './search-bar.scss';
 import React, {Component} from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import cn from 'classnames';
 import {observer, inject} from 'mobx-react';
@@ -9,12 +9,9 @@ import SearchIcon from 'material-ui-icons/Search';
 import CloseIcon from 'material-ui-icons/Close';
 import IconButton from 'material-ui/IconButton';
 import { CircularProgress } from 'material-ui/Progress';
-import AutocompleteList from './autocomplete-list';
-import Avatar from 'material-ui/Avatar';
+import OptionsContainer from './options-container';
 import {t, translatable} from '../../i18n';
 import {getImgSrc} from '../../utils';
-import DIcon from '../../icons';
-import SearchModeSelector from './mode-selector';
 
 @inject('store')
 @translatable
@@ -38,11 +35,9 @@ export default class SearchBar extends Component {
 
   setFocus = (focused) => {
     const {searchBar} = this.props.store;
-
     setTimeout(() => {
       console.log('insideMenuOpen', this.insideMenuOpen);
-      if (this.mouseHover && this.state.focused && !this.insideMenuOpen) {
-        console.log('here 1');
+      if (this.mouseHover && this.state.focused && !this.insideMenuOpen && !this.dontCloseClick) {
         setTimeout(() => {
           if (this.clearPressed) {
             this.clearPressed = false;
@@ -53,12 +48,13 @@ export default class SearchBar extends Component {
           focused && setTimeout(() => searchBar.doAutoComplete());
         }, 300);
       } else {
-        if (!this.insideMenuOpen) {
+        if (!this.insideMenuOpen && !this.dontCloseClick) {
           searchBar.resetAcIndex();
           this.setState({focused});
           focused && searchBar.doAutoComplete();
         }
       }
+      this.dontCloseClick = false;
     });
   }
 
@@ -112,14 +108,7 @@ export default class SearchBar extends Component {
         onMouseEnter={() => this.mouseHover = true}
         onMouseLeave={() => this.mouseHover = false}>
         <div className="search-box">
-          {searchBar.modeIsSwitcheable
-            ? <SearchModeSelector
-                mode={searchBar.mode}
-                onModeSelect={searchBar.switchMode}
-                onOpen={this.onOpenInsideMenu}
-                onClose={this.onCloseInsideMenu} />
-            : <SearchIcon className="search-icon no-switch" />
-          }
+          <SearchIcon className="search-icon no-switch" />
           <TextField inputRef={ref => {this.searchFieldRef = ref}}
             name="mainSearch"
             className="main-search-textfield"
@@ -144,7 +133,7 @@ export default class SearchBar extends Component {
         <div className="search-bg"></div>
         {this.state.focused &&
           <div className={cn('ac-wrapper', searchBar.hasAcResults && 'full')}>
-            <AutocompleteList />
+            <OptionsContainer setNonCloseClick={() => {this.dontCloseClick = true}} />
           </div>
         }
       </div>

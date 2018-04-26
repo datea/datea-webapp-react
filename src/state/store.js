@@ -4,6 +4,7 @@ import DataStore from './stores/data';
 import UIStore from './stores/ui';
 import UserStore from './stores/user';
 import SearchBar from './stores/search-bar';
+import BackButton './stores/back-button';
 import Views from './views';
 
 import CampaignViewStore from './stores/campaign-view';
@@ -24,6 +25,7 @@ export default class DateaStore {
     this.data = new DataStore(this);
     this.dateo = new DateoStore(this);
     this.searchBar = new SearchBar(this);
+    this.backButton = new BackButton(this);
     this.initListenToDateoForm();
   }
 
