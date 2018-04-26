@@ -4,7 +4,7 @@ import DataStore from './stores/data';
 import UIStore from './stores/ui';
 import UserStore from './stores/user';
 import SearchBar from './stores/search-bar';
-import BackButton './stores/back-button';
+import BackButton from './stores/back-button';
 import Views from './views';
 
 import CampaignViewStore from './stores/campaign-view';
