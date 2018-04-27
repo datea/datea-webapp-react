@@ -30,6 +30,11 @@ export default class SearchBarStore {
   constructor(main) {
     this.main = main;
     this.initModeReaction();
+    setTimeout(() => {
+      if (this.main.router.queryParams && this.main.router.queryParams.q) {
+        this.search = this.main.router.queryParams.q;
+      }
+    });
   }
 
   @action clear = () => {
@@ -77,13 +82,14 @@ export default class SearchBarStore {
   @action onEnter = () => {
     if (this.search.trim().length >= MIN_SEARCH_LENGTH && this.acSelectIndex == -1) {
       const query = this.search.trim();
-      this.main.goTo('search', {query});
+      this.main.goTo('search', {}, {q: query});
+      this.search = query;
       this.acSelectIndex = -1;
     } else if (this.acSelectIndex >= 0) {
       const {route} = this.getAcIndexRoute(this.acSelectIndex);
       this.search = '';
       this.acSelectIndex = -1;
-      this.goTo(route);
+      this.goTo(item.route);
     }
   }
 
@@ -92,6 +98,16 @@ export default class SearchBarStore {
     this.acSelectIndex = -1;
     console.log('item', item);
     this.goTo(item.route);
+  }
+
+  goTo = (route) => {
+    const view = route.view || this.main.router.currentView;
+    const params = route.params || this.main.router.params;
+    const queryParams = route.queryParams || {};
+    this.main.goTo(view, params, queryParams);
+    if (queryParams && queryParams.q) {
+      this.search = queryParams.q;
+    }
   }
 
   @action resetAcIndex = () => {
