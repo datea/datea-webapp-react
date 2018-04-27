@@ -62,12 +62,10 @@ export default class ProfileView {
     return Promise.all([
       Api.mapping.getList(campaignParams)
       .then(res => {
-        console.log('res campaigns', res);
         this.data.mappingsFollowed.replace(res.objects);
       }),
       Api.campaign.getList(mappingParams)
       .then(res => {
-        console.log('res mappings', res);
         this.data.mappingsCreated.replace(res.objects);
       })
     ])

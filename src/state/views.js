@@ -1,6 +1,7 @@
 import React from 'react';
 import {Route} from 'mobx-router/src';
 import {toJS} from 'mobx';
+import _ from 'lodash';
 
 import config from '../config';
 
@@ -18,6 +19,7 @@ import AccountSettings from '../components/account/settings';
 import Profile from '../components/profile';
 import CampaignView from '../components/campaign-view';
 import CampaignManagerView from '../components/campaign-manager-view';
+import StaticPage from '../components/static-page';
 
 
 const customUrls = {
@@ -39,7 +41,7 @@ const Views = {
         store.ui.setLayout('normal');
         !store.user.isSignedIn && store.goTo('welcome');
       }
-    }
+    },
   }),
 
   /* LANDING / WELCOME */
@@ -55,6 +57,18 @@ const Views = {
         store.ui.setLayout('normal');
         store.user.isSignedIn && store.goTo('home');
       }
+    },
+  }),
+
+  /* STATIC INFO */
+  info : new Route({
+    name : 'info',
+    path : '/info/:pageId',
+    component : <StaticPage />,
+    onEnter: (route, params, store) => store.ui.setLayout('normal'),
+    backButtonConfig : {
+      view : 'home',
+      showBackButton : true,
     }
   }),
 
@@ -67,26 +81,38 @@ const Views = {
     onEnter : (route, params, store) => {
       store.ui.setLayout('normal');
       store.user.isSignedIn && store.router.goTo(Views.home, {}, store);
+    },
+    backButtonConfig : {
+      view : 'welcome',
+      showBackButton : true,
     }
   }),
 
   register : new Route({
     name : 'register',
-    path: '/register',
+    path : '/register',
     component : <RegisterPage />,
-    beforeEnter: (route, params, store) => store.user.setLastLoggedOutView(),
+    beforeEnter : (route, params, store) => store.user.setLastLoggedOutView(),
     onEnter : (route, params, store) => {
       store.ui.setLayout('normal');
       store.user.isSignedIn && store.router.goTo(Views.home, {}, store)
+    },
+    backButtonConfig : {
+      view : 'welcome',
+      showBackButton : true,
     }
   }),
 
   registerFormPage : new Route({
     name : 'registerFormPage',
-    path: '/register-form',
+    path : '/register-form',
     component : <RegisterFormPage />,
     onEnter : (route, params, store) => {
       store.ui.setLayout('normal');
+    },
+    backButtonConfig : {
+      view : 'register',
+      showBackButton : true,
     }
   }),
 
@@ -97,6 +123,10 @@ const Views = {
     onEnter: (route, params, store) => {
       store.ui.setLayout('normal');
       store.user.isSignedIn && store.goTo('home')
+    },
+    backButtonConfig : {
+      view : 'welcome',
+      showBackButton : true,
     }
   }),
 
@@ -107,6 +137,10 @@ const Views = {
     onEnter: (route, params, store) => {
       store.ui.setLayout('normal');
       store.user.isSignedIn && store.goTo('home')
+    },
+    backButtonConfig : {
+      view : 'welcome',
+      showBackButton : true,
     }
   }),
 
@@ -117,6 +151,10 @@ const Views = {
     onEnter: (route, params, store) => {
       store.ui.setLayout('normal');
       store.user.isSignedIn && store.goTo('home')
+    },
+    backButtonConfig : {
+      view : 'welcome',
+      showBackButton : true,
     }
   }),
 
@@ -127,17 +165,31 @@ const Views = {
     onEnter: (route, params, store) => {
       store.ui.setLayout('normal');
       return !store.user.isSignedIn
+    },
+    backButtonConfig : {
+      view : 'profile',
+      showBackButton : true,
     }
   }),
 
   /* CAMPAIGN EDIT */
   campaignForm : new Route({
     name : 'campaignForm',
-    path: '/mapeo/:id',
+    path : '/mapeo/:id',
     component : <CampaignManagerView />,
     onEnter: (route, params, store) => {
       store.ui.setLayout('normal');
       store.createCampaignFormStore(params.id);
+    },
+    backButtonConfig : (route, params, store) => {
+      return {
+        view : 'campaign',
+        params : {
+          username : store.user.data.username,
+          slug : store.campaignForm.campaign.get('slug')
+        },
+        showBackButton :  true,
+      }
     }
   }),
 
@@ -152,6 +204,10 @@ const Views = {
     },
     onExit: (route, params, store) => {
       !!store.profileView && !!store.profileView.dispose && store.profileView.dispose();
+    },
+    backButtonConfig : {
+      view : 'home',
+      showBackButton : false,
     }
   }),
 
@@ -161,7 +217,14 @@ const Views = {
     component: <Profile />,
     onEnter: (route, params, store) => {
       store.ui.setLayout('mapping');
-    }
+    },
+    backButtonConfig : (route, params, store) => ({
+      view : 'profile',
+      params : {
+        username : store.profileView.data.user.username
+      },
+      showBackButton : false,
+    })
   }),
 
   /* CAMPAIGNS - TAGS */
@@ -179,6 +242,37 @@ const Views = {
     },
     shouldTriggerHooksOnSameView : ({currentParams, currentQueryParams, nextParams, nextQueryParams}) => {
       return currentParams.username != nextParams.username || currentParams.slug != nextParams.slug;
+    },
+    backButtonConfig : (route, params, store, queryParams) => {
+      const visualIsOpen = store.campaignView.layoutMode == 'visual';
+      const contentIsDetail = store.campaignView.contentViewMode == 'detail-view';
+
+      // is root
+      if (!visualIsOpen && !contentIsDetail) {
+        return {
+          view: 'home',
+          showBackButton : false,
+        }
+      } else if (visualIsOpen && !contentIsDetail) {
+        return {
+          callback : () => store.campaignView.setLayout('content'),
+          showBackButton : true,
+        }
+      } else if ( visualIsOpen && contentIsDetail) {
+        return {
+          callback : () => store.campaignView.setLayout('content'),
+          showBackButton : true,
+        }
+      } else if (contentIsDetail) {
+        let newQueryParams = _.omit(toJS(queryParams), 'dateo');
+        return {
+          view : 'campaign',
+          params : params,
+          queryParams : newQueryParams,
+          showBackButton : true
+        }
+      }
+
     }
   }),
 

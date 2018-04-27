@@ -27,6 +27,11 @@ export default class MainMenu extends React.Component {
 
   onLocaleChange = (event, index, value) => this.props.store.user.setLocale(value);
 
+  goTo = (view, params) => {
+    this.props.onClose();
+    this.props.store.goTo(view, params);
+  }
+
   render() {
     return (
       <Drawer
@@ -34,17 +39,13 @@ export default class MainMenu extends React.Component {
         onClose={this.props.onClose}>
           <MenuList className="main-menu-list">
             <ListSubheader>{t('MENU_TOP.MENU')}</ListSubheader>
-            <MenuItem>
+            <MenuItem onClick={() => this.goTo('home')}>
               <ListItemText primary={t('MENU_TOP.HOME')} />
               <ListItemIcon><HomeIcon/></ListItemIcon>
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={() => this.goTo('info', {pageId : 'about'})}>
               <ListItemText primary={t('MENU_TOP.ABOUT')} />
               <ListItemIcon><InfoOutlineIcon/></ListItemIcon>
-            </MenuItem>
-            <MenuItem>
-              <ListItemText primary={t('MENU_TOP.HELP')} />
-              <ListItemIcon><HelpOutlineIcon/></ListItemIcon>
             </MenuItem>
             <br /><br />
             <Divider />

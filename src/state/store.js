@@ -1,4 +1,4 @@
-import {autorun, reaction, computed, observable, toJS} from 'mobx';
+import {autorun, action, reaction, computed, observable, toJS, runInAction} from 'mobx';
 import {RouterStore} from 'mobx-router/src';
 import DataStore from './stores/data';
 import UIStore from './stores/ui';
@@ -60,7 +60,7 @@ export default class DateaStore {
     );
   }
 
-  openDateo = ({dateo, isNew = false}) => {
+  @action openDateo = ({dateo, isNew = false}) => {
     if (!dateo) return;
     if (!!dateo && ['string', 'number']. includes(typeof (dateo))) {
       dateo = this.dateo.data.dateos.get(String(dateo));
@@ -78,8 +78,10 @@ export default class DateaStore {
     switch (viewName) {
       case 'campaign':
         this.campaignView.setLayout('content');
-        this.goTo('campaign', this.router.params, queryParams);
-        this.ui.setLoading(false);
+        setTimeout(() => runInAction(() => {
+          this.goTo('campaign', this.router.params, queryParams);
+          this.ui.setLoading(false);
+        }));
         break;
     }
   }

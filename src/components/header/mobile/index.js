@@ -31,7 +31,7 @@ export default class Header extends React.Component {
 
     let headerLeft;
     if (user.isSignedIn) {
-      headerLeft = ui.isHome ? <AppBarLogo onClick={this.goHome} /> : <BackBtn />;
+      headerLeft = <BackBtn />;
     }else{
       headerLeft = router.currentView.name == 'welcome' ? <LandingMenuBtn onClick={this.toggleMenu} /> : <AppBarLogo onClick={this.toggleMenu} />;
     }

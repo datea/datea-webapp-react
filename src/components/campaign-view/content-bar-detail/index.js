@@ -23,9 +23,11 @@ export default class ContentBarDetail extends Component {
         <div className={cn('campaign-content-bar-detail', `mode-${mode}`, isMobile && 'mobile')}>
           <div className="center-content">
             <ButtonBase onClick={onBackClick} className="go-back-btn">
-              <div className="back-icon">
-                <BackArrowIcon />
-              </div>
+              {!isMobile &&
+                <div className="back-icon">
+                  <BackArrowIcon />
+                </div>
+              }
               <div className="campaign-ht">
                 {'#'+campaign.main_tag.tag}
               </div>

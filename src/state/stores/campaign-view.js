@@ -23,6 +23,7 @@ export default class Campaign {
     showDateoDetail : false,
   };
   @observable layoutMode = 'content';
+  prevLayoutMode = 'content';
 
   @computed get contentViewMode() {
     return this.data.showDateoDetail ? 'detail-view' : 'list-view';
@@ -81,6 +82,7 @@ export default class Campaign {
         }
       },
       dateoId => {
+        console.log('navigateToLayer', dateoId);
         !!dateoId && setTimeout(() => this.map.navigateToLayer(dateoId), 50);
         this.data.showDateoDetail = dateoId;
       },
@@ -178,6 +180,10 @@ export default class Campaign {
 
   @action setLayout = (layout) => {
     this.layoutMode = layout;
+    if (layout != this.prevLayoutMode) {
+      this.main.backButton.updateBackButtonConfig();
+    }
+    this.prevLayoutMode = layout;
   }
 
   @action showOverview = () => {

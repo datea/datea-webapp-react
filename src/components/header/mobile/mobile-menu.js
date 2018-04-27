@@ -65,7 +65,7 @@ export default class MobileMenu extends React.Component {
                   </MenuItem>
                 }
 
-                <MenuItem onClick={() => this.goTo('about')}>
+                <MenuItem onClick={() => this.goTo('info', {pageId: 'about'})}>
                  <ListItemIcon><InfoOutlineIcon/></ListItemIcon>
                  <ListItemText inset primary={t('MENU_TOP.ABOUT')} />
                 </MenuItem>

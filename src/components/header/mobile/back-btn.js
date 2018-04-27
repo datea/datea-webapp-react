@@ -2,17 +2,15 @@ import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import ArrowBack from 'material-ui-icons/ArrowBack';
 import ChevronLeft from 'material-ui-icons/ChevronLeft';
-import {inject} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
+import DIcon from '../../../icons';
 
-@inject('store')
-export default class BackButton extends React.Component {
+const BackButton = ({store}) =>
+  <IconButton className="back-btn" onClick={() => store.backButton.goBack()}>
+    {store.backButton.showBackButton
+      ? <ChevronLeft className="header-back-btn-icon" />
+      : <DIcon name="datea-logo" />
+    }
+  </IconButton>
 
-  render() {
-    return (
-      <IconButton onClick={() => window.history.back()}>
-        <ChevronLeft className="header-back-btn-icon" />
-      </IconButton>
-    )
-  }
-
-}
+export default inject('store')(observer(BackButton))

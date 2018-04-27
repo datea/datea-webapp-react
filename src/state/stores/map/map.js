@@ -265,13 +265,11 @@ export default class MapeoStore {
       boundList.push(this.geometryCollectionLayer.getBounds());
     }
 
-    console.log('boundList', boundList);
     if (boundList.length) {
       let bounds;
       boundList.forEach( b => {
         bounds = bounds ? bounds.extend(b) : b;
       })
-      console.log('final bounds', bounds);
       !!this.lmap && this.lmap.fitBounds(bounds);
     }
   }
