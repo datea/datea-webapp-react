@@ -194,7 +194,20 @@ export default class DateoFormStore {
       this.main.dateo.data.dateos.set(String(model.id), model);
       this.main.openDateo({dateo: model, isNew: !data.id});
       if (model.isNew) {
-        this.main.user.data.dateo_count++;
+        this.main.user.incrementDateoCount();
+      }
+      const context = this.main.getDatearContext();
+
+      /* FOLLOW CURRENT TAG IF NOT ALREADY */
+      if (context.type == 'tag' || context.type == 'campaign') {
+        const tag = toJS(context.type == 'campaign' ? context.data.main_tag : context.data);
+        const followedTagIds = this.main.user.data.tags_followed.map(t => t.id);
+        if (!followedTagIds.includes(tag.id)) {
+          Api.follow.post({user: this.main.user.data.id, follow_key: `tag.${tag.id}`})
+          .then(res => {
+            this.main.user.addFollowedTag(tag);
+          })
+        }
       }
     }).catch(e => {
       this.main.ui.setLoading(false);

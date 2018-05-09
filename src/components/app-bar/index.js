@@ -10,7 +10,12 @@ import {colors} from '../../theme/vars';
 const DateaAppBar = ({store, className, children, colorName, position, ...props}) =>
   <AppBar
     position={position}
-    className={cn('datea-app-bar', store.ui.isMobile ? 'mobile' : 'normal', className)}
+    className={cn(
+      'datea-app-bar',
+      store.ui.isMobile ? 'mobile' : 'normal',
+      store.ui.isScrollTop && !store.ui.forceNavShadow && 'not-scrolled',
+      className
+    )}
     style={Object.assign({}, props.style || {}, {backgroundColor: colors[colorName]})}
     {...props}>
     <Toolbar className="datea-app-bar-toolbar">

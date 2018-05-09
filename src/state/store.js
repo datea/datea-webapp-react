@@ -7,6 +7,8 @@ import SearchBar from './stores/search-bar';
 import BackButton from './stores/back-button';
 import Views from './views';
 
+import HomeViewStore from './stores/home-view';
+import SearchMappingViewStore from './stores/search-mapping-view';
 import CampaignViewStore from './stores/campaign-view';
 import CampaignFormStore from './stores/campaign-form';
 import ProfileViewStore from './stores/profile-view';
@@ -79,6 +81,23 @@ export default class DateaStore {
       case 'campaign':
         this.campaignView.setLayout('content');
         setTimeout(() => runInAction(() => {
+          // ver si se está filtrando
+          if (queryParams.tags) {
+            const activeTags = queryParams.tags.split(',');
+            let tagIncluded = false;
+            for (let tag of dateo.tags) {
+              if (activeTags.includes(tag)) {
+                tagIncluded = true;
+                break;
+              }
+            }
+            if (!tagIncluded) {
+              delete queryParams.tags
+            }
+          }
+          if (queryParams.q) {
+            delete queryParams.q;
+          }
           this.goTo('campaign', this.router.params, queryParams);
           this.ui.setLoading(false);
         }));
@@ -114,6 +133,16 @@ export default class DateaStore {
       queryParams = Object.assign({}, this.router.queryParams, queryParams);
     }
     this.goTo(this.router.currentView, this.router.params, queryParams);
+  }
+
+  /****** HOME / LANDING ******/
+  createHomeViewStore = () => {
+    this.homeView = new HomeViewStore(this);
+  }
+
+  /******* MAPPING SEARCH *******/
+  createSearchMappingViewStore = () => {
+    this.searchMappingView = new SearchMappingViewStore(this);
   }
 
   /****** CAMPAIGN *******/

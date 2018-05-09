@@ -60,7 +60,7 @@ export default class Campaign {
     this.disposeDateoQueryReaction = reaction(
       () => {
         if (this.main.router.queryParams) {
-          const {datear, dateo, ...params} = this.main.router.queryParams;
+          const {datear, dateo, slideshow, ...params} = this.main.router.queryParams;
           return qs.stringify(params || {});
         } else {
           return false;
@@ -82,7 +82,6 @@ export default class Campaign {
         }
       },
       dateoId => {
-        console.log('navigateToLayer', dateoId);
         !!dateoId && setTimeout(() => this.map.navigateToLayer(dateoId), 50);
         this.data.showDateoDetail = dateoId;
       },

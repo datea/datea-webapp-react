@@ -26,10 +26,14 @@ export default class Profile extends Component {
     return (
       <div className="profile">
         <ProfileHead profile={profile} onEditClick={this.onEditProfile} isMobile={ui.isMobile} />
-        <div className="profile-content">
-          <Button className="create-mapping-btn" onClick={this.onCreateMapping}>Crear Mapeo</Button>
-          <h3 className="profile-content-title"><Tr id="MY_MAPPINGS" /></h3>
-          <MappingColumnLayout mappings={profile.mappings} />
+        <div className="profile-content mapping-column-container">
+          <div className="mappings">
+            <div className="mapping-group">
+              <Button className="create-mapping-btn" onClick={this.onCreateMapping}>Crear Mapeo</Button>
+              <h3 className="profile-content-title"><Tr id="MY_MAPPINGS" /></h3>
+              <MappingColumnLayout mappings={profile.mappings} />
+            </div>
+          </div>
         </div>
       </div>
     )

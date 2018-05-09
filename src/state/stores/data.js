@@ -50,6 +50,7 @@ export default class DataStore {
     /* to get campaigns for a user:
        params.followed_by_tags = USER.data.id */
     @action getMappings(params = {}) {
+      console.log('getMappings en data');
       const {showLoading, ...queryParams} = params;
       !!showLoading && this.main.ui.setLoading(true);
       const url = urlJoin(config.api.url, 'mapping');

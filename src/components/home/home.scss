@@ -1,5 +1,54 @@
 @import '../../scss/vars';
 
-.my-mappings {
-  padding: 15px;
+.home-page-container {
+
+  .home-header {
+    background-color: white;
+    border-bottom: 1px solid #eee;
+
+    .content-container {
+      padding-top: 16px;
+
+      .home-title {
+        font-weight: normal;
+        margin-top: 5px;
+        margin-bottom: 0px;
+        display: flex;
+
+        .d-icon {
+          align-self : center;
+          flex-grow: 0;
+          flex-shrink: 0;
+          margin-left: 10px;
+          margin-right: 16px;
+        }
+        .welcome-msg {
+          flex-grow: 10;
+          flex-shrink: 1;
+          align-self : center;
+          text-align: left;
+          font-size: 28px;
+          @media (max-width: $xs-break) {
+            font-size: 22px;
+            line-height: 1.2;
+          }
+          color: #666;
+          .strong {
+            color: black
+          }
+        }
+      }
+      .subtitle {
+        padding: 16px;
+        @media (max-width: $xs-break) {
+          padding-left: 0;
+        }
+      }
+      .actions {
+        @media (max-width: $xs-break) {
+          margin-left: -16px;
+        }
+      }
+    }
+  }
 }

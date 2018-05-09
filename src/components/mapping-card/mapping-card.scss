@@ -1,31 +1,68 @@
 
-.mapping-card-img {
-  height: 200px;
-  background-size: cover;
-}
+.mapping-card {
 
-.mapping-card-img-icon {
-  height: 200px;
-  text-align: center;
-  overflow: hidden;
-  background-color: #ccc;
+
+  height: 300px;
   position: relative;
-  svg {
-    position: relative;
-    fill: #ffffff !important;
+
+  .mapping-card-img {
+    height: 260px;
+    background-size: cover;
   }
-  &.hashtag {
+
+  .mapping-card-img-icon {
+    height: 260px;
+    text-align: center;
+    overflow: hidden;
+    background-color: #ccc;
+    position: relative;
     svg {
-      top: -10px;
-      width: 220px !important;
-      height: 220px !important;
+      position: relative;
+      fill: #ffffff !important;
+    }
+    &.hashtag {
+      svg {
+        top: -10px;
+        width: 220px !important;
+        height: 220px !important;
+      }
+    }
+    &.campaign {
+      svg {
+        top: 20px;
+        width: 160px !important;
+        height: 160px !important;
+      }
     }
   }
-  &.campaign {
-    svg {
-      top: 20px;
-      width: 160px !important;
-      height: 160px !important;
+
+  .mapping-card-info {
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    padding-bottom: 12px !important;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.75), white, white);
+
+    h3 {
+      word-wrap: break-word;
+    }
+    .subtitle {
+      padding: 5px 0;
+      .tag, .stats {
+        margin-right: 5px;
+        display: inline-block;
+        vertical-align: top;
+      }
+      .tag {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 }

@@ -35,6 +35,7 @@ export default class UserStore {
   constructor(main) {
     this.getFromLocal();
     this.getFromServer();
+    console.log('user', this.data);
     this.main = main;
     this.syncUserToLS = autorun(() => {
       if (!!this.apiKey) {
@@ -253,6 +254,16 @@ export default class UserStore {
 
   @action setLocation(loc) {
     this.location = loc;
+  }
+
+  @action addFollowedTag(tag) {
+    if (this.data.followed_tags) {
+      this.data.followed_tags.push(tag);
+    }
+  }
+
+  @action incrementDateoCount() {
+    this.data.dateo_count++;
   }
 
   isEditable = (obj) => {

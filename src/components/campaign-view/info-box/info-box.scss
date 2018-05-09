@@ -59,6 +59,14 @@
       cursor: pointer;
     }
 
+    .actions {
+      color: white;
+      .follow-btn {
+        color: white;
+        fill: white;
+      }
+    }
+
     .datear-btn {
       position: absolute;
       right: 16px;

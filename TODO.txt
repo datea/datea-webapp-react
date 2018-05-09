@@ -1,8 +1,5 @@
-debug:
-- credentials after register are ok?
-
-móvil:
-- boton de ir para atrás
+home:
+-
 
 dateo:
 - apoyar
@@ -13,7 +10,6 @@ dateo:
 mapeo:
 - info window
 - dateo stats con opción de cargar mas
-- seguir
 - visualización de imágenes
 - visualización de charts
 - download de csv
@@ -25,10 +21,9 @@ datear:
 - poder editar la dirección fuera del modo visual
 - boundary de campaña
 - detectar hashtags en texto
-- opción de seguir los tags que estas dateando?
+- opción de seguir los tags que estas dateando? (por el momento, sigues en donde dateas)
 
 busqueda mapeo:
-- autocomplete -> tags y usuarios
 - mostrar filtros
 - filtros de mapeo: tags, moderación, dateos cargados (mobil con menos por defecto)
 
@@ -37,7 +32,6 @@ busqueda general
 - revisar autocomplete y rutas
 
 css
-- arreglar barra móvil
 - solo poner sombra a app bar cuando esta escrolleado
 
 share:

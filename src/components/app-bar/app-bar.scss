@@ -21,4 +21,8 @@ $mobile-height: 48px;
       min-height: 0 !important;
     }
   }
+  &.not-scrolled:not(.force-shadow) {
+    box-shadow: none !important;
+    border-bottom: 1px solid #eee;
+  }
 }

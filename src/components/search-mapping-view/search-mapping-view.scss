@@ -1,0 +1,26 @@
+@import '../../scss/vars';
+
+.search-page-container {
+
+  > h1 {
+    font-weight: normal;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .no-results {
+    display: flex;
+    .d-icon {
+      flex-grow: 0;
+      flex-shrink : 0;
+      width: 48px;
+      flex-basis: 48px;
+    }
+    .txt {
+      align-self: center;
+      flex-grow: 10;
+      flex-shrink: 1;
+      padding-left: 10px;
+    }
+  }
+}

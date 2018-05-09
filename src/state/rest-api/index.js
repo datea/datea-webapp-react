@@ -68,6 +68,13 @@ class Api {
     getList : () => this.get(url('category'))
   };
 
+  /* FOLLOW */
+  follow = {
+    getList : params => this.get(url('follow'), params),
+    post : params => this.post(url('follow'), params),
+    delete : id => this.delete(url('follow', id))
+  };
+
   /* URL INFO */
   urlInfo = {
     get : (url) => this.get(url('url_info'), {url})

@@ -38,6 +38,8 @@
   "DONE" : "¡Listo!",
   "CLEAR" : "borrar",
   "CLEAR_SELECTION" : "borrar selección",
+  "MAPPINGS_HIGHLIGHTED": "Mapeos destacados",
+  "MAPPINGS_RESULTS" : "Resultados",
 
   "DATEO_FORM" : {
     "ADDITIONAL_FIELDS" : "Datos adicionales (opcional)",
@@ -131,6 +133,7 @@
 
 	"FOLLOW" : {
 		"FOLLOW" : "seguir",
+    "FOLLOWING" : "siguiendo",
 		"FOLLOW_THREAD" : "seguir hilo",
 		"FOLLOWER" : "seguidor",
 		"FOLLOWERS" : "seguidores",
@@ -629,7 +632,8 @@
 		"UPLOAD" : "Error al subir archivo. Xfa, inténtalo de nuevo ;)",
     "INVALID_DATE_FORMAT" : "Fecha inválida",
     "REQUIRED_FIELD": "Debes llenar este campo ;)",
-    "GENERAL_REQUIRED_FIELDS" : "¡Uy! Te faltó llenar campos obligatorios ;)"
+    "GENERAL_REQUIRED_FIELDS" : "¡Uy! Te faltó llenar campos obligatorios ;)",
+    "RETRY" : "Inténtalo de nuevo."
  	},
 
  	"REDIRECT_MSG" : "Por favor, aguarda un momento mientras te redirigimos :)",

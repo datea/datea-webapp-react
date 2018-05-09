@@ -1,0 +1,26 @@
+
+
+.follow-btn {
+  display: inline-flex;
+  position: relative;
+  .btn-progress {
+    position: absolute;
+    top: 7px;
+    float: left;
+  }
+
+  .d-icon, svg.btn-icon {
+    height: 1.2em;
+    width: 1.2em;
+    position: relative;
+    top: -3px;
+    fill: inherit;
+    color: inherit;
+  }
+  .btn-label {
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    font-size: 12px;
+  }
+}

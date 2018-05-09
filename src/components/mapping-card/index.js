@@ -22,7 +22,12 @@ export default class MappingCard extends Component {
   render() {
     const m = this.props.mapping;
     const title = !!m.tag ? '#'+m.tag : m.name;
-    const subtitle = (!!m.name ? '#'+m.main_tag.tag : '')+', '+m.dateo_count+' dateos';
+    const subtitle = (
+      <div className="subtitle">
+        {!!m.name && <span className="tag">{'#'+m.main_tag.tag}, </span>}
+        <span className="stats">{m.dateo_count} dateos</span>
+      </div>
+    );
     let img;
     if (!!m.tag) {
       img = <div className="mapping-card-img-icon hashtag"><DIcon name="pound" /></div>;
@@ -35,11 +40,11 @@ export default class MappingCard extends Component {
     }
 
     return (
-      <Card onClick={this.goToMapping}>
+      <Card onClick={this.goToMapping} className="mapping-card">
         {img}
-        <CardContent>
+        <CardContent className="mapping-card-info">
           <Typography variant="headline" component="h3">{title}</Typography>
-          <Typography variant="subheading" component="p">{subtitle}</Typography>
+          {subtitle}
         </CardContent>
       </Card>
     )

@@ -6,6 +6,7 @@ import SettingsIcon from 'material-ui-icons/Settings';
 import {observer} from 'mobx-react';
 import {getImgSrc} from '../../../utils';
 import {Tr} from '../../../i18n';
+import FollowButton from '../../follow';
 import DatearBtn from '../../datear-btn';
 
 const InfoBox = ({campaign, onMoreInfo, isMobile, showEdit, onEditClick}) =>
@@ -28,6 +29,9 @@ const InfoBox = ({campaign, onMoreInfo, isMobile, showEdit, onEditClick}) =>
       <div className="short-desc">{campaign.short_description}</div>
       <div className="more-info" onClick={() => !!onMoreInfo && onMoreInfo()}>
         <Tr id="MORE_INFO" />
+      </div>
+      <div className="actions">
+        <FollowButton followKey={`tag.${campaign.main_tag.id}`} />
       </div>
     </div>
   </div>

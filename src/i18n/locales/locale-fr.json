@@ -39,6 +39,8 @@
   "DONE" : "Prêt!",
   "CLEAR": "effacer",
   "CLEAR_SELECTION" : "supprimer la sélection",
+  "MAPPINGS_HIGHLIGHTED": "Cartes en vedette",
+  "MAPPINGS_RESULTS" : "Cartes trouvées",
 
   "DATEO_FORM" : {
     "ADDITIONAL_FIELDS" : "Informations supplémentaires (optionnel)",
@@ -132,6 +134,7 @@
 
 	"FOLLOW" : {
 		"FOLLOW" : "Suivre",
+    "FOLLOWING" : "suivant",
 		"FOLLOW_THREAD" : "Suivre le fil",
 		"FOLLOWER" : "Suiveur",
 		"FOLLOWERS" : "Suiveurs",
@@ -629,7 +632,8 @@
  		"NOT_FOUND" : "Il semblerait que votre contenu soit introuvable. Serait-il parti sur Mars ?",
 		"UPLOAD" : "Erreur téléchargement. S'il vous plaît essayer à nouveau ;)",
     "REQUIRED_FIELD": "Vous devez remplir ce champ ;)",
-    "GENERAL_REQUIRED_FIELDS" : "Oops! Vous n'avez pas rempli les champs obligatoires. ;)"
+    "GENERAL_REQUIRED_FIELDS" : "Oops! Vous n'avez pas rempli les champs obligatoires. ;)",
+    "RETRY" : "Essaye à nouveau."
  	},
 
  	"REDIRECT_MSG" : "Merci de patienter... La page arrive à la vitesse de la lumière... Ou presque... :)"

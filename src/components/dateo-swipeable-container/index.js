@@ -35,6 +35,8 @@ export default class DateoSwipeableContainer extends Component {
     slideStyle : {}
   };
 
+  lastIndex = null;
+
   dateoIdToIndex = (id) => {
     if (id) {
       let idx = this.props.store.dateo.data.dateos.keys().indexOf(String(id));
@@ -92,6 +94,8 @@ export default class DateoSwipeableContainer extends Component {
     if (!dateoId) return <span />
 
     const idx = this.dateoIdToIndex(dateoId);
+    let animateTransitions = !this.lastIndex || Math.abs(idx - this.lastIndex) == 1;
+    this.lastIndex = idx
     return (
       <div className={cn('dateo-swipeable-container', ui.isMobile && 'mobile')}
           ref={ref => {this.containerRef = ref}}>
@@ -108,6 +112,7 @@ export default class DateoSwipeableContainer extends Component {
         <VirtualizeSwipeableViews
           index={idx}
           enableMouseEvents
+          animateTransitions={animateTransitions}
           resistance
           animateHeight
           action={cs => {this.swipeableCallbacks = cs}}

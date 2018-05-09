@@ -1,4 +1,4 @@
-import {observable, action, computed} from 'mobx';
+import {observable, action, computed, reaction, toJS} from 'mobx';
 import {rem2px, getBreakpoint} from '../../utils';
 import config from '../../config';
 
@@ -13,6 +13,8 @@ export default class UiStore {
   };
   @observable loading = false;
   @observable path = document.location.pathname;
+  @observable isScrollTop = true;
+  @observable forceNavShadow = false;
 
   @observable modals = {
     slideshow : false,
@@ -32,6 +34,8 @@ export default class UiStore {
   constructor(main) {
     this.main = main;
     window.addEventListener('resize', this.handleResize);
+    this.initSlideshowReaction();
+    this.initScrollTracking();
   }
 
   handleResize = () => {
@@ -74,16 +78,46 @@ export default class UiStore {
     }
   }
 
+  /************ SCROLL BAR ****************/
+  initScrollTracking() {
+    window.addEventListener('scroll', () =>  {
+      const val = (window.scrollY || window.pageYOffset) == 0;
+      if (val != this.isScrollTop) {
+        this.isScrollTop = val;
+      }
+    });
+  }
+
   /************* SLIDSHOW *****************/
-  @action openSlideshow(images, index = 0) {
+
+  initSlideshowReaction() {
+    this.slideReaction = reaction(
+      () => this.main.router && this.main.router.queryParams && !!this.main.router.queryParams.slideshow,
+      (open) => !open && this.modals.slideShow && this.closeSlideShow()
+    )
+  }
+
+  @action openSlideshow = (images, index = 0) => {
+    const {router} = this.main;
+    if (router.queryParams.slideshow) {
+      let qParams = toJS(router.queryParams);
+      qParams.slideshow = 'open';
+      router.goTo(router.currentView, router.params, this.main, qParams);
+    }
     this.modals.slideshow = {images, index};
   }
 
-  @action setSlideIndex(idx) {
+  @action setSlideIndex = (idx) => {
     this.modals.slideshow.index = idx;
   }
 
-  @action closeSlideShow() {
+  @action closeSlideShow = () => {
+    const {router} = this.main;
+    if (router.queryParams.slideshow) {
+      let qParams = toJS(router.queryParams);
+      delete qParams.slideshow;
+      router.goTo(router.currentView, router.params, this.main, qParams);
+    }
     this.modals.slideshow = false;
   }
 

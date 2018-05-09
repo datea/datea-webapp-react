@@ -61,7 +61,8 @@ function fetch(url, options = {}, requestLib = request) {
     promise  : () => prom,
     state    : () => state,
     then     : (func) => prom.then(func), // should we do this?
-    catch    : (func) => prom.catch(func) // ^ ^ ^ ^
+    catch    : (func) => prom.catch(func), // ^ ^ ^ ^
+    finally  : (func) => prom.finally(func)
   };
 };
 

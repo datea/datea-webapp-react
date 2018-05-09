@@ -47,6 +47,7 @@ export default class OptionsContainer extends Component {
   render() {
     const {children} = this.props;
     const {ui, searchBar} = this.props.store;
+
     return (
       <div ref={r => {this.wrapperRef = r}}
         className={cn('searchbar-options-content', ui.isMobile ? 'mobile' : 'normal', !searchBar.hasAcResults && 'empty')}

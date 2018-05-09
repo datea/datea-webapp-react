@@ -1,37 +1,65 @@
 @import '../../scss/vars';
 
 .mapping-column-layout {
-  column-count: 1;
-  column-gap: 5px;
-  column-fill: auto;
   padding-bottom: 30px;
-  margin: 0 -5px;
+  margin: 0 -10px;
+  display: flex;
+  flex-wrap: wrap;
+
+  .mapping-column-item {
+    cursor: pointer;
+    overflow: hidden;
+    padding: 10px;
+    width: 100%;
+    flex-basis: 100%;
+  }
 
   @media (min-width: 600px ) {
-  	column-count: 2;
+  	.mapping-column-item {
+      width: 50%;
+      flex-basis: 50%;
+    }
   }
 
   @media (min-width: 750px) {
-  	column-count: 3;
+    .mapping-column-item {
+      width: 33.33333%;
+      flex-basis: 33.33333%;
+    }
   }
 
-  @media (min-width: 1024px) {
-  	column-count: 4;
+  @media (min-width: 1120px) {
+    .mapping-column-item {
+      width: 25%;
+      flex-basis: 25%;
+    }
+  }
+}
+
+
+.mapping-column-container, .content-container {
+
+  padding: 20px;
+
+  @media (min-width: $xs-break) {
+    padding: 24px;
   }
 
-}
+  @media (min-width: $md-break) {
+    padding: 24px 3%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-.mapping-column-item {
-  cursor: pointer;
-  display: block;
-  break-inside: avoid-column;
-  -webkit-column-break-inside: avoid;
-  overflow: hidden;
-  padding: 10px;
-}
-
-.mapping-column-container {
-  @media (min-width: 1024px) {
-    padding: 0 7%;
+  .mappings {
+    padding-top: 0px;
+    .mapping-group {
+      > h3 {
+        color: #555;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+    }
   }
 }

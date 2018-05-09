@@ -1,6 +1,6 @@
 import './search-bar.scss';
 import React, {Component} from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import cn from 'classnames';
 import {observer, inject} from 'mobx-react';
@@ -8,11 +8,10 @@ import TextField from 'material-ui/TextField';
 import SearchIcon from 'material-ui-icons/Search';
 import CloseIcon from 'material-ui-icons/Close';
 import IconButton from 'material-ui/IconButton';
-import AutocompleteList from './autocomplete-list';
-import Avatar from 'material-ui/Avatar';
+import { CircularProgress } from 'material-ui/Progress';
+import OptionsContainer from './options-container';
 import {t, translatable} from '../../i18n';
 import {getImgSrc} from '../../utils';
-import DIcon from '../../icons';
 
 @inject('store')
 @translatable
@@ -23,220 +22,76 @@ export default class SearchBar extends Component {
     router: PropTypes.object
   };
 
-  static defaultProps = {
-    iconSize : 30
-  };
-  mouseHover   = false;
+  mouseHover = false;
+  insideMenuOpen = false;
   clearPressed = false;
 
   constructor(props, context) {
     super(props, context);
     this.state = {
-      focused       : false,
-      query         : '',
-      acResults     : this.createAcResultItems([], ''),
-      acSelectIndex : -1
+      focused : false,
     };
   }
 
   setFocus = (focused) => {
-    if (this.mouseHover && this.state.focused) {
-      setTimeout(() => {
-        if (this.clearPressed) {
-          this.clearPressed = false;
-        } else {
-          this.props.store.searchBar.resetAc();
+    const {searchBar} = this.props.store;
+    setTimeout(() => {
+      console.log('insideMenuOpen', this.insideMenuOpen);
+      if (this.mouseHover && this.state.focused && !this.insideMenuOpen && !this.dontCloseClick) {
+        setTimeout(() => {
+          if (this.clearPressed) {
+            this.clearPressed = false;
+          } else {
+            searchBar.resetAcIndex();
+            this.setState({focused});
+          }
+          focused && setTimeout(() => searchBar.doAutoComplete());
+        }, 300);
+      } else {
+        if (!this.insideMenuOpen && !this.dontCloseClick) {
+          searchBar.resetAcIndex();
           this.setState({focused});
+          focused && searchBar.doAutoComplete();
         }
-        focused && setTimeout(() => this.doAutoComplete());
-      }, 300);
-    } else {
-      this.setState({focused, acSelectIndex: -1});
-      focused && this.doAutoComplete();
-    }
+      }
+      this.dontCloseClick = false;
+    });
   }
 
-  handleChange = (ev) => {
-    const query = ev.target.value;
-    this.setState({query});
-    _.debounce(() => this.doAutoComplete(), 500)();
-  }
-
-  doAutoComplete() {
-    const {data} = this.props.store;
-    const query = this.state.query;
-    let state = {acSelectIndex : -1};
-    if (query && query.length >= 2) {
-      data.searchAutoComplete(query).then(res => {
-        console.log('ac results', res);
-        state.acResults = this.createAcResultItems(res, this.state.query);
-        this.setState(state);
-      });
-    }else{
-      state.acResults = this.createAcResultItems([], this.state.query);
-      this.setState(state);
-    }
-  }
+  handleChange = (ev) => this.props.store.searchBar.setSearch(ev.target.value);
 
   handlePressKey = (ev) => {
-    const {store} = this.props;
+    const {searchBar} = this.props.store;
     const key = ev.keyCode;
     if (key == 13) {
-      if (this.state.query && this.state.acSelectIndex == -1) {
+      if ((searchBar.searchValid() && searchBar.acSelectIndex == -1) || searchBar.acSelectIndex >= 0) {
         this.searchFieldRef.blur();
-        const query = this.state.query.trim();
-        store.goTo('search', {query});
-      } else if (this.state.acSelectIndex >= 0) {
-        this.searchFieldRef.blur();
-        let route = this.state.acResults.filter(r => r.type == 'listItem')[this.state.acSelectIndex].route;
-        this.setState({query: '', acSelectIndex: -1});
-        store.goTo(route.view, route.params);
+        searchBar.onEnter();
       }
     }
     if (key == 40 || key == 38) {
       ev.preventDefault();
-      key == 40 && this.incrementAcResult(1);
-      key == 38 && this.incrementAcResult(-1);
+      key == 40 && searchBar.incrementAcResult(1);
+      key == 38 && searchBar.incrementAcResult(-1);
     }
-  }
-
-  navigateTo = (route) => {
-    this.setState({query: '', acSelectIndex: -1});
-    this.props.store.goTo(route.view, route.params);
   }
 
   handleClear = (ev) => {
     this.clearPressed = true;
-    this.setState({query: '', acResults: this.createAcResultItems([], ''), acSelectIndex: -1});
+    this.props.store.searchBar.clear();
     this.searchFieldRef.focus();
   }
 
-  incrementAcResult(num) {
-    const {user} = this.props.store;
-    let totalResults;
-    if (this.state.query.length < 2) {
-      if (user.isSignedIn) {
-        totalResults = (!!user.data.dateo_count ? 1 : 0) + (user.data.tags_followed.length);
-      }else{
-        totalResults = 0;
-      }
-    }else {
-      totalResults = this.state.acResults.length
-    }
-    const futurePos = this.state.acSelectIndex + num;
-    if (futurePos < totalResults && futurePos > -1) {
-      this.setState({acSelectIndex: futurePos});
-    } else if (futurePos == -1 && this.state.acSelectIndex != -1) {
-      this.setState({acSelectIndex : -1});
-    }
+  onOpenInsideMenu = () => {
+    this.insideMenuOpen = true;
   }
 
-  createAcResultItems(results, query) {
-    const {user} = this.props.store;
-    let listItems = [];
-
-    if (query.length > 1 && !results.length) {
-      return listItems;
-    } else if (!results || !results.length) {
-      // add personal dateos
-      if (user.isSignedIn) {
-        if (user.data.dateo_count > 0) {
-          listItems.push({
-            type: 'listItem',
-            primaryText:
-                   <span>
-                     <strong>{'@'+user.data.username}</strong>
-                     <span> {'('+t('SEARCHBOX.MY_DATEOS')+')'}</span>
-                   </span>,
-            secondaryText: user.data.dateo_count+ ' dateos',
-            leftAvatar: user.image ? <Avatar src={user.smallImage} /> : <DefaultAvatar />,
-            route : { view: 'profileDateos'}
-          });
-
-          if (user.data.tags_followed.length) {
-            // add stuff I follow
-            listItems.push({
-              type : 'subHeader',
-              text : t('SEARCHBOX.MAPPINGS_I_FOLLOW')
-            });
-            listItems = listItems.concat(this.createFollowedAcItemList());
-          }
-        }
-      }
-    } else if (results && !!results.length) {
-      listItems.push({
-        type : 'subHeader',
-        text : t('SEARCHBOX.MAPPINGS')
-      });
-      listItems = listItems.concat(this.createAcSearchResultItems(results));
-    }
-    return listItems;
-  }
-
-  createFollowedAcItemList() {
-    const {user} = this.props.store;
-    return user.data.tags_followed.map(item => {
-      if (t.type == 'tag') {
-        return {
-          type: 'listItem',
-          primaryText: '#'+item.tag,
-          secondaryText : item.dateo_count + 'dateos',
-          route: {view: 'tag', params: {tag: item.tag}}
-        }
-      }else{
-        return {
-          type: 'listItem',
-          primaryText : item.campaigns[0].name,
-          secondaryText: '#'+item.tag+', '+item.dateo_count+' dateos',
-          leftAvatar : !!item.campaigns[0].thumb ?
-              <Avatar src={getImgSrc(item.campaigns[0].thumb)} style={{borderRadius: '5px'}} /> :
-              <Avatar style={{borderRadius: '5px'}}><DIcon name="map-marker-multiple" /></Avatar>,
-          route: {
-            view: 'campaign',
-            params: {
-              username: item.campaigns[0].username,
-              slug: item.campaigns[0].slug
-            }
-          }
-        }
-      }
-    })
-  }
-
-  createAcSearchResultItems(results) {
-    return results.map(item => {
-      if (item.type == 'tag') {
-        return {
-                type: 'listItem',
-                primaryText : '#'+item.tag,
-                secondaryText : item.dateo_count+' dateos',
-                route : {
-                  view: 'tag',
-                  params: {tag: item.tag}
-                }
-              };
-      }else if (item.type == 'campaign') {
-        return {
-                type: 'listItem',
-                primaryText : item.name,
-                leftAvatar : !!item.thumb ?
-                    <Avatar src={getImgSrc(item.thumb)} style={{borderRadius: '5px'}} /> :
-                    <Avatar style={{borderRadius: '5px'}}><DIcon name="map-marker-multiple" /></Avatar>,
-                secondaryText : '#'+item.main_tag+', '+item.dateo_count+' dateos',
-                route : {
-                  view: 'campaign',
-                  params: {
-                    username: item.user,
-                    slug: item.slug
-                  }
-                }
-              };
-      }
-    });
+  onCloseInsideMenu = () => {
+    this.insideMenuOpen = true;
   }
 
   render() {
-    const {ui} = this.props.store;
+    const {ui, searchBar} = this.props.store;
     const barClass = cn(
       'search-bar',
       ui.isMobile ? 'mobile' : 'normal',
@@ -244,48 +99,41 @@ export default class SearchBar extends Component {
     );
     const inputStyle = {
         paddingLeft  : 44,
-        paddingRight : 44,
-        boxSizing    : 'border-box',
-        width        : '100%',
+        paddingRight : this.state.focused && !!searchBar.search ? 44 : 0,
         lineHeight   : '35px',
     };
-    const acResults = this.state.acResults;
 
     return (
       <div className={barClass}
         onMouseEnter={() => this.mouseHover = true}
         onMouseLeave={() => this.mouseHover = false}>
         <div className="search-box">
-          <SearchIcon className="search-icon"
-            style={{width: this.props.iconSize, height: this.props.iconSize}} />
+          <SearchIcon className="search-icon no-switch" />
           <TextField inputRef={ref => {this.searchFieldRef = ref}}
             name="mainSearch"
-            placeholder={this.state.focused ? 'Buscar mapeos' : ''}
+            className="main-search-textfield"
+            placeholder={searchBar.mode == 'global' ? t('SEARCHBOX.GLOBAL_PH') : t('SEARCHBOX.LOCAL_PH')}
             fullWidth={true}
             onFocus={()=> this.setFocus(true)}
             onBlur={()=> this.setFocus(false)}
             InputProps={{style:inputStyle, disableUnderline: true}}
-            style={{display: 'block'}}
             onKeyDown={this.handlePressKey}
             onChange={this.handleChange}
-            value={this.state.query}
+            value={searchBar.search}
            />
-           {!!this.state.focused && !!this.state.query &&
-             <IconButton className="search-clear-btn"
-              style={{position: 'absolute', top: 0, right: 0}}
-              onClick={this.handleClear}>
-                <CloseIcon />
-            </IconButton>
+          {!!this.state.focused && !!searchBar.search && !searchBar.loading &&
+             <IconButton className="search-clear-btn" onClick={this.handleClear}>
+               <CloseIcon />
+             </IconButton>
+           }
+           {searchBar.loading &&
+             <CircularProgress className="search-loading-indicator" size={20} style={{color: '#ccc'}} />
            }
         </div>
         <div className="search-bg"></div>
         {this.state.focused &&
-          <div className={cn('ac-wrapper', !!acResults.length && 'full')}>
-            <AutocompleteList
-              items={acResults}
-              selectIdx={this.state.acSelectIndex}
-              onItemClick={this.navigateTo}
-             />
+          <div className={cn('ac-wrapper', searchBar.hasAcResults && 'full')}>
+            <OptionsContainer setNonCloseClick={() => {this.dontCloseClick = true}} />
           </div>
         }
       </div>

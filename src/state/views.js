@@ -20,7 +20,7 @@ import Profile from '../components/profile';
 import CampaignView from '../components/campaign-view';
 import CampaignManagerView from '../components/campaign-manager-view';
 import StaticPage from '../components/static-page';
-
+import SearchMappingView from '../components/search-mapping-view';
 
 const customUrls = {
   //localhost : 'admindatero'
@@ -38,10 +38,18 @@ const Views = {
         store.goTo('profile', {username: customUrls[location.hostname]});
         return false;
       } else {
-        store.ui.setLayout('normal');
-        !store.user.isSignedIn && store.goTo('welcome');
+        if (!store.user.isSignedIn) {
+          store.goTo('welcome');
+        } else {
+            store.ui.setLayout('normal');
+            store.createHomeViewStore();
+        }
       }
     },
+    onExit: (route, params, store) => {
+      !!store.homeView && !!store.homeView.dispose && store.homeView.dispose();
+      store.homeView = null;
+    }
   }),
 
   /* LANDING / WELCOME */
@@ -58,6 +66,21 @@ const Views = {
         store.user.isSignedIn && store.goTo('home');
       }
     },
+  }),
+
+  /* MAPPING SEARCH  */
+  search : new Route({
+    name : 'search',
+    path : '/search',
+    component : <SearchMappingView />,
+    onEnter: (route, params, store) => {
+      store.ui.setLayout('normal');
+      store.createSearchMappingViewStore();
+    },
+    onExit: (route, params, store) => {
+      !!store.searchMappingView && !!store.searchMappingView.dispose && store.searchMappingView.dispose();
+      store.searchMappingView = null;
+    }
   }),
 
   /* STATIC INFO */
@@ -204,6 +227,7 @@ const Views = {
     },
     onExit: (route, params, store) => {
       !!store.profileView && !!store.profileView.dispose && store.profileView.dispose();
+      store.profileView = null;
     },
     backButtonConfig : {
       view : 'home',
@@ -233,10 +257,12 @@ const Views = {
     path: '/:username/:slug',
     component : <CampaignView />,
     onEnter: (route, params, store) => {
+      store.ui.forceNavShadow = true;
       store.ui.setLayout('mapping');
       const campaignView = store.createCampaignViewStore();
       campaignView.loadView(params.username, params.slug)
     },
+    beforeExit : (route, params, store) => { store.ui.forceNavShadow = false},
     onExit: (route, params, store) => {
       store.disposeCampaignViewStore();
     },

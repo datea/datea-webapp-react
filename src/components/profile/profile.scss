@@ -1,12 +1,16 @@
 
 .profile {
   .profile-content {
-    .create-mapping-btn {
-      float: right;
+    .mappings {
+      padding-top: 0;
+      .mapping-group {
+        position: relative;
+        .create-mapping-btn {
+          position: absolute;
+          top: -5px;
+          right: 0;
+        }
+      }
     }
-    .profile-content-title {
-      margin-left: 5px;
-    }
-    margin: 0 16px 40px 16px;
   }
 }
