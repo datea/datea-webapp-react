@@ -16,13 +16,16 @@ function fetch(url, options = {}, requestLib = request) {
 
   // HEADERS
   if (!options.headers.Accept) options.headers.Accept = 'application/json';
-  // language/locale
-  options.headers['Accept-Language'] = localStorage.getItem('locale') || config.defaultLocale;
-  // include Auth info if present
-  if (localStorage.getItem('apiKey') && localStorage.getItem('user')) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const apiKey = localStorage.getItem('apiKey');
-    options.headers.Authorization = 'Apikey ' + user.username + ':' + apiKey;
+
+  if (typeof (ENV_TYPE) != 'undefined' && ENV_TYPE == 'browser') {
+    // language/locale
+    options.headers['Accept-Language'] = localStorage.getItem('locale') || config.defaultLocale;
+    // include Auth info if present
+    if (localStorage.getItem('apiKey') && localStorage.getItem('user')) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const apiKey = localStorage.getItem('apiKey');
+      options.headers.Authorization = 'Apikey ' + user.username + ':' + apiKey;
+    }
   }
   !options.noHeaders && req.set(options.headers);
 

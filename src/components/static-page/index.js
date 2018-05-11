@@ -16,6 +16,19 @@ export default class StaticPage extends Component {
     this.props.store.goTo('info', {pageId: value});
   }
 
+  componentDidMount() {
+    const {store} = this.props;
+    const page = store.router.params.pageId.toUpperCase();
+    const metaData = {
+      title : {id : 'METADATA.INFO.'+page+'.TITLE'}
+    };
+    store.metaData.set(metaData);
+  }
+
+  componentDidUpdate() {
+
+  }
+
   render() {
     const tab = this.props.store.router.params.pageId || 'about';
     return (

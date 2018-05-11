@@ -80,7 +80,7 @@ export default class CampaignLegendBar extends Component {
         onMouseLeave={this.onMouseLeave}
         ref={r => {this.mainRef = r}}
         >
-        {campaign.subtags.values().map(tag =>
+        {[...campaign.subtags.values()].map(tag =>
           <ButtonBase
             key={tag.tag}
             className={cn('ht-btn', activeTags.includes(tag.tag) && 'active')}

@@ -139,7 +139,7 @@ export default class DateoFormStore {
       }
     } else if (context.type == 'campaign') {
       if (context.data.subtags) {
-        tags = tags.concat(context.data.subtags.values().map(t => t.tag));
+        tags = tags.concat([...context.data.subtags.values()].map(t => t.tag));
       }
     }
     this.suggestedTags.replace(tags);

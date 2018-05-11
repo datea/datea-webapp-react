@@ -111,7 +111,9 @@
 		"NO_TAGS_FOLLOWED_TITLE" : "Aucune étiquette suivie !",
 		"NO_TAGS_FOLLOWED_MSG" : "En suivant des étiquettes, vous pourrez participer aux thèmes qui vous intéressent. Pour cela, il faut cliquer sur Suivre",
 		"LAST_ACTIONS" : "Dernières actions",
-		"WELCOME" : "Bienvenue!",
+		"WELCOME" : "Bienvenue",
+    "WELCOME_SUB1": "Que voulez-vous cartographier aujourd'hui? Choisissez une carte pour la carte ou",
+    "WELCOME_SUB2": "en créer une nouvelle",
 		"SEARCH_TITLE" : "Trouvez des sujets pour participer",
 		"SEARCH_PH" : "Rechercher",
 		"SEARCH_SUBTITLE" : "La localisation avec une nouvelle étiquette pour créer la carte",
@@ -145,6 +147,66 @@
 		"SHARE" : "Partage",
 		"SHARE_ON" : "Partagez sur"
 	},
+
+  "METADATA" : {
+    "TITLE_SUFFIX" : " - Datea.pe",
+    "DEFAULT" : {
+      "TITLE" : "Todos Somos Dateros",
+      "DESCRIPTION" : "Datea es una Plataforma de mapeo colaborativo. Crea mapas y galerias de imágenes, dateando con tu comunidad."
+    },
+    "NOT_FOUND" : {
+      "TITLE" : "Página no encontrada"
+    },
+    "INFO" : {
+      "TOS" : {
+        "TITLE" : "Términos"
+      },
+      "PRIVACY" : {
+        "TITLE" : "Provacidad"
+      },
+      "ABOUT" : {
+        "TITLE" : "Acerca de"
+      }
+    },
+    "CAMPAIGN_FORM" : {
+      "TITLE" : "Crea un mapeo"
+    },
+    "SETTINGS" : {
+      "TITLE" : "Configuración"
+    },
+    "RECOVER_PASS_CONFIRM" : {
+      "TITLE" : "Confirma tu nueva contraseña"
+    },
+    "RECOVER_PASS" : {
+      "TITLE" : "Recuperar contraseña"
+    },
+    "ACTIVATE" : {
+      "TITLE" : "Activar mi cuenta datera"
+    },
+    "REGISTER_FORM_PAGE" : {
+      "TITLE" : "Regístra una cuenta de usuario en Datea"
+    },
+    "REGISTER" : {
+      "TITLE" : "Únete a Datea, crea una cuenta de usuario"
+    },
+    "LOGIN" : {
+      "TITLE" : "Iniciar sesión"
+    },
+    "CAMPAIGN" : {
+      "TITLE" : "%{mainTag} - %{name}",
+      "DESCRIPTION" : "%{shortDesc}. Mapeo creado por %{username}"
+    },
+    "DATEO" : {
+      "TITLE" : "%{username}: %{extract}",
+      "DESCRIPTION" : "%{extract}"
+    },
+    "PROFILE" : {
+      "TITLE" : "perfil datero de %{username}"
+    },
+    "PROFILE_DATEOS" : {
+      "TITLE" : "dateos de %{username}"
+    }
+  },
 
 	"DATEAR" : {
 		"DATEAR" : "Cartographier",

@@ -5,7 +5,7 @@ import config from '../../config';
 export default class UiStore {
 
   @observable activeBreakpoint = getBreakpoint();
-  @observable windowSize = {width: window.innerWidth, height: window.innerHeight};
+  @observable windowSize = this.getWindowSize();
   @observable layout = {
     showFooter    : false,
     docHeightMode : 'window', // or 'window' -> for same as the window.
@@ -33,9 +33,23 @@ export default class UiStore {
 
   constructor(main) {
     this.main = main;
-    window.addEventListener('resize', this.handleResize);
+    if (ENV_TYPE == 'browser') {
+      window.addEventListener('resize', this.handleResize);
+    }
     this.initSlideshowReaction();
     this.initScrollTracking();
+  }
+
+  getWindowSize() {
+    if (ENV_TYPE == 'browser') {
+      return {width: window.innerWidth, height: window.innerHeight};
+    } else {
+      return {width: 1024, height: 768};
+    }
+  }
+
+  getCurrentPath() {
+    if (ENV_TYPE == 'browser') return document.location.pathname;
   }
 
   handleResize = () => {
@@ -48,7 +62,7 @@ export default class UiStore {
   *************/
   @action setWindowSize() {
     this.activeBreakpoint = getBreakpoint();
-    this.windowSize = {width: window.innerWidth, height: window.innerHeight};
+    this.windowSize = this.getWindowSize();
   }
 
   @action showFooter(bool) {
@@ -80,12 +94,14 @@ export default class UiStore {
 
   /************ SCROLL BAR ****************/
   initScrollTracking() {
-    window.addEventListener('scroll', () =>  {
-      const val = (window.scrollY || window.pageYOffset) == 0;
-      if (val != this.isScrollTop) {
-        this.isScrollTop = val;
-      }
-    });
+    if (ENV_TYPE == 'browser') {
+      window.addEventListener('scroll', () =>  {
+        const val = (window.scrollY || window.pageYOffset) == 0;
+        if (val != this.isScrollTop) {
+          this.isScrollTop = val;
+        }
+      });
+    }
   }
 
   /************* SLIDSHOW *****************/

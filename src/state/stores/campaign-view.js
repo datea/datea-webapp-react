@@ -46,6 +46,7 @@ export default class Campaign {
     .then(res => runInAction(() => {
       if (res.objects.length == 1) {
         this.data.campaign = this.hydrateCampaign(res.objects[0]);
+        this.setMetaData();
         this.initReactions();
         const {boundary: geometry, center, zoom} = this.data.campaign;
         this.map.createMap({center, zoom, geometry});
@@ -60,7 +61,7 @@ export default class Campaign {
     this.disposeDateoQueryReaction = reaction(
       () => {
         if (this.main.router.queryParams) {
-          const {datear, dateo, slideshow, ...params} = this.main.router.queryParams;
+          const {datear, dateo, slideshow, lang,...params} = this.main.router.queryParams;
           return qs.stringify(params || {});
         } else {
           return false;
@@ -69,7 +70,7 @@ export default class Campaign {
       () => {
         this.queryDateos();
       },
-      true
+      {fireImmediately: true}
     );
 
     this.disposeDetailViewReaction = reaction(
@@ -85,7 +86,7 @@ export default class Campaign {
         !!dateoId && setTimeout(() => this.map.navigateToLayer(dateoId), 50);
         this.data.showDateoDetail = dateoId;
       },
-      true
+      {fireImmediately: true}
     );
   }
 
@@ -96,13 +97,13 @@ export default class Campaign {
 
   getCurrentDateoQueryParams = () => {
     const {router} = this.main;
-    const {datear, dateo, ...params} = !!router.queryParams ? toJS(router.queryParams) : {};
+    const {datear, dateo, lang, slideshow, ...params} = !!router.queryParams ? toJS(router.queryParams) : {};
     return params;
   }
 
   @action setQueryParams = (newParams, replace = true) => {
     const {router} = this.main;
-    const {datear, dateo, ...currentParams} = router.queryParams ? toJS(router.queryParams) : {};
+    const {datear, dateo, lang, slideshow, ...currentParams} = router.queryParams ? toJS(router.queryParams) : {};
     let params;
     if (!replace) {
       newParams = {...currentParams, ...newParams};
@@ -170,6 +171,7 @@ export default class Campaign {
     subtagArray.forEach(tag => subtags.set(tag.tag, tag));
 
     campaign.subtags = subtags;
+    console.log('subtags', subtags);
     return campaign;
   }
 
@@ -188,6 +190,35 @@ export default class Campaign {
   @action showOverview = () => {
     this.main.closeDateo();
     this.map.fitBoundsToLayers();
+  }
+
+  @action setMetaData = (dateoId) => {
+    let data;
+    if (!dateoId) {
+      const campaign = this.data.campaign;
+      this.main.metaData.set({
+        title: {
+          id: 'METADATA.CAMPAIGN.TITLE',
+          params : {
+            username: campaign.user.username,
+            name : campaign.name,
+            mainTag : campaign.main_tag.tag
+          },
+        },
+        description : {
+          id: 'METADATA.CAMPAIGN.DESCRIPTION',
+          params : {
+            username: campaign.user.username,
+            name : campaign.name,
+            mainTag : campaign.main_tag.tag,
+            shortDesc : campaign.short_description
+          },
+        },
+        imgUrl : !!campaign.image ? campaign.image.image : false
+      });
+    } else {
+      this.main.dateo.setMetaData(dateoId, this.main.router.currentView);
+    }
   }
 
   dispose = () => {

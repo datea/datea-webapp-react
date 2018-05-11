@@ -10,7 +10,7 @@ const DateoTeaserList = ({dateos, onLoadMoreDateos, onDateoOpen, showMax}) =>
     <div className="dateo-teaser-list">
       <h4 className="title">Dateos</h4>
       <div className="dateo-list">
-        {dateos.values().slice(0, showMax).map(dateo =>
+        {[...dateos.values()].slice(0, showMax).map(dateo =>
           <DateoTeaser key={'dateo-'+dateo.id} dateo={dateo} onOpen={onDateoOpen} />
         )}
       </div>

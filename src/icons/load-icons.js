@@ -7,4 +7,6 @@ let __svg__ = { path: './svg/**/*.svg', name: 'svg/[hash].icons.svg' };
 // var __svgsprite__ = { path: './assets/svg/minify/*.svg', name: 'assets/svg/[hash].1logos.svg' };
 
 // require basic or custom sprite loader
-require('webpack-svgstore-plugin/src/helpers/svgxhr')(__svg__);
+if (ENV_TYPE == 'browser') {
+  require('webpack-svgstore-plugin/src/helpers/svgxhr')(__svg__);
+}

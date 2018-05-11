@@ -10,7 +10,7 @@ import 'leaflet.pm';
 
 const FLY_TO_ZOOM = 16;
 
-const ResizeMapEvent = new Event('ResizeMapEvent');
+const ResizeMapEvent = ENV_TYPE == 'browser' ? new Event('ResizeMapEvent') : {};
 export {ResizeMapEvent};
 
 export default class MapeoStore {
@@ -440,7 +440,7 @@ export default class MapeoStore {
   dispose() {
     !!this.lmap && this.lmap.remove();
     this.lmap = null;
-    window.removeEventListener('ResizeMapEvent', this.resizeMap);
+    ENV_TYPE == 'browser' && window.removeEventListener('ResizeMapEvent', this.resizeMap);
     this.mapMounted = false;
   }
 }

@@ -41,9 +41,10 @@ export default class ProfileView {
       Api.user.getDetail(this.username)
       .then(res => {
         this.data.user = res;
+        this.setMetaData(res);
         this.loadMappings();
       })
-      .catch(res => {
+      .catch(e => {
         this.main.ui.show404();
       })
       .finally(() => this.main.ui.setLoading(false));
@@ -69,5 +70,13 @@ export default class ProfileView {
         this.data.mappingsCreated.replace(res.objects);
       })
     ])
+  }
+
+  @action setMetaData = (obj) => {
+    this.main.metaData.set({
+      title: {id: 'METADATA.PROFILE.TITLE', params : {username: obj.username}},
+      description : {id: 'METADATA.PROFILE.TITLE', params: {username : obj.username}},
+      imgUrl : obj.image_large
+    });
   }
 }

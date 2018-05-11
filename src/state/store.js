@@ -1,10 +1,11 @@
-import {autorun, action, reaction, computed, observable, toJS, runInAction} from 'mobx';
-import {RouterStore} from 'mobx-router/src';
+import {autorun, action, reaction, computed, observable, toJS, runInAction, when} from 'mobx';
+import {RouterStore} from '../mobx-router';
 import DataStore from './stores/data';
 import UIStore from './stores/ui';
 import UserStore from './stores/user';
 import SearchBar from './stores/search-bar';
 import BackButton from './stores/back-button';
+import MetaData from './stores/meta-data';
 import Views from './views';
 
 import HomeViewStore from './stores/home-view';
@@ -19,6 +20,8 @@ import DateoFormStore from './stores/dateo-form';
 export default class DateaStore {
 
   @observable datearMode = 'closed';
+  @observable isServerSideReady = false;
+  hostname = '';
 
   constructor() {
     this.router = new RouterStore();
@@ -28,7 +31,9 @@ export default class DateaStore {
     this.dateo = new DateoStore(this);
     this.searchBar = new SearchBar(this);
     this.backButton = new BackButton(this);
+    this.metaData = new MetaData(this);
     this.initListenToDateoForm();
+    this.initMetaDataTracking();
   }
 
   /* DATEO FORM MAIN ACTIONS: TODO EVALUATE WHERE TO PUT THIS */
@@ -47,7 +52,7 @@ export default class DateaStore {
   initListenToDateoForm = () => {
     this.listenDateoForm = reaction(
       () => this.router.queryParams && this.router.queryParams.datear,
-        val => {
+      val => {
         if (val) {
           this.dateoForm = new DateoFormStore(this, val);
           this.datearMode = val;
@@ -167,8 +172,43 @@ export default class DateaStore {
     this.router.goTo(view, paramsObject, this, queryParamsObject);
   }
 
-  /************** PROFILE *******************/
+  /************** PROFILE **********************/
   createProfileStore = (username) => {
     this.profileView = new ProfileViewStore(this, username);
   }
+
+  setServerSideReady = () => {
+    setTimeout(() => { this.isServerSideReady = true;});
+  }
+
+  /************* SERVER SIDE ASYNC *************/
+  initMetaDataTracking = () => {
+    autorun(() => {
+      if (this.router.currentView && !this.router.currentView.isServerSideAsync) {
+        this.metaData.set(this.router.currentView.metaData || {});
+      }
+    })
+  }
+
+  setHostName = (name) => {
+    this.hostname = name;
+  }
+
+  getHostName = () => {
+    return ENV_TYPE == 'browser' ? location.hostname : this.hostname;
+  }
+
+  serverSideWaitAsync = async () => new Promise((resolve, reject) => {
+    when(() => !!this.router.currentView, () => {
+      if (!this.router.currentView.isServerSideAsync) {
+        this.metaData.set(this.router.currentView.metaData || {});
+        resolve();
+      } else {
+        this.isServerSideReady = false;
+        when(() => this.isServerSideReady, () => {
+          resolve();
+        });
+      }
+    })
+  });
 }

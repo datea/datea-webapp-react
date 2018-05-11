@@ -308,7 +308,7 @@ export default class SearchBarStore {
       if (subtags && subtags.size) {
         return [{
           subheader : t('SEARCH_FILTER.FILTER_TAG'),
-          items : subtags.values().map((tag, index) => ({
+          items : [...subtags.values()].map((tag, index) => ({
             index,
             primaryText : '#'+tag.tag,
             secondaryText : tag.dateo_count+' '+t('DATEOS'),

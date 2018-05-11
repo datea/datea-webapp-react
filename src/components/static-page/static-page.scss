@@ -26,6 +26,23 @@
         font-size: 24px;
         margin-top: 0;
       }
+
+      .logo-row {
+        display: flex;
+        img {
+          align-self: center;
+          margin: 0 15px;
+          transform: scale(0.75)
+        }
+        .pro-habitat {
+          width: 177px;
+          height: 155px;
+        }
+        .misereor {
+          width : 267px;
+
+        }
+      }
     }
   }
 }

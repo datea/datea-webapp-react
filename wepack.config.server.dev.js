@@ -4,10 +4,13 @@ var webpack           = require('webpack');
 var path              = require('path');
 var fs                = require('fs');
 var SvgStore          = require('webpack-svgstore-plugin');
+var nodeExternals   = require('webpack-node-externals');
 var loaderRules       = require('./webpack-loader-rules');
 
 var config = {
   mode: 'development',
+  target: 'node',
+  externals: [nodeExternals()],
   devServer: {
     host: '0.0.0.0',
     historyApiFallback: true,
@@ -15,11 +18,19 @@ var config = {
     hot: true,
     port: 9000
   },
-  entry: ['babel-polyfill', path.resolve(__dirname, './src/client/index-dev.js')],
+  entry: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:9000',
+    'webpack/hot/only-dev-server',
+    'babel-polyfill',
+    path.resolve(__dirname, './src/server/index.js')
+  ],
   output: {
     path: path.resolve(__dirname, './dev'),
-    filename: '[name].[hash].js',
-    publicPath: '/'
+    filename: 'server.js',
+    publicPath: '/',
+    library: 'app',
+    libraryTarget: 'commonjs2'
   },
   module: { rules: loaderRules },
   plugins: [
@@ -28,13 +39,12 @@ var config = {
       __DEV__: 'true',
       API_URL: JSON.stringify(process.env.API_URL_DEV || 'http://localhost:8000/api/v2'),
       MEDIA_URL : JSON.stringify(process.env.MEDIA_URL_DEV || 'http://localhost:8000'),
-      WEB_URL: JSON.stringify(process.env.WEB_URL_DEV || 'http://localhost:9000'),
-      ENV_TYPE : JSON.stringify('browser')
+      WEB_URL: JSON.stringify(process.env.WEB_URL_DEV || 'http://localhost:9000')
     }),
-    new webpack.NamedModulesPlugin(), // BETTER CONSOLE OUTPUT FOR ERRORS
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(), // BETTER CONSOLE OUTPUT FOR ERRORS
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/client/index-dev.html'),
+      template: path.resolve(__dirname, './src/index-dev.html'),
       inject: 'body' // Inject all scripts into the body
     }),
     new SvgStore({
