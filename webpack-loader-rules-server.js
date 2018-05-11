@@ -1,3 +1,6 @@
+const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 var rules = [
 
   /********** JS ***********/
@@ -12,7 +15,7 @@ var rules = [
         cacheDirectory: true,
         presets : [['env',{
           "targets": {
-            "browsers": ["last 2 versions"]
+            "node": "current"
           }
         }], 'react'],
         plugins : [
@@ -24,6 +27,13 @@ var rules = [
           'transform-class-properties',
           'fast-async',
           'transform-export-extensions',
+          ["module-resolver", {
+            "alias": {
+              "leaflet": "leaflet-headless",
+              "leaflet.pm" : path.resolve(__dirname, './src/utils/empty')
+            },
+            "extensions": [".js"]
+          }]
           //'transform-optional-chaining'
         ]
       }
@@ -33,21 +43,11 @@ var rules = [
   /********** STYLE ***********/
   {
       test: /\.css$/,
-      use: ['style-loader', 'css-loader']
+      use: [MiniCssExtractPlugin.loader, 'css-loader']
   },
   {   // scss everything except react-toolbox
       test: /\.scss$/,
-      exclude: /(node_modules)\/react-toolbox/,
-      use: ['style-loader', 'css-loader','sass-loader']
-  },
-  {   // scss only react-toolbox
-      test    : /(\.scss|\.css)$/,
-      include : /(node_modules)\/react-toolbox/,
-      use : [
-        'style-loader',
-        {loader: 'css-loader', options: {modules: true}},
-        'sass-loader'
-      ]
+      use: [MiniCssExtractPlugin.loader, 'css-loader','sass-loader']
   },
 
   /********** FONTS ***********/
@@ -55,8 +55,8 @@ var rules = [
     test: /\.woff$|\.woff2$|\.ttf$|\.eot$/,
     use: {
       loader: 'file-loader',
-      options : {
-        name: 'fonts/[name].[ext]'
+      options: {
+        emitFile: false
       }
     }
   },
@@ -68,7 +68,7 @@ var rules = [
       {
         loader : 'url-loader',
         options: {
-          limit: 8192,
+          limit: 0,
           hash : 'sha512',
           digest : 'hex',
           name : '[hash].[ext]'

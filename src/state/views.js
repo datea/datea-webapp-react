@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route} from 'mobx-router/src';
+import {Route} from '../mobx-router';
 import {toJS} from 'mobx';
 import _ from 'lodash';
 
@@ -49,6 +49,10 @@ const Views = {
     onExit: (route, params, store) => {
       !!store.homeView && !!store.homeView.dispose && store.homeView.dispose();
       store.homeView = null;
+    },
+    metaData : {
+      title : {id : 'METADATA.DEFAULT.TITLE'},
+      description : {id : 'METADATA.DEFAULT.DESCRIPTION'}
     }
   }),
 
@@ -66,6 +70,10 @@ const Views = {
         store.user.isSignedIn && store.goTo('home');
       }
     },
+    metaData : {
+      title : {id : 'METADATA.DEFAULT.TITLE'},
+      description : {id : 'METADATA.DEFAULT.DESCRIPTION'}
+    }
   }),
 
   /* MAPPING SEARCH  */
@@ -80,6 +88,10 @@ const Views = {
     onExit: (route, params, store) => {
       !!store.searchMappingView && !!store.searchMappingView.dispose && store.searchMappingView.dispose();
       store.searchMappingView = null;
+    },
+    metaData : {
+      title : {id : 'METADATA.SEARCH.TITLE'},
+      description : {id : 'METADATA.SEARCH.DESCRIPTION'}
     }
   }),
 
@@ -92,7 +104,8 @@ const Views = {
     backButtonConfig : {
       view : 'home',
       showBackButton : true,
-    }
+    },
+    isServerSideAsync : true
   }),
 
   /* ACCOUNT PATHS */
@@ -108,6 +121,10 @@ const Views = {
     backButtonConfig : {
       view : 'welcome',
       showBackButton : true,
+    },
+    metaData : {
+      title : {id : 'METADATA.LOGIN.TITLE'},
+      description : {id : 'METADATA.LOGIN.DESCRIPTION'}
     }
   }),
 
@@ -123,6 +140,10 @@ const Views = {
     backButtonConfig : {
       view : 'welcome',
       showBackButton : true,
+    },
+    metaData : {
+      title : {id : 'METADATA.REGISTER.TITLE'},
+      description : {id : 'METADATA.REGISTER.DESCRIPTION'}
     }
   }),
 
@@ -136,6 +157,10 @@ const Views = {
     backButtonConfig : {
       view : 'register',
       showBackButton : true,
+    },
+    metaData : {
+      title : {id : 'METADATA.REGISTER_FORM_PAGE.TITLE'},
+      description : {id : 'METADATA.REGISTER_FORM_PAGE.DESCRIPTION'}
     }
   }),
 
@@ -150,6 +175,10 @@ const Views = {
     backButtonConfig : {
       view : 'welcome',
       showBackButton : true,
+    },
+    metaData : {
+      title : {id : 'METADATA.ACTIVATE.TITLE'},
+      description : {id : 'METADATA.ACTIVATE.DESCRIPTION'}
     }
   }),
 
@@ -164,6 +193,10 @@ const Views = {
     backButtonConfig : {
       view : 'welcome',
       showBackButton : true,
+    },
+    metaData : {
+      title : {id : 'METADATA.RECOVER_PASS.TITLE'},
+      description : {id : 'METADATA.RECOVER_PASS.DESCRIPTION'}
     }
   }),
 
@@ -178,6 +211,10 @@ const Views = {
     backButtonConfig : {
       view : 'welcome',
       showBackButton : true,
+    },
+    metaData : {
+      title : {id : 'METADATA.RECOVER_PASS_CONFIRM.TITLE'},
+      description : {id : 'METADATA.RECOVER_PASS_CONFIRM.DESCRIPTION'}
     }
   }),
 
@@ -192,6 +229,10 @@ const Views = {
     backButtonConfig : {
       view : 'profile',
       showBackButton : true,
+    },
+    metaData : {
+      title : {id : 'METADATA.SETTINGS.TITLE'},
+      description : {id : 'METADATA.SETTINGS.DESCRIPTION'}
     }
   }),
 
@@ -213,6 +254,10 @@ const Views = {
         },
         showBackButton :  true,
       }
+    },
+    metaData : {
+      title : {id : 'METADATA.CAMPAIGN_FORM.TITLE'},
+      description : {id : 'METADATA.CAMPAIGN_FORM.DESCRIPTION'}
     }
   }),
 
@@ -232,7 +277,8 @@ const Views = {
     backButtonConfig : {
       view : 'home',
       showBackButton : false,
-    }
+    },
+    isServerSideAsync : true
   }),
 
   profileDateos : new Route({
@@ -248,7 +294,8 @@ const Views = {
         username : store.profileView.data.user.username
       },
       showBackButton : false,
-    })
+    }),
+    isServerSideAsync : true
   }),
 
   /* CAMPAIGNS - TAGS */
@@ -298,8 +345,8 @@ const Views = {
           showBackButton : true
         }
       }
-
-    }
+    },
+    isServerSideAsync : true,
   }),
 
   /* 404 */
@@ -309,6 +356,10 @@ const Views = {
     component: <Error404 errorId="NOT_FOUND" />,
     onEnter: (route, params, store) => {
       store.ui.setLayout('normal');
+    },
+    metaData : {
+      title : {id : 'METADATA.NOT_FOUND.TITLE'},
+      description : {id : 'METADATA.NOT_FOUND.DESCRIPTION'}
     }
   })
 }

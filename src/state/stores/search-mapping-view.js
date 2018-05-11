@@ -17,7 +17,7 @@ export default class SearchMappingView {
 
   getSearchParams = () => {
     if (this.main && this.main.router.queryParams) {
-      const {dateo, datear, slideshow, ...params} = this.main.router.queryParams;
+      const {dateo, datear, slideshow, lang, ...params} = this.main.router.queryParams;
       return params;
     } else {
       return {};

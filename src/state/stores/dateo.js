@@ -1,4 +1,4 @@
-import {observable, action, autorun, computed, runInAction} from 'mobx';
+import {observable, action, autorun, computed, runInAction, wait} from 'mobx';
 import Api from '../rest-api';
 import {reduceIntoObjById} from '../../utils';
 
@@ -49,8 +49,44 @@ export default class DateoStore {
     }
   }
 
-  //dateoQueryRun = autorun(() => this.getDateos(this.data.queryParams));
-
   @action clearDateos = () => this.data.dateos.clear();
   @action clearDetail = () => this.data.detail = {};
+
+
+  @action setMetaData = async (dateo, url) => {
+
+    const setFunc = (dateo) => {
+      this.main.metaData.set({
+        title : {
+          id: 'METADATA.DATEO.TITLE',
+          params: {
+            username : dateo.user.username,
+            extract : dateo.extract
+          }
+        },
+        description : {
+          id: 'METADATA.DATEO.DESCRIPTION',
+          params : {
+            username : dateo.user.username,
+            extract : dateo.extract
+          }
+        },
+        imgUrl : !!dateo.images && !!dateo.images.length && dateo.images[0].image,
+        url : url || '/dateo/'+dateo.id
+      })
+    };
+
+    if (typeof(dateo) == 'object') {
+      setFunc(dateo);
+    } else {
+      wait(() => !this.main.ui.loading, () => {
+        setTimeout(() => {
+          let dateo = this.data.dateos.get(String(dateo));
+          if (dateo) {
+            setFunc(dateo);
+          }
+        })
+      });
+    }
+  }
 }

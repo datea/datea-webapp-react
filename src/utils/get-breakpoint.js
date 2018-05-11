@@ -5,9 +5,13 @@ const smBreak = rem2px(64);
 const mdBreak = rem2px(75);
 
 export default function getBreakpoint() {
-  const w = window.innerWidth;
-  if (w <= xsBreak) return 'xs';
-  if (w <= smBreak) return 'sm';
-  if (w <= mdBreak) return 'md';
-  return 'lg';
+  if (ENV_TYPE == 'browser') {
+    const w = window.innerWidth;
+    if (w <= xsBreak) return 'xs';
+    if (w <= smBreak) return 'sm';
+    if (w <= mdBreak) return 'md';
+    return 'lg';
+  } else {
+    return 'xs';
+  }
 }

@@ -46,6 +46,7 @@ const config = {
     ipLocationAccuracy: 10000,
   },
   defaultLocale: 'es',
+  locales : ['es', 'fr'],
   keys: {
     google: 'AIzaSyBqMKdCCMaxkAouJ3DhxWuH7Dbhho0Uw8U',
     mapbox : 'pk.eyJ1IjoicmRlcnRlYW5vIiwiYSI6ImNqZW9jMDZpczByOGcyeW12bmhpeXk4OXoifQ.0k1Ludxm8__Eo9MkdDUOmg'

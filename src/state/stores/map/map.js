@@ -8,7 +8,7 @@ import MapMarkerfactory from './MapMarker';
 
 const FLY_TO_ZOOM = 16;
 
-const ResizeMapEvent = new Event('ResizeMapEvent');
+const ResizeMapEvent = ENV_TYPE == 'browser' ? new Event('ResizeMapEvent') : {};
 export {ResizeMapEvent};
 
 export default class MapeoStore {
@@ -38,7 +38,7 @@ export default class MapeoStore {
     this.markers = new Map();
     this.clusterFactory = new ClusterPieFactory(this.main, mappingType);
     this.markerFactory  = new MapMarkerfactory(this.main, mappingType);
-    window.addEventListener('ResizeMapEvent', this.resizeMap);
+    ENV_TYPE == 'browser' && window.addEventListener('ResizeMapEvent', this.resizeMap);
   }
 
   getMapping () {
@@ -346,7 +346,7 @@ export default class MapeoStore {
     this.lmap = null;
     this.markerLayer = null;
     this.geometryCollectionLayer = null;
-    window.removeEventListener('ResizeMapEvent', this.resizeMap);
+    ENV_TYPE == 'browser' && window.removeEventListener('ResizeMapEvent', this.resizeMap);
     this.mapMounted = false;
   }
 }

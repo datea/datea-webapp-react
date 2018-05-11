@@ -33,57 +33,61 @@ export default class UserStore {
   lastLoggedOutURL = {view: 'home'};
 
   constructor(main) {
+    this.main = main;
     this.getFromLocal();
     this.getFromServer();
-    console.log('user', this.data);
-    this.main = main;
-    this.syncUserToLS = autorun(() => {
-      if (!!this.apiKey) {
-        localStorage.setItem('apiKey', this.apiKey);
-        localStorage.setItem('user', JSON.stringify(this.data));
-      } else {
-        localStorage.removeItem('apiKey');
-        localStorage.removeItem('user');
-      }
-    });
+
+    if (ENV_TYPE == 'browser') {
+      this.syncUserToLS = autorun(() => {
+        if (!!this.apiKey) {
+          localStorage.setItem('apiKey', this.apiKey);
+          localStorage.setItem('user', JSON.stringify(this.data));
+        } else {
+          localStorage.removeItem('apiKey');
+          localStorage.removeItem('user');
+        }
+      });
+    }
 
     this.syncLangToLS = autorun(() => {
       moment.locale(this.locale);
-      localStorage.setItem('locale', this.locale);
+      ENV_TYPE == 'browser' && localStorage.setItem('locale', this.locale);
     });
     this.startLocationTracker();
   }
 
   startLocationTracker() {
-    const locReadyEvent = new Event('userLocationReady');
-    this.locationTrackId = navigator.geolocation.watchPosition(
-      ({coords}) => {
-        this.setLocation({lat: coords.latitude, lng: coords.longitude, accuracy: coords.accuracy});
-        window.dispatchEvent(locReadyEvent);
-      },
-      error => {
-        if (!this.location || !Object.keys(this.location).length) {
-          // get IP location as fallback
-          const url = urlJoin('https://api.datea.pe/api/v2', 'ip_location');
-          fetch.get(url)
-          .then(res => {
-            const {latitude: lat, longitude : lng} = res.body.ip_location;
-            this.setLocation({lat, lng, accuracy: config.geolocation.ipLocationAccuracy});
-            window.dispatchEvent(locReadyEvent);
-          })
-          .catch(e => {
-            console.log(e);
-            //set location to false!
-            this.location = false;
-            window.dispatchEvent(locReadyEvent);
-          })
+    if (ENV_TYPE == 'browser') {
+      const locReadyEvent = new Event('userLocationReady');
+      this.locationTrackId = navigator.geolocation.watchPosition(
+        ({coords}) => {
+          this.setLocation({lat: coords.latitude, lng: coords.longitude, accuracy: coords.accuracy});
+          window.dispatchEvent(locReadyEvent);
+        },
+        error => {
+          if (!this.location || !Object.keys(this.location).length) {
+            // get IP location as fallback
+            const url = urlJoin('https://api.datea.pe/api/v2', 'ip_location');
+            fetch.get(url)
+            .then(res => {
+              const {latitude: lat, longitude : lng} = res.body.ip_location;
+              this.setLocation({lat, lng, accuracy: config.geolocation.ipLocationAccuracy});
+              window.dispatchEvent(locReadyEvent);
+            })
+            .catch(e => {
+              console.log(e);
+              //set location to false!
+              this.location = false;
+              window.dispatchEvent(locReadyEvent);
+            })
+          }
+        },
+        {
+          enableHighAccuracy: false,
+          timeout: 10000
         }
-      },
-      {
-        enableHighAccuracy: false,
-        timeout: 10000
-      }
-    );
+      );
+    }
   }
 
   getLocation() {
@@ -91,13 +95,17 @@ export default class UserStore {
       if (this.location) {
         resolve(this.location);
       }else if (this.location === null) {
-        window.addEventListener('userLocationReady', () => {
-          if (!this.location) {
-            reject();
-          } else {
-            resolve(this.location);
-          }
-        }, {once: true});
+        if (ENV_TYPE == 'browser') {
+          window.addEventListener('userLocationReady', () => {
+            if (!this.location) {
+              reject();
+            } else {
+              resolve(this.location);
+            }
+          }, {once: true});
+        } else {
+          reject();
+        }
       } else {
         reject();
       }
@@ -225,11 +233,13 @@ export default class UserStore {
   }
 
   @action getFromLocal() {
-    const apiKey = localStorage.getItem('apiKey');
-    const user   = JSON.parse(localStorage.getItem('user'));
-    if (!!apiKey && !!user) {
-      this.apiKey = apiKey;
-      this.data   = user;
+    if (ENV_TYPE == 'browser') {
+      const apiKey = localStorage.getItem('apiKey');
+      const user   = JSON.parse(localStorage.getItem('user'));
+      if (!!apiKey && !!user) {
+        this.apiKey = apiKey;
+        this.data   = user;
+      }
     }
   }
 

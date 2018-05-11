@@ -110,7 +110,9 @@
 		"NO_TAGS_FOLLOWED_TITLE" : "¡Aún no sigues etiquetas!",
 		"NO_TAGS_FOLLOWED_MSG" : "Sigue etiquetas para visualizar y participar de los temas que te interesan. Para ello, cliquea sobre ellas y activa el botón seguir.",
 		"LAST_ACTIONS" : "Últimas acciones",
-		"WELCOME" : "¡Bienvenido a Datea!",
+		"WELCOME" : "¡Bienvenido",
+    "WELCOME_SUB1": "¿Qué quieres datear hoy? Elige un mapeo para datear o",
+    "WELCOME_SUB2" : "crea uno nuevo",
 		"SEARCH_TITLE" : "Busca temas en los que quieras participar",
 		"SEARCH_PH" : "buscar",
 		"SEARCH_SUBTITLE" : "o datea con una nueva etiqueta para crear un mapa",
@@ -144,6 +146,58 @@
 		"SHARE" : "¡comparte!",
 		"SHARE_ON" : "compartir en"
 	},
+
+  "METADATA" : {
+    "TITLE_SUFFIX" : " - Datea.pe",
+    "DEFAULT" : {
+      "TITLE" : "Todos Somos Dateros",
+      "DESCRIPTION" : "Datea es una Plataforma de mapeo colaborativo. Crea mapas y galerias de imágenes, dateando con tu comunidad."
+    },
+    "NOT_FOUND" : {
+      "TITLE" : "Página no encontrada"
+    },
+    "INFO" : {
+      "TITLE" : "%{title}"
+    },
+    "CAMPAIGN_FORM" : {
+      "TITLE" : "Crea un mapeo"
+    },
+    "SETTINGS" : {
+      "TITLE" : "Configuración"
+    },
+    "RECOVER_PASS_CONFIRM" : {
+      "TITLE" : "Confirma tu nueva contraseña"
+    },
+    "RECOVER_PASS" : {
+      "TITLE" : "Recuperar contraseña"
+    },
+    "ACTIVATE" : {
+      "TITLE" : "Activar mi cuenta datera"
+    },
+    "REGISTER_FORM_PAGE" : {
+      "TITLE" : "Regístra una cuenta de usuario en Datea"
+    },
+    "REGISTER" : {
+      "TITLE" : "Únete a Datea, crea una cuenta de usuario"
+    },
+    "LOGIN" : {
+      "TITLE" : "Iniciar sesión"
+    },
+    "CAMPAIGN" : {
+      "TITLE" : "%{mainTag} - %{name}",
+      "DESCRIPTION" : "%{shortDesc}. Mapeo creado por %{username}"
+    },
+    "DATEO" : {
+      "TITLE" : "%{username}: %{extract}",
+      "DESCRIPTION" : "%{extract}"
+    },
+    "PROFILE" : {
+      "TITLE" : "perfil datero de %{username}"
+    },
+    "PROFILE_DATEOS" : {
+      "TITLE" : "dateos de %{username}"
+    }
+  },
 
 	"DATEAR" : {
 		"DATEAR" : "datear",

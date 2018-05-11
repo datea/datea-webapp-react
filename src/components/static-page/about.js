@@ -1,6 +1,9 @@
 import React from 'react';
 import Link from '../link';
 
+import logoMisereor from '../../img/misereor-logo.jpg';
+import logoProHabitat from '../../img/pro-habitat-logo.jpg';
+
 const AboutContent = () =>
   <div className="static-page-content about">
       <h1>DATEA - TODOS SOMOS DATEROS</h1>
@@ -26,6 +29,10 @@ const AboutContent = () =>
         <a className="logo" href="http://www.avinaamericas.org/">
           <img src="http://www.informeavina2010.org/english/images/Logo_avinas_americas.gif" alt="Avina Americas" />
         </a>
+      </p>
+      <p className="logo-row">
+        <img className="pro-habitat" src={logoProHabitat} alt="Pro Habitat" />
+        <img className="misereor" src={logoMisereor} alt="Misereor" />
       </p>
   </div>
 

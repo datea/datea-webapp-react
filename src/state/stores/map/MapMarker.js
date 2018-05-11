@@ -43,7 +43,7 @@ export default class MapMarkerFactory {
 
   buildMarkerIcon(dateo) {
 
-    const clipPath = document.location.href + '#pinpath';
+    const clipPath = (ENV_TYPE == 'browser' ? document.location.href : '/') + '#pinpath';
     const mapping = this.getMapping();
     let markerSVG = mapping.subtags
                   ? <CampaignMarkerIcon dateo={dateo} subtags={mapping.subtags} />

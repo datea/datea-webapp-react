@@ -70,7 +70,7 @@ export default class ClusterPieFactory {
   }
 
   makeSVGPie({ data, diameter, numItems}) {
-
+    if (ENV_TYPE == 'server') return '<svg></svg>';
     const mapping = this.getMapping();
     const radius = diameter / 2 ;
     const svg = document.createElementNS(d3.namespaces.svg, 'svg');
@@ -131,7 +131,9 @@ export default class ClusterPieFactory {
   }
 
   serializeXmlNode ( xmlNode ) {
-    if ( typeof window.XMLSerializer !== 'undefined' ) {
+    if (ENV_TYPE == 'server') {
+      return '';
+    }else if ( typeof window.XMLSerializer !== 'undefined' ) {
       return ( new window.XMLSerializer() ).serializeToString( xmlNode );
     } else if ( typeof xmlNode.xml !== 'undefined' ) {
       return xmlNode.xml;
