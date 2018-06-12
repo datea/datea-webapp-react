@@ -7,7 +7,7 @@ const Author = ({dateo}) =>
   <AuthorHeader
     user={dateo.user}
     subTitle={
-      <Link view="dateo" params={{dateoId: dateo.id}}>
+      <Link route="dateo" params={{dateoId: dateo.id}}>
         <DateAuthored date={dateo.created} />
       </Link>
     }

@@ -1,4 +1,5 @@
 import {observable, action, autorun, reaction, runInAction, toJS, when} from 'mobx';
+import {routerStateToUrl} from 'mobx-state-router';
 import urlJoin from 'url-join';
 import {getImgSrc} from '../../utils';
 import {t} from '../../i18n';
@@ -36,9 +37,11 @@ export default class MetaDataStore {
     } else {
       data = this.currentData;
     }
+    const rState = this.main.router.routerState;
+    if (!data.url && (!rState.routeName || rState.routeName == '__initial__')) return;
 
     // add lang to link
-    let url = data.url ? urlJoin(config.app.url, data.url) : urlJoin(config.app.url, this.main.router.currentPath);
+    let url = data.url ? urlJoin(config.app.url, data.url) : urlJoin(config.app.url, routerStateToUrl(this.main.router, rState));
     if (url.indexOf('lang=') == -1) {
       url = url + (url.indexOf('?') != -1 ? '&' : '?')+'lang='+this.main.user.locale;
     }

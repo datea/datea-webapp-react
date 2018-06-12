@@ -13,8 +13,8 @@ import {DateoDetail} from '../dateo';
 const VirtualizeSwipeableViews = virtualize(SwipeableViews);
 
 const dateoRenderer = ({index, store}) => {
-  const dateos = store.dateo.data.dateos;
-  const dateoId = dateos.keys()[index];
+  const dateos = store.dateo.dateos;
+  const dateoId = [...dateos.keys()][index];
   if (!dateos.get(dateoId)) {
     return <span>loading...</span>
   }else{
@@ -39,28 +39,30 @@ export default class DateoSwipeableContainer extends Component {
 
   dateoIdToIndex = (id) => {
     if (id) {
-      let idx = this.props.store.dateo.data.dateos.keys().indexOf(String(id));
+      let idx = [...this.props.store.dateo.dateos.keys()].indexOf(id);
       return idx != -1 ? idx : 0;
     }else{
+      console.log('returning 0 as default');
       return 0;
     }
   }
-  indexToDateoId = (idx) => this.props.store.dateo.data.dateos.keys()[idx]
+  indexToDateoId = (idx) => [...this.props.store.dateo.dateos.keys()][idx]
 
   onChangeIndex = (idx) => {
     this.props.store.updateQueryParams({dateo: this.indexToDateoId(idx)});
   }
 
   onClickNav = (currentId, direction) => {
-    const dateos = this.props.store.dateo.data.dateos;
-    const dateoIds = dateos.keys();
-    const idx = dateoIds.indexOf(String(currentId));
+    const dateos = this.props.store.dateo.dateos;
+    const dateoIds = [...dateos.keys()];
+    const idx = dateoIds.indexOf(currentId);
     let nextId;
     if (direction == 'next') {
       nextId = dateoIds.length > idx + 1 ? dateoIds[idx + 1] : dateoIds[0];
     } else {
       nextId = idx > 0 ? dateoIds[idx -1] : dateoIds[dateoIds.length - 1];
     }
+    console.log('nextId', nextId);
     this.props.store.openDateo({dateo: nextId});
   }
 
@@ -81,6 +83,7 @@ export default class DateoSwipeableContainer extends Component {
 
   updateSlideMinHeight = () => {
     // am I in map layout / .content-area?
+    if (!this.containerRef) return;
     const contentArea = this.containerRef.closest('.content-area');
     if (contentArea) {
       const minSlideHeight = contentArea.offsetHeight - this.containerRef.offsetTop - 15;
@@ -90,12 +93,13 @@ export default class DateoSwipeableContainer extends Component {
 
   render() {
     const {router, ui} = this.props.store;
-    const dateoId = router.queryParams && router.queryParams.dateo;
+    const {routerState} = router;
+    const dateoId = routerState.queryParams && parseInt(routerState.queryParams.dateo);
     if (!dateoId) return <span />
 
     const idx = this.dateoIdToIndex(dateoId);
-    let animateTransitions = !this.lastIndex || Math.abs(idx - this.lastIndex) == 1;
-    this.lastIndex = idx
+    let animateTransitions = typeof this.lastIndex !== 'undefined' ? Math.abs(idx - this.lastIndex) == 1 : false;
+    this.lastIndex = idx;
     return (
       <div className={cn('dateo-swipeable-container', ui.isMobile && 'mobile')}
           ref={ref => {this.containerRef = ref}}>

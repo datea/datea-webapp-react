@@ -28,7 +28,7 @@ export default class LandingPage extends React.Component {
           <div className="msg"><Tr id="LOGIN_PAGE.NOT_A_DATERO" /></div>
           <Button variant="raised"
             size="large"
-            onClick={() => this.props.store.goTo('register')}
+            onClick={() => this.props.store.router.goTo('register')}
             ><Tr id="REGISTER" /></Button>
           {/*labelStyle={{fontSize: '1.1rem', paddingLeft: '20px', paddingRight: '20px'}}*/}
         </div>

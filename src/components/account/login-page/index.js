@@ -39,9 +39,9 @@ export default class LoginPage extends React.Component {
 
           <div className="bottom-info">
             <div className="info-line">
-              <Link view="register">{t('LOGIN_PAGE.NOT_A_DATERO')}</Link>
+              <Link route="register">{t('LOGIN_PAGE.NOT_A_DATERO')}</Link>
               &nbsp;&nbsp;|&nbsp;&nbsp;
-              <Link view="recoverPass">{t('LOGIN_PAGE.RECOVER_PASS_LINK')}</Link>
+              <Link route="recoverPass">{t('LOGIN_PAGE.RECOVER_PASS_LINK')}</Link>
             </div>
           </div>
         </div>

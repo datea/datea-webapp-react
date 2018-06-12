@@ -31,8 +31,9 @@ export default class SearchBarStore {
     this.main = main;
     this.initModeReaction();
     setTimeout(() => {
-      if (this.main.router.queryParams && this.main.router.queryParams.q) {
-        this.search = this.main.router.queryParams.q;
+      const {routerState} = this.main.router;
+      if (routerState.queryParams && routerState.queryParams.q) {
+        this.search = routerState.queryParams.q;
       }
     });
   }
@@ -46,20 +47,16 @@ export default class SearchBarStore {
   initModeReaction = () => {
     this.modeReaction = reaction(
       () => {
-        const router = this.main.router;
-        if (!!router.currentView) {
-          switch (router.currentView.name) {
-            case 'campaign':
-              return 'campaign-'+router.params.slug;
-            case 'tag':
-              return 'campaign-'+router.params.tag;
-            case 'profileDateos':
-              return 'profile-'+router.params.username;
-            default :
-              return '';
-          }
-        } else {
-          return '';
+        const {routerState} = this.main.router;
+        switch (routerState.routeName) {
+          case 'campaign':
+            return 'campaign-'+routerState.params.slug;
+          case 'tag':
+            return 'campaign-'+routerState.params.tag;
+          case 'profileDateos':
+            return 'profile-'+routerState.params.username;
+          default :
+            return '';
         }
       },
       (mapping) => {
@@ -82,7 +79,7 @@ export default class SearchBarStore {
   @action onEnter = () => {
     if (this.search.trim().length >= MIN_SEARCH_LENGTH && this.acSelectIndex == -1) {
       const query = this.search.trim();
-      this.main.goTo('search', {}, {q: query});
+      this.main.router.goTo('search', {}, {q: query});
       this.search = query;
       this.acSelectIndex = -1;
     } else if (this.acSelectIndex >= 0) {
@@ -96,15 +93,15 @@ export default class SearchBarStore {
   @action onAcItemClick = (item) => {
     this.search = '';
     this.acSelectIndex = -1;
-    console.log('item', item);
     this.goTo(item.route);
   }
 
   goTo = (route) => {
-    const view = route.view || this.main.router.currentView;
-    const params = route.params || this.main.router.params;
+    route = toJS(route);
+    const view = route.view || this.main.router.routerState.routeName;
+    const params = route.params || this.main.router.routerState.params;
     const queryParams = route.queryParams || {};
-    this.main.goTo(view, params, queryParams);
+    this.main.router.goTo(view, params, queryParams);
     if (queryParams && queryParams.q) {
       this.search = queryParams.q;
     }
@@ -140,10 +137,8 @@ export default class SearchBarStore {
   doAutoComplete = _.debounce(this._doAutocomplete, 500, {leading: true});
 
   @action autocompleteOnMapeo = () => {
-    if (!this.main.router.currentView) return;
-
     let narrowOn;
-    switch (this.main.router.currentView.name) {
+    switch (this.main.router.routerState.routeName) {
       case 'campaign':
         narrowOn = '#'+this.main.campaignView.data.campaign.main_tag.tag;
         break;
@@ -301,8 +296,7 @@ export default class SearchBarStore {
   }
 
   createDefaultMapeoSuggestions() {
-    if (!this.main.router.currentView) return [];
-    const viewName = this.main.router.currentView.name;
+    const viewName = this.main.router.routerState.routeName;
     if (viewName == 'campaign') {
       const {subtags} = this.main.campaignView.data.campaign;
       if (subtags && subtags.size) {

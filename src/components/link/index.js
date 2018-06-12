@@ -1,32 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from '../../mobx-router';
 import {inject} from 'mobx-react';
-import Views from '../../state/views';
+import _ from 'lodash';
+import { Link, RouterState } from 'mobx-state-router';
 
-const DateaLink = ({view, params, queryParams, store, children, title, className, style}) => {
-  if (!Views[view]) return <span>{children} </span>;
-  return (
-    <Link view={Views[view]}
-      params={params}
-      queryParams={queryParams}
-      store={store}
-      className={className}
-      style={style}
-      title={title}>
-        {children}
-    </Link>
-  );
+const DateaLink = ({store, route, params, queryParams, children, ...otherProps}) => {
+  let toState;
+  if (typeof(route) == 'string') {
+    toState = new RouterState(route, params, queryParams);
+  } else {
+    toState = new RouterState(route);
+  }
+  let routeExists = _.find(store.router.routes, r => r.name == toState.routeName);
+  if (routeExists) {
+    return <Link routerStore={store.router} toState={toState} {...otherProps}>{children}</Link>;
+  } else {
+    return <span className="dummy-route">{children}</span>
+  }
 }
+
 DateaLink.propTypes = {
-  view: PropTypes.string,
+  store: PropTypes.object.isRequired,
+  route: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   params : PropTypes.object,
-  queryParams : PropTypes.object,
-  store: PropTypes.object,
-  children: PropTypes.node,
+  queryParams: PropTypes.object,
   className: PropTypes.string,
-  style : PropTypes.object,
-  title: PropTypes.node
+  activeClassName : PropTypes.string,
+  children: PropTypes.node
 };
 
 export default inject('store')(DateaLink);

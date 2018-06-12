@@ -11,14 +11,15 @@ import MoreIcon from 'material-ui-icons/MoreVert';
 export default class UserMenu extends React.Component {
 
   goTo = (view) => {
-    this.props.store.goTo(view);
+    this.props.store.router.goTo(view);
   }
 
   render() {
     const {ui, user, router} = this.props.store;
     if (!user.isSignedIn) {
-      const label = router.currentView.name == 'login' ? t('REGISTER') : t('LOGIN');
-      const link  = router.currentView.name == 'login' ? 'register' : 'login';
+      const currentRoute = router.getCurrentRoute();
+      const label = currentRoute.name == 'login' ? t('REGISTER') : t('LOGIN');
+      const link  = currentRoute.name == 'login' ? 'register' : 'login';
       return (
         <Button className="login-btn"
           onClick={() => this.goTo(link) }

@@ -1,6 +1,5 @@
 import {autorun, action, reaction, computed, observable, toJS, runInAction, when} from 'mobx';
-import {RouterStore} from '../mobx-router';
-import DataStore from './stores/data';
+import { RouterState, RouterStore } from 'mobx-state-router';
 import UIStore from './stores/ui';
 import UserStore from './stores/user';
 import SearchBar from './stores/search-bar';
@@ -16,7 +15,6 @@ import ProfileViewStore from './stores/profile-view';
 import DateoStore from './stores/dateo';
 import DateoFormStore from './stores/dateo-form';
 
-
 export default class DateaStore {
 
   @observable datearMode = 'closed';
@@ -24,10 +22,10 @@ export default class DateaStore {
   hostname = '';
 
   constructor() {
-    this.router = new RouterStore();
+    const notFound = new RouterState('notFound');
+    this.router = new RouterStore(this, Views, notFound);
     this.ui = new UIStore(this);
     this.user = new UserStore(this);
-    this.data = new DataStore(this);
     this.dateo = new DateoStore(this);
     this.searchBar = new SearchBar(this);
     this.backButton = new BackButton(this);
@@ -38,20 +36,22 @@ export default class DateaStore {
 
   /* DATEO FORM MAIN ACTIONS: TODO EVALUATE WHERE TO PUT THIS */
   openDateoForm = (id) => {
-    const queryParams  = toJS(this.router.queryParams);
+    const rState = this.router.routerState;
+    const queryParams  = Object.assign({} , rState.queryParams || {});
     queryParams.datear = id || 'new';
-    this.router.goTo(this.router.currentView, this.router.params, this, queryParams);
+    this.router.goTo(rState.routeName, rState.params, queryParams);
   }
 
   cancelDateoForm = () => {
-    const queryParams  = toJS(this.router.queryParams);
+    const rState = this.router.routerState;
+    const queryParams  = Object.assign({} , rState.queryParams || {});
     delete queryParams.datear;
-    this.goTo(this.router.currentView.name, this.router.params, queryParams);
+    this.router.goTo(rState.routeName, rState.params, queryParams);
   }
 
   initListenToDateoForm = () => {
     this.listenDateoForm = reaction(
-      () => this.router.queryParams && this.router.queryParams.datear,
+      () => this.router.routerState.queryParams && this.router.routerState.queryParams.datear,
       val => {
         if (val) {
           this.dateoForm = new DateoFormStore(this, val);
@@ -68,21 +68,20 @@ export default class DateaStore {
   }
 
   @action openDateo = ({dateo, isNew = false}) => {
+    console.log('openDateo', dateo);
     if (!dateo) return;
     if (!!dateo && ['string', 'number']. includes(typeof (dateo))) {
-      dateo = this.dateo.data.dateos.get(String(dateo));
+      dateo = this.dateo.dateos.get(dateo);
     }
     if (!dateo) return;
 
-    const dateoId = String(dateo.id);
-
-    const viewName = !!this.router.currentView && this.router.currentView.name;
-    const queryParams = toJS(this.router.queryParams);
+    const rState = this.router.routerState;
+    let queryParams = {...rState.queryParams};
     queryParams.dateo = dateo.id;
     if (queryParams.datear) {
       delete queryParams.datear;
     }
-    switch (viewName) {
+    switch (rState.routeName) {
       case 'campaign':
         this.campaignView.setLayout('content');
         setTimeout(() => runInAction(() => {
@@ -103,7 +102,8 @@ export default class DateaStore {
           if (queryParams.q) {
             delete queryParams.q;
           }
-          this.goTo('campaign', this.router.params, queryParams);
+          const newState = new RouterState('campaign', rState.params, queryParams);
+          this.router.goTo(newState);
           this.ui.setLoading(false);
         }));
         break;
@@ -111,15 +111,16 @@ export default class DateaStore {
   }
 
   closeDateo = () => {
-    const queryParams  = toJS(this.router.queryParams);
+    const rState = this.router.routerState;
+    const queryParams  = {...rState.queryParams};
     if (queryParams.dateo) {
       delete queryParams.dateo;
     }
-    this.router.goTo(this.router.currentView, this.router.params, this, queryParams);
+    this.router.goTo(rState.routeName, rState.params, queryParams);
   }
 
   getDatearContext() {
-    if (this.router.currentView.name == 'campaign') {
+    if (this.router.getCurrentRoute().name == 'campaign') {
       return {
         type: 'campaign',
         data : this.campaignView.data.campaign
@@ -134,10 +135,11 @@ export default class DateaStore {
   }
 
   updateQueryParams = (queryParams, replace = true) => {
+    const rState = this.router.routerState;
     if (!replace) {
-      queryParams = Object.assign({}, this.router.queryParams, queryParams);
+      queryParams = {...rState.queryParams, ...queryParams};
     }
-    this.goTo(this.router.currentView, this.router.params, queryParams);
+    this.router.goTo(rState.routeName, rState.params, queryParams);
   }
 
   /****** HOME / LANDING ******/
@@ -166,12 +168,6 @@ export default class DateaStore {
     this.campaignForm = new CampaignFormStore(this, id);
   }
 
-
-  goTo = (view, paramsObject = {}, queryParamsObject = {}) => {
-    view = typeof(view) == 'string' ? Views[view] : view;
-    this.router.goTo(view, paramsObject, this, queryParamsObject);
-  }
-
   /************** PROFILE **********************/
   createProfileStore = (username) => {
     this.profileView = new ProfileViewStore(this, username);
@@ -184,8 +180,9 @@ export default class DateaStore {
   /************* SERVER SIDE ASYNC *************/
   initMetaDataTracking = () => {
     autorun(() => {
-      if (this.router.currentView && !this.router.currentView.isServerSideAsync) {
-        this.metaData.set(this.router.currentView.metaData || {});
+      const route = this.router.getCurrentRoute();
+      if (route && route.name != '__initial__' && !route.isServerSideAsync) {
+        this.metaData.set(route.metaData || {});
       }
     })
   }
@@ -199,9 +196,10 @@ export default class DateaStore {
   }
 
   serverSideWaitAsync = async () => new Promise((resolve, reject) => {
-    when(() => !!this.router.currentView, () => {
-      if (!this.router.currentView.isServerSideAsync) {
-        this.metaData.set(this.router.currentView.metaData || {});
+    when(() => !!this.router.routerState, () => {
+      const route = this.router.getCurrentRoute();
+      if (!route.isServerSideAsync) {
+        this.metaData.set(route.metaData || {});
         resolve();
       } else {
         this.isServerSideReady = false;

@@ -28,14 +28,14 @@ export default class MobileMenu extends React.Component {
 
   goTo = (view, params) => {
     this.props.onClose();
-    this.props.store.goTo(view, params);
+    this.props.store.router.goTo(view, params);
   }
 
   logout = () => {
     const {store} = this.props;
     this.props.onClose();
     store.user.signOut();
-    store.goTo('welcome');
+    store.router.goTo('welcome');
   }
 
   render() {
@@ -43,7 +43,7 @@ export default class MobileMenu extends React.Component {
     return (
         <Drawer
           open={this.props.open}
-          anchor={(router.currentView && router.currentView.name == 'welcome') || !user.isSignedIn ? 'left' : 'right'}
+          anchor={(router.routerState.routeName == 'welcome') || !user.isSignedIn ? 'left' : 'right'}
           className="user-drawer"
           onClose={this.props.onClose}>
 

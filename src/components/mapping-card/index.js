@@ -16,7 +16,7 @@ export default class MappingCard extends Component {
 
   goToMapping = (ev) => {
     const {store, mapping} = this.props;
-    store.goTo('campaign', {username: mapping.user.username, slug: mapping.slug })
+    store.router.goTo('campaign', {username: mapping.user.username, slug: mapping.slug })
   }
 
   render() {

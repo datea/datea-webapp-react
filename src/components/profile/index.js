@@ -13,11 +13,11 @@ import ProfileHead from './profile-head';
 export default class Profile extends Component {
 
   onEditProfile = ev => {
-    this.props.store.goTo('settings', {page: 'profile'});
+    this.props.store.router.goTo('settings', {page: 'profile'});
   }
 
   onCreateMapping = ev => {
-    this.props.store.goTo('campaignForm', {id: 'new'});
+    this.props.store.router.goTo('campaignForm', {id: 'new'});
   }
 
   render() {

@@ -1,4 +1,5 @@
 import {observable, action, computed, autorun, reaction, runInAction, toJS, when} from 'mobx';
+import {routerStateToUrl} from 'mobx-state-router';
 import _ from 'lodash';
 import qs from 'qs';
 import Api from '../rest-api';
@@ -46,7 +47,7 @@ export default class Campaign {
     .then(res => runInAction(() => {
       if (res.objects.length == 1) {
         this.data.campaign = this.hydrateCampaign(res.objects[0]);
-        this.setMetaData();
+        this.setMetaData(this.main.router.routerState.queryParams.dateo);
         this.initReactions();
         const {boundary: geometry, center, zoom} = this.data.campaign;
         this.map.createMap({center, zoom, geometry});
@@ -58,35 +59,41 @@ export default class Campaign {
   }
 
   initReactions = () => {
+
     this.disposeDateoQueryReaction = reaction(
       () => {
-        if (this.main.router.queryParams) {
-          const {datear, dateo, slideshow, lang,...params} = this.main.router.queryParams;
-          return qs.stringify(params || {});
-        } else {
-          return false;
-        }
+        const {datear, dateo, slideshow, lang,...params} = this.main.router.routerState.queryParams;
+        return qs.stringify(params || {});
       },
-      () => {
-        this.queryDateos();
-      },
+      () => this.queryDateos(),
       {fireImmediately: true}
     );
 
     this.disposeDetailViewReaction = reaction(
       () => {
-        const {queryParams} = this.main.router;
-        if (queryParams && queryParams.dateo && this.main.dateo.data.dateos.has(String(queryParams.dateo))) {
-          return queryParams.dateo;
-        }else {
-          return false;
-        }
+        const {queryParams} =  this.main.router.routerState;
+        return !!queryParams.dateo && parseInt(queryParams.dateo);
       },
       dateoId => {
-        !!dateoId && setTimeout(() => this.map.navigateToLayer(dateoId), 50);
         this.data.showDateoDetail = dateoId;
+        if (dateoId) {
+          if (this.main.dateo.dateos.has(dateoId)) {
+            setTimeout(() => this.map.navigateToLayer(dateoId), 50);
+          } else if (this.main.ui.loading) {
+            when(
+              () => !this.main.ui.loading,
+              () => {
+                if (this.main.dateo.dateos.has(dateoId)) {
+                  setTimeout(() => this.map.navigateToLayer(dateoId), 50);
+                } else {
+                  this.data.showDateoDetail = false;
+                }
+              }
+            )
+          }
+        }
       },
-      {fireImmediately: true}
+      {fireImmediately: true, delay: 1}
     );
   }
 
@@ -96,14 +103,14 @@ export default class Campaign {
   }
 
   getCurrentDateoQueryParams = () => {
-    const {router} = this.main;
-    const {datear, dateo, lang, slideshow, ...params} = !!router.queryParams ? toJS(router.queryParams) : {};
+    const {routerState} = this.main.router;
+    const {datear, dateo, lang, slideshow, ...params} = routerState.queryParams;
     return params;
   }
 
   @action setQueryParams = (newParams, replace = true) => {
-    const {router} = this.main;
-    const {datear, dateo, lang, slideshow, ...currentParams} = router.queryParams ? toJS(router.queryParams) : {};
+    const {routerState} = this.main.router;
+    const {datear, dateo, lang, slideshow, ...currentParams} = routerState.queryParams;
     let params;
     if (!replace) {
       newParams = {...currentParams, ...newParams};
@@ -111,7 +118,7 @@ export default class Campaign {
     if (dateo) {
       newParams.dateo = dateo;
     }
-    this.main.goTo('campaign', this.main.router.params, cleanObject(newParams));
+    this.main.router.goTo('campaign', routerState.params, cleanObject(newParams));
   }
 
   queryDateos = () => {
@@ -124,12 +131,12 @@ export default class Campaign {
     this.main.dateo.getDateos(params, true)
     .then( res => {
       this.main.ui.setLoading(false);
-      const openDateoId = this.main.router.queryParams && this.main.router.queryParams.dateo;
-      if (openDateoId && this.main.dateo.data.dateos.has(String(openDateoId))) {
+      const openDateoId = this.main.router.routerState.queryParams.dateo;
+      if (openDateoId && this.main.dateo.dateos.has(openDateoId)) {
         this.map.navigateToLayer(openDateoId);
       }
       /*} else {
-        const ids = this.main.dateo.data.dateos.keys();
+        const ids = this.main.dateo.dateos.keys();
         if (ids.length) {
           this.main.openDateo(ids[0]);
         } else if (openDateoId) {
@@ -171,11 +178,11 @@ export default class Campaign {
     subtagArray.forEach(tag => subtags.set(tag.tag, tag));
 
     campaign.subtags = subtags;
-    console.log('subtags', subtags);
     return campaign;
   }
 
   onMarkerClick = (id, latLng) => {
+    console.log('id', id, typeof(id));
     this.main.openDateo({dateo: id});
   }
 
@@ -217,11 +224,12 @@ export default class Campaign {
         imgUrl : !!campaign.image ? campaign.image.image : false
       });
     } else {
-      this.main.dateo.setMetaData(dateoId, this.main.router.currentView);
+      this.main.dateo.setMetaData(parseInt(dateoId), routerStateToUrl(this.main.router, this.main.router.routerState));
     }
   }
 
   dispose = () => {
+    console.log('dispose campiagnview');
     this.disposeReactions();
     this.map.dispose();
     this.main.dateo.clearDateos();

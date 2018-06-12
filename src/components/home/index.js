@@ -30,10 +30,10 @@ export default class HomePage extends React.Component {
               <DIcon name={this.welcomeIcon} />
               <div className="welcome-msg"><Tr id="HOME.WELCOME" /> <span className="strong">{this.props.store.user.data.username}</span>!</div>
             </h1>
-            <div className="subtitle"><Tr id="HOME.WELCOME_SUB1" /> <Link view="campaignForm" params={{id: 'new'}}><Tr id="HOME.WELCOME_SUB2" /></Link>.</div>
+            <div className="subtitle"><Tr id="HOME.WELCOME_SUB1" /> <Link route="campaignForm" params={{id: 'new'}}><Tr id="HOME.WELCOME_SUB2" /></Link>.</div>
             <div className="actions">
               <Button variant="flat"
-                onClick={() => this.props.store.goTo('profile', {username: this.props.store.user.data.username})}
+                onClick={() => this.props.store.router.goTo('profile', {username: this.props.store.user.data.username})}
               >IR A MI PERFIL</Button>
             </div>
           </div>

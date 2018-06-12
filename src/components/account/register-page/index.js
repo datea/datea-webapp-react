@@ -16,7 +16,7 @@ import AccountFormContainer from '../account-form-container';
 export default class RegisterPage extends React.Component {
 
   goToRegister = () => {
-    this.props.store.goTo('registerFormPage');
+    this.props.store.router.goTo('registerFormPage');
   }
 
   render() {
@@ -42,7 +42,7 @@ export default class RegisterPage extends React.Component {
           </div>
           <div className="bottom-info">
             <div className="info-line">{t('REGISTER_PAGE.NOT_WITHOUT_CONSENT')}</div>
-            <div className="info-line"><Link view="privacidad">{(t('MENU_FOOTER.PRIVACY'))}</Link></div>
+            <div className="info-line"><Link route="privacidad">{(t('MENU_FOOTER.PRIVACY'))}</Link></div>
           </div>
         </div>
       </AccountFormContainer>

@@ -1,38 +1,43 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import director from 'director';
 import Helmet from 'react-helmet';
-import {autorun} from 'mobx';
 import qs from 'qs';
-
+import {createLocation} from "history";
+import { useStaticRendering } from "mobx-react"
+import { StaticAdapter } from 'mobx-state-router';
+import {send} from 'micro';
 import {setLanguageFile} from '../i18n';
 import App from './StaticApp';
-import {viewsForHttpDirector} from '../mobx-router/utils';
 import DateaStore from '../state/store';
-import RouteConfig from '../state/views';
 import templateFunction from './templateFunction';
+
+useStaticRendering(true);
 
 export default async (req, res) => new Promise( async (resolve, reject) => {
 
-  const store = new DateaStore();
-
-  const callback = async (err) => {
-    if (req.url.indexOf('?') !== -1) {
-      const qParams = qs.parse(req.url.split('?')[1]);
-      if (qParams && qParams.lang) {
-        setLanguageFile(qParams.lang);
-      }
-    };
-    console.log('before await');
-    await store.serverSideWaitAsync();
-    console.log('hey after await');
-    const html = ReactDOMServer.renderToStaticMarkup(
-        <App store={store} />
-    );
-    const helmet = Helmet.renderStatic();
-
-    resolve(templateFunction(html, helmet));
+  if (req.url == '/favicon.ico') {
+    send(res, 204);
+    return;
   }
-  const router = new director.http.Router({...viewsForHttpDirector(RouteConfig, store, callback)});
-  router.dispatch(req, res);
+
+  const store = new DateaStore();
+  const staticAdapter = new StaticAdapter(store.router);
+
+  if (req.url.indexOf('?') !== -1) {
+    const qParams = qs.parse(req.url.split('?')[1]);
+    if (qParams && qParams.lang) {
+      setLanguageFile(qParams.lang);
+    }
+  };
+  await staticAdapter.goToLocation(createLocation(req.url));
+  await store.serverSideWaitAsync();
+
+  const html = ReactDOMServer.renderToStaticMarkup(
+      <App store={store} />
+  );
+  const helmet = Helmet.renderStatic();
+  //console.log('title in store', store.metaData.title);
+  //console.log('title in helmet', helmet.title.toString());
+
+  resolve(templateFunction(html, helmet));
 });

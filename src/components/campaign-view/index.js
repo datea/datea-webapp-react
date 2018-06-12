@@ -19,7 +19,7 @@ export default class CampaignView extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      showMaxDateos : 20
+      showMaxDateos : 12
     };
   }
 
@@ -34,13 +34,13 @@ export default class CampaignView extends Component {
 
   onEditClick = () => {
     const {campaign} = this.props.store.campaignView.data;
-    this.props.store.goTo('campaignForm', {id: campaign.id});
+    this.props.store.router.goTo('campaignForm', {id: campaign.id});
   }
 
   render() {
     const {campaignView, ui, user, dateo} = this.props.store;
     const {campaign} = campaignView.data;
-    const {dateos} = dateo.data;
+    const {dateos} = dateo;
 
     if (!campaign || !campaign.id) return <span />
 

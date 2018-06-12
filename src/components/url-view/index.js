@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import LinkIcon from 'material-ui-icons/Link';
 import {inject} from 'mobx-react';
+import Api from '../../state/rest-api';
 
 @inject('store')
 export default class UrlView extends React.Component {
@@ -23,9 +24,9 @@ export default class UrlView extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.url) {
-      this.props.store.data.getURLMeta({url: this.props.url})
+      Api.urlInfo(this.props.url)
       .then(res => this.setState({urlInfo: res, loading: false}))
     }
   }
@@ -33,7 +34,7 @@ export default class UrlView extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!!nextProps.url && nextProps.url != this.props.url) {
       this.setState({loading: true })
-      this.props.store.data.getURLMeta({url: nextProps.url})
+      Api.urlInfo(nextProps.url)
       .then(res => this.setState({urlInfo: res, loading: false}))
     }
   }

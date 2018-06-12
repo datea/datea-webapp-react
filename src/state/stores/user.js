@@ -15,7 +15,7 @@ export default class UserStore {
   @observable locale = getCurrentLocale();
   @observable location = null;
 
-  lastLoggedOutView = {};
+  lastLoggedOutRoute = null;
 
   @computed get isSignedIn() {
     return !!this.apiKey && !!this.data.id && this.data.status == 1;
@@ -29,8 +29,6 @@ export default class UserStore {
   @computed get largeImage() {
     return this.data.image_large ? urlJoin(config.api.imgUrl, this.data.image_large) : '';
   }
-
-  lastLoggedOutURL = {view: 'home'};
 
   constructor(main) {
     this.main = main;
@@ -47,13 +45,12 @@ export default class UserStore {
           localStorage.removeItem('user');
         }
       });
+      this.syncLangToLS = autorun(() => {
+        moment.locale(this.locale);
+        localStorage.setItem('locale', this.locale);
+      });
+      this.startLocationTracker();
     }
-
-    this.syncLangToLS = autorun(() => {
-      moment.locale(this.locale);
-      ENV_TYPE == 'browser' && localStorage.setItem('locale', this.locale);
-    });
-    this.startLocationTracker();
   }
 
   startLocationTracker() {
@@ -131,14 +128,14 @@ export default class UserStore {
     this.loadUser(resultBody.user, resultBody.token, resultBody.is_new);
 
     if (!resultBody.is_new) {
-      const {view, params, queryParams} = this.lastLoggedOutView;
-      if (view && view.name != 'welcome') {
-        this.main.goTo(view, params, queryParams);
+      this.lastLoggedOutRoute;
+      if (this.lastLoggedOutRoute && this.lastLoggedOutRoute.routeName != 'welcome') {
+        this.main.router.goTo(this.lastLoggedOutRoute);
       } else {
-        this.main.goTo('home');
+        this.main.router.goTo('home');
       }
     }else{
-      this.main.goTo('settings' ,{page: 'welcome'});
+      this.main.router.goTo('settings', {page: 'welcome'});
     }
   }
 
@@ -227,12 +224,13 @@ export default class UserStore {
   }
 
   @action loadUser(user, apiKey, isNew) {
+    console.log('load user', user);
     this.data   = user;
     this.apiKey = apiKey;
     this.isNew  = isNew;
   }
 
-  @action getFromLocal() {
+  @action getFromLocal(){
     if (ENV_TYPE == 'browser') {
       const apiKey = localStorage.getItem('apiKey');
       const user   = JSON.parse(localStorage.getItem('user'));
@@ -243,7 +241,7 @@ export default class UserStore {
     }
   }
 
-  @action getFromServer() {
+  @action getFromServer(){
     if (!this.data.id) return;
     fetch.get(urlJoin(config.api.url, 'user/'+this.data.id+'/'))
     .then(res => runInAction(() => this.data = res.body))
@@ -280,14 +278,7 @@ export default class UserStore {
     return this.isSignedIn && !!obj && !!obj.user && obj.user.id == this.data.id;
   }
 
-  setLastLoggedOutView() {
-    const {router} = this.main;
-    const viewDesc = {
-      view: toJS(router.currentView),
-      params : toJS(router.params),
-      queryParams : toJS(router.queryParams)
-    }
-    console.log('lastLoggedOutView', viewDesc)
-    this.lastLoggedOutView = viewDesc
+  setLastLoggedOutRoute(rState) {
+    this.lastLoggedOutRoute = rState;
   }
 }

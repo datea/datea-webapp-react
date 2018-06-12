@@ -25,10 +25,10 @@ export default class UiStore {
     return this.activeBreakpoint == 'xs'
   }
   @computed get isLanding() {
-    return !!this.main && !!this.main.router && this.main.router.currentView.name == 'welcome';
+    return !!this.main && this.main.router.routerState.routeName == 'welcome';
   }
   @computed get isHome() {
-    return !!this.main && !!this.main.router && this.main.router.currentView.name == 'home';
+    return !!this.main && this.main.router.routerState.routeName == 'home';
   }
 
   constructor(main) {
@@ -114,11 +114,10 @@ export default class UiStore {
   }
 
   @action openSlideshow = (images, index = 0) => {
-    const {router} = this.main;
-    if (router.queryParams.slideshow) {
-      let qParams = toJS(router.queryParams);
-      qParams.slideshow = 'open';
-      router.goTo(router.currentView, router.params, this.main, qParams);
+    const rState = this.main.router.routerState;
+    if (rState.queryParams.slideshow) {
+      let qParams = {...rState.queryParams, slideshow : 'open'};
+      router.goTo(rState.routeName, rState.params, qParams);
     }
     this.modals.slideshow = {images, index};
   }
@@ -128,11 +127,11 @@ export default class UiStore {
   }
 
   @action closeSlideShow = () => {
-    const {router} = this.main;
-    if (router.queryParams.slideshow) {
-      let qParams = toJS(router.queryParams);
+    const rState = this.main.router.routerState;
+    if (rState.queryParams.slideshow) {
+      let qParams = {...rState.queryParams};
       delete qParams.slideshow;
-      router.goTo(router.currentView, router.params, this.main, qParams);
+      router.goTo(rState.routeName, rState.params, qParams);
     }
     this.modals.slideshow = false;
   }

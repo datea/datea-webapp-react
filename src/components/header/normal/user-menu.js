@@ -28,19 +28,19 @@ export default class UserMenu extends React.Component {
 
   toggleUserDrawer = () => this.setState({openDrawer: !this.state.openDrawer});
   closeDrawer =() => this.setState({openDrawer: false});
-  goTo = (...args) => this.props.store.goTo(...args);
+  goTo = (...args) => this.props.store.router.goTo(...args);
   goToSettings = () => {
     this.closeDrawer();
     this.props.store.goTo('settings');
   }
   goToProfile = () => {
     this.closeDrawer();
-    this.props.store.goTo('profile', {username: this.props.store.user.data.username});
+    this.props.store.router.goTo('profile', {username: this.props.store.user.data.username});
   }
   logout = () => {
     const {store} = this.props;
     store.user.signOut();
-    store.goTo('welcome');
+    store.router.goTo('welcome');
     this.closeDrawer();
   }
 
@@ -50,7 +50,7 @@ export default class UserMenu extends React.Component {
 
   render() {
     const {user, ui, router} = this.props.store;
-    const isLoginView = !!router && router.currentView && router.currentView.name == 'login';
+    const isLoginView = !!router && router.routerState.routeName == 'login';
     return (
       <span className="user-menu">
         {!user.isSignedIn &&

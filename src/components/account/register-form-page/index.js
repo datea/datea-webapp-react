@@ -210,7 +210,7 @@ export default class RegisterFormPage extends React.Component {
               <div className="form-btns">
                 <Button variant="raised"
                   color="primary"
-                  onClick={() => store.goTo('login')}
+                  onClick={() => store.router.goTo('login')}
                 >{t('LOGIN')}</Button>
               </div>
             </div>

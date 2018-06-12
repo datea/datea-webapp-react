@@ -13,7 +13,7 @@ import AboutContent from './about';
 export default class StaticPage extends Component {
 
   onTabChange = (event, value) => {
-    this.props.store.goTo('info', {pageId: value});
+    this.props.store.router.goTo('info', {pageId: value});
   }
 
   componentDidMount() {

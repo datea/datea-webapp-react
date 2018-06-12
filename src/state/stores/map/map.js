@@ -1,5 +1,6 @@
 import {observable, action, computed, autorun, reaction, runInAction, toJS, observe, when} from 'mobx';
 import L from 'leaflet';
+import {centroid} from 'turf';
 import config from '../../../config';
 import {defaultLayerColor} from '../../../config/colors';
 import 'leaflet.markercluster';
@@ -52,7 +53,7 @@ export default class MapeoStore {
 
     this.disposeDateoAutorun = autorun(() => {
       const mapping = this.getMapping();
-      const {dateos} = this.main.dateo.data;
+      const {dateos} = this.main.dateo;
 
       if (!this.mapMounted || !mapping || !mapping.id) return;
 
@@ -136,7 +137,7 @@ export default class MapeoStore {
       const {subtags} = this.getMapping();
       if (subtags.size && dateo.tags && dateo.tags.length) {
         let colors = [];
-        dateo.tags.peek().forEach(t => {
+        dateo.tags.forEach(t => {
           if (subtags.has(t)) {
             colors.push({color: subtags.get(t).color, order: subtags.get(t).order});
           }
@@ -218,14 +219,14 @@ export default class MapeoStore {
 
   @action navigateToLayer = (dateoId) => {
     when(() => this.layersLoaded, () => {
-      let marker = this.markers.get(String(dateoId));
+      let marker = this.markers.get(dateoId);
       if (marker) {
         this.markerLayer.zoomToShowLayer(marker, () => {
           this.setMap(marker.getLatLng(), this.lmap.getZoom());
           this.focusMarker(marker);
         });
       } else {
-        let layer = this.geometryCollections.get(String(dateoId));
+        let layer = this.geometryCollections.get(dateoId);
         if (layer) {
           this.lmap.fitBounds(layer.getBounds());
         }
@@ -290,7 +291,7 @@ export default class MapeoStore {
     } else {
       bounds = geometry.coordinates.map( p => [...p].reverse());
       const cent = centroid(geometry);
-      center = L.latLng(cent.coordinates.reverse());
+      center = L.latLng(cent.geometry.coordinates.reverse());
     }
     return {center, bounds};
   }

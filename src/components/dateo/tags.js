@@ -4,7 +4,7 @@ import Link from '../link';
 const Tags = ({tags}) =>
   <div className="tags">
     {tags.map(tag =>
-      <Link key={tag} className="tag" view="tag" params={{tag}}>#{tag}</Link>
+      <Link key={tag} className="tag" route="tag" params={{tag}}>#{tag}</Link>
     )}
   </div>
 

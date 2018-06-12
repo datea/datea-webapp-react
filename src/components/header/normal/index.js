@@ -29,7 +29,7 @@ export default class Header extends React.Component {
   toggleMainMenu = () => this.setState({openMainMenu: !this.state.openMainMenu});
   setDrawer    = (o) => this.setState({openMainMenu: o});
   onLogoClick  = (ev) => {
-    this.props.store.goTo('home');
+    this.props.store.router.goTo('home');
   }
 
   render() {

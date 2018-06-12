@@ -29,7 +29,7 @@ export default class MainMenu extends React.Component {
 
   goTo = (view, params) => {
     this.props.onClose();
-    this.props.store.goTo(view, params);
+    this.props.store.router.goTo(view, params);
   }
 
   render() {

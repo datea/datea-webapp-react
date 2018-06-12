@@ -1,368 +1,327 @@
 import React from 'react';
-import {Route} from '../mobx-router';
+import {RouterState} from 'mobx-state-router';
 import {toJS} from 'mobx';
 import _ from 'lodash';
-
-import config from '../config';
-
-/* VIEWS */
-import Home from '../components/home';
-import Landing from '../components/landing';
-import Error404 from '../components/error/error-404';
-import LoginPage from '../components/account/login-page';
-import RegisterPage from '../components/account/register-page';
-import RegisterFormPage from '../components/account/register-form-page';
-import RecoverPasswordPage from '../components/account/recover-password-page';
-import RecoverPasswordConfirmPage from '../components/account/recover-password-confirm-page';
-import ActivationPage from '../components/account/activation-page';
-import AccountSettings from '../components/account/settings';
-import Profile from '../components/profile';
-import CampaignView from '../components/campaign-view';
-import CampaignManagerView from '../components/campaign-manager-view';
-import StaticPage from '../components/static-page';
-import SearchMappingView from '../components/search-mapping-view';
 
 const customUrls = {
   //localhost : 'admindatero'
 };
 
-const Views = {
+const accountRedirectIfLoggedIn = (fromState, toState, {rootStore}) => {
+  if (!rootStore.user.isSignedIn) {
+    if (['register', 'login'].includes(toState.routeName)) {
+      rootStore.user.setLastLoggedOutRoute(fromState);
+    }
+    rootStore.ui.setLayout('normal');
+    return Promise.resolve();
+  } else {
+    return Promise.reject(new RouterState('home'));
+  }
+};
+
+const layoutToNormal = (fromState, toState, {rootStore}) => {
+  rootStore.ui.setLayout('normal');
+  return Promise.resolve();
+};
+
+const isSamePath = (fromState, toState) => {
+  return fromState.routeName == toState.routeName && _.isEqual(fromState.params, toState.params);
+}
+
+const Views = [
 
   /* HOME */
-  home : new Route({
+  {
     name : 'home',
-    path : '/',
-    component : <Home />,
-    onEnter : (route, params, store) => {
-      if (customUrls[store.getHostName()]) {
-        store.goTo('profile', {username: customUrls[store.getHostName()]});
-        return false;
+    pattern : '/',
+    beforeEnter : (fromState, toState, {rootStore}) => {
+      if (customUrls[rootStore.getHostName()]) {
+        return Promise.reject(new RouterState('profile', {username: customUrls[rootStore.getHostName()]}));
       } else {
-        if (!store.user.isSignedIn) {
-          store.goTo('welcome');
+        if (!rootStore.user.isSignedIn) {
+          return Promise.reject(new RouterState('welcome'));
         } else {
-            store.ui.setLayout('normal');
-            store.createHomeViewStore();
+          rootStore.ui.setLayout('normal');
+          rootStore.createHomeViewStore();
+          return Promise.resolve();
         }
       }
     },
-    onExit: (route, params, store) => {
-      !!store.homeView && !!store.homeView.dispose && store.homeView.dispose();
-      store.homeView = null;
+    onExit: (fromState, toState, {rootStore}) => {
+      !!rootStore.homeView && !!rootStore.homeView.dispose && rootStore.homeView.dispose();
+      rootStore.homeView = null;
+      return Promise.resolve();
     },
     metaData : {
       title : {id : 'METADATA.DEFAULT.TITLE'},
       description : {id : 'METADATA.DEFAULT.DESCRIPTION'}
     }
-  }),
+  },
 
   /* LANDING / WELCOME */
-  welcome : new Route({
+  {
     name : 'welcome',
-    path : '/welcome',
-    component : <Landing />,
-    onEnter: (route, params, store) => {
-      if (customUrls[store.getHostName()]) {
-        store.goTo('profile', {username: customUrls[store.getHostName()]});
-        return false;
+    pattern : '/welcome',
+    beforeEnter: (fromState, toState, {rootStore}) => {
+      if (customUrls[rootStore.getHostName()]) {
+        return Promise.reject( new RouterState('profile', {username: customUrls[rootStore.getHostName()]}));
       } else {
-        store.ui.setLayout('normal');
-        store.user.isSignedIn && store.goTo('home');
+        if (rootStore.user.isSignedIn) {
+          return Promise.reject(new RouterState('home'));
+        } else {
+          rootStore.ui.setLayout('normal');
+          return Promise.resolve();
+        }
       }
     },
     metaData : {
       title : {id : 'METADATA.DEFAULT.TITLE'},
       description : {id : 'METADATA.DEFAULT.DESCRIPTION'}
     }
-  }),
+  },
 
   /* MAPPING SEARCH  */
-  search : new Route({
+  {
     name : 'search',
-    path : '/search',
-    component : <SearchMappingView />,
-    onEnter: (route, params, store) => {
-      store.ui.setLayout('normal');
-      store.createSearchMappingViewStore();
+    pattern : '/search',
+    onEnter: (fromState, toState, {rootStore}) => {
+      rootStore.ui.setLayout('normal');
+      rootStore.createSearchMappingViewStore();
+      return Promise.resolve();
     },
-    onExit: (route, params, store) => {
-      !!store.searchMappingView && !!store.searchMappingView.dispose && store.searchMappingView.dispose();
-      store.searchMappingView = null;
+    onExit: (fromState, toState, {rootStore}) => {
+      !!rootStore.searchMappingView && !!rootStore.searchMappingView.dispose && rootStore.searchMappingView.dispose();
+      rootStore.searchMappingView = null;
+      return Promise.resolve();
     },
     metaData : {
       title : {id : 'METADATA.SEARCH.TITLE'},
       description : {id : 'METADATA.SEARCH.DESCRIPTION'}
     }
-  }),
+  },
 
   /* STATIC INFO */
-  info : new Route({
+  {
     name : 'info',
-    path : '/info/:pageId',
-    component : <StaticPage />,
-    onEnter: (route, params, store) => store.ui.setLayout('normal'),
+    pattern : '/info/:pageId',
+    onEnter: (fromState, toState, {rootStore}) => {
+      rootStore.ui.setLayout('normal');
+      return Promise.resolve();
+    },
     backButtonConfig : {
-      view : 'home',
+      routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     isServerSideAsync : true
-  }),
+  },
 
   /* ACCOUNT PATHS */
-  login : new Route({
-    path: '/login',
-    name : 'login',
-    component: <LoginPage />,
-    beforeEnter: (route, params, store) => store.user.setLastLoggedOutView(),
-    onEnter : (route, params, store) => {
-      store.ui.setLayout('normal');
-      store.user.isSignedIn && store.router.goTo(Views.home, {}, store);
-    },
+  {
+    name: 'login',
+    pattern: '/login',
+    beforeEnter : accountRedirectIfLoggedIn,
     backButtonConfig : {
-      view : 'welcome',
+      routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.LOGIN.TITLE'},
       description : {id : 'METADATA.LOGIN.DESCRIPTION'}
     }
-  }),
+  },
 
-  register : new Route({
+  {
     name : 'register',
-    path : '/register',
-    component : <RegisterPage />,
-    beforeEnter : (route, params, store) => store.user.setLastLoggedOutView(),
-    onEnter : (route, params, store) => {
-      store.ui.setLayout('normal');
-      store.user.isSignedIn && store.router.goTo(Views.home, {}, store)
-    },
+    pattern : '/register',
+    beforeEnter : accountRedirectIfLoggedIn,
     backButtonConfig : {
-      view : 'welcome',
+      routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.REGISTER.TITLE'},
       description : {id : 'METADATA.REGISTER.DESCRIPTION'}
     }
-  }),
+  },
 
-  registerFormPage : new Route({
+  {
     name : 'registerFormPage',
-    path : '/register-form',
-    component : <RegisterFormPage />,
-    onEnter : (route, params, store) => {
-      store.ui.setLayout('normal');
-    },
+    pattern : '/register-form',
+    beforeEnter : accountRedirectIfLoggedIn,
     backButtonConfig : {
-      view : 'register',
+      routerState : new RouterState('register'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.REGISTER_FORM_PAGE.TITLE'},
       description : {id : 'METADATA.REGISTER_FORM_PAGE.DESCRIPTION'}
     }
-  }),
+  },
 
-  activate : new Route({
+  {
     name : 'activate',
-    path: '/activation/:outcome',
-    component: <ActivationPage />,
-    onEnter: (route, params, store) => {
-      store.ui.setLayout('normal');
-      store.user.isSignedIn && store.goTo('home')
-    },
+    pattern: '/activation/:outcome',
+    beforeEnter: accountRedirectIfLoggedIn,
     backButtonConfig : {
-      view : 'welcome',
+      routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.ACTIVATE.TITLE'},
       description : {id : 'METADATA.ACTIVATE.DESCRIPTION'}
     }
-  }),
+  },
 
-  recoverPass : new Route({
+  {
     name : 'recoverPass',
-    path: '/recover-password',
-    component: <RecoverPasswordPage />,
-    onEnter: (route, params, store) => {
-      store.ui.setLayout('normal');
-      store.user.isSignedIn && store.goTo('home')
-    },
+    pattern: '/recover-password',
+    beforeEnter: accountRedirectIfLoggedIn,
     backButtonConfig : {
-      view : 'welcome',
+      routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.RECOVER_PASS.TITLE'},
       description : {id : 'METADATA.RECOVER_PASS.DESCRIPTION'}
     }
-  }),
+  },
 
-  recoverPassConfirm : new Route({
+  {
     name: 'recoverPassConfirm',
-    path: '/recover-password/confirm/:uid/:token',
-    component: <RecoverPasswordConfirmPage />,
-    onEnter: (route, params, store) => {
-      store.ui.setLayout('normal');
-      store.user.isSignedIn && store.goTo('home')
-    },
+    pattern: '/recover-password/confirm/:uid/:token',
+    onEnter: accountRedirectIfLoggedIn,
     backButtonConfig : {
-      view : 'welcome',
+      routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.RECOVER_PASS_CONFIRM.TITLE'},
       description : {id : 'METADATA.RECOVER_PASS_CONFIRM.DESCRIPTION'}
     }
-  }),
+  },
 
-  settings : new Route({
+  {
     name: 'settings',
-    path: '/settings/:page?',
-    component: <AccountSettings />,
-    onEnter: (route, params, store) => {
-      store.ui.setLayout('normal');
-      return !store.user.isSignedIn
+    pattern: '/settings/:page?',
+    beforeEnter: (fromState, toState, {rootStore}) => {
+      if (!rootStore.user.isSignedIn) {
+        return Promise.reject(new RouterState('login'))
+      } else {
+        rootStore.ui.setLayout('normal');
+        return Promise.resolve();
+      }
     },
     backButtonConfig : {
-      view : 'profile',
+      routerState : new RouterState('profile'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.SETTINGS.TITLE'},
       description : {id : 'METADATA.SETTINGS.DESCRIPTION'}
     }
-  }),
+  },
 
   /* CAMPAIGN EDIT */
-  campaignForm : new Route({
+  {
     name : 'campaignForm',
-    path : '/mapeo/:id',
-    component : <CampaignManagerView />,
-    onEnter: (route, params, store) => {
-      store.ui.setLayout('normal');
-      store.createCampaignFormStore(params.id);
+    pattern : '/mapeo/:id',
+    onEnter: (fromState, toState, {rootStore}) => {
+      rootStore.ui.setLayout('normal');
+      rootStore.createCampaignFormStore(toState.params.id);
+      return Promise.resolve();
     },
-    backButtonConfig : (route, params, store) => {
-      return {
-        view : 'campaign',
-        params : {
-          username : store.user.data.username,
-          slug : store.campaignForm.campaign.get('slug')
-        },
-        showBackButton :  true,
-      }
-    },
+    backButtonConfig : (routeState, rootStore) => ({
+      routerState: new RouterState('campaign', {
+        username : rootStore.user.data.username,
+        slug : rootStore.campaignForm.campaign.get('slug')
+      }),
+      showBackButton :  true,
+    }),
     metaData : {
       title : {id : 'METADATA.CAMPAIGN_FORM.TITLE'},
       description : {id : 'METADATA.CAMPAIGN_FORM.DESCRIPTION'}
     }
-  }),
+  },
 
-  profile : new Route({
+  {
     name : 'profile',
-    path: '/:username',
-    component: <Profile />,
-    onEnter: (route, params, store) => {
-      console.log('on enter profile', params.username);
-      store.createProfileStore(params.username);
-      store.ui.setLayout('normal');
+    pattern: '/:username',
+    onEnter: (fromState, toState, {rootStore}) => {
+      rootStore.createProfileStore(toState.params.username);
+      rootStore.ui.setLayout('normal');
+      return Promise.resolve();
     },
-    onExit: (route, params, store) => {
-      !!store.profileView && !!store.profileView.dispose && store.profileView.dispose();
-      store.profileView = null;
+    onExit: (fromState, toState, {rootStore}) => {
+      !!rootStore.profileView && !!rootStore.profileView.dispose && rootStore.profileView.dispose();
+      rootStore.profileView = null;
+      return Promise.resolve();
     },
     backButtonConfig : {
-      view : 'home',
+      routerState : new RouterState('home'),
       showBackButton : false,
     },
     isServerSideAsync : true
-  }),
-
-  profileDateos : new Route({
-    name : 'profileDateos',
-    path: '/:username/dateos',
-    component: <Profile />,
-    onEnter: (route, params, store) => {
-      store.ui.setLayout('mapping');
-    },
-    backButtonConfig : (route, params, store) => ({
-      view : 'profile',
-      params : {
-        username : store.profileView.data.user.username
-      },
-      showBackButton : false,
-    }),
-    isServerSideAsync : true
-  }),
+  },
 
   /* CAMPAIGNS - TAGS */
-  campaign : new Route({
+  {
     name : 'campaign',
-    path: '/:username/:slug',
-    component : <CampaignView />,
-    onEnter: (route, params, store) => {
-      console.log('onEnter campaign');
-      store.ui.forceNavShadow = true;
-      store.ui.setLayout('mapping');
-      const campaignView = store.createCampaignViewStore();
-      campaignView.loadView(params.username, params.slug)
+    pattern: '/:username/:slug',
+    onEnter: (fromState, toState, {rootStore}) => {
+      if (isSamePath(fromState, toState)) return Promise.resolve();
+      rootStore.ui.forceNavShadow = true;
+      rootStore.ui.setLayout('mapping');
+      const campaignView = rootStore.createCampaignViewStore();
+      campaignView.loadView(toState.params.username, toState.params.slug);
+      return Promise.resolve();
     },
-    beforeExit : (route, params, store) => { store.ui.forceNavShadow = false},
-    onExit: (route, params, store) => {
-      store.disposeCampaignViewStore();
+    beforeExit : (fromState, toState, {rootStore}) => {
+      if (isSamePath(fromState, toState)) return Promise.resolve();
+      rootStore.ui.forceNavShadow = false;
+      rootStore.disposeCampaignViewStore();
+      return Promise.resolve();
     },
-    shouldTriggerHooksOnSameView : ({currentParams, currentQueryParams, nextParams, nextQueryParams}) => {
-      return currentParams.username != nextParams.username || currentParams.slug != nextParams.slug;
-    },
-    backButtonConfig : (route, params, store, queryParams) => {
-      const visualIsOpen = store.campaignView.layoutMode == 'visual';
-      const contentIsDetail = store.campaignView.contentViewMode == 'detail-view';
+    backButtonConfig : (routeState, rootStore) => {
+      const visualIsOpen = rootStore.campaignView.layoutMode == 'visual';
+      const contentIsDetail = rootStore.campaignView.contentViewMode == 'detail-view';
 
       // is root
       if (!visualIsOpen && !contentIsDetail) {
         return {
-          view: 'home',
+          routerState: new RouterState('home'),
           showBackButton : false,
         }
       } else if (visualIsOpen && !contentIsDetail) {
         return {
-          callback : () => store.campaignView.setLayout('content'),
+          callback : () => rootStore.campaignView.setLayout('content'),
           showBackButton : true,
         }
       } else if ( visualIsOpen && contentIsDetail) {
         return {
-          callback : () => store.campaignView.setLayout('content'),
+          callback : () => rootStore.campaignView.setLayout('content'),
           showBackButton : true,
         }
       } else if (contentIsDetail) {
-        let newQueryParams = _.omit(toJS(queryParams), 'dateo');
+        let newQueryParams = _.omit(routeState.queryParams, 'dateo');
         return {
-          view : 'campaign',
-          params : params,
-          queryParams : newQueryParams,
+          routerState : new RouterState('campaign', routeState.params, newQueryParams),
           showBackButton : true
         }
       }
     },
     isServerSideAsync : true,
-  }),
+  },
 
   /* 404 */
-  notFound : new Route({
+  {
     name : 'notFound',
-    path: '*',
-    component: <Error404 errorId="NOT_FOUND" />,
-    onEnter: (route, params, store) => {
-      store.ui.setLayout('normal');
-    },
+    pattern: 'not-found-ww404',
+    onEnter: layoutToNormal,
     metaData : {
       title : {id : 'METADATA.NOT_FOUND.TITLE'},
       description : {id : 'METADATA.NOT_FOUND.DESCRIPTION'}
     }
-  })
-}
+  }
+];
 
 export default Views;

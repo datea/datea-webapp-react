@@ -21,7 +21,7 @@ export default class DateoFormStore {
     });
 
     if (id && id != 'new') {
-      let dateo = this.main.dateo.data.dateos.get(String(id));
+      let dateo = this.main.dateo.dateos.get(id);
       if (dateo) {
         this.dateo.merge(dateo);
         this.map.createMap({geometry:  toJS(dateo.position || dateo.geometry_collection)});
@@ -191,7 +191,7 @@ export default class DateoFormStore {
     Api.dateo.save(data)
     .then(model => {
       model.isNew = !data.id;
-      this.main.dateo.data.dateos.set(String(model.id), model);
+      this.main.dateo.dateos.set(model.id, model);
       this.main.openDateo({dateo: model, isNew: !data.id});
       if (model.isNew) {
         this.main.user.incrementDateoCount();

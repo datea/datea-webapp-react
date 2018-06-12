@@ -30,11 +30,11 @@ export default class ActivationPage extends React.Component {
 
           {success &&
             <div>
-              <LoginForm onSuccess={() => store.goTo('settings', {page: 'welcome'})} />
+              <LoginForm onSuccess={() => store.router.goTo('settings', {page: 'welcome'})} />
 
               <div className="bottom-info">
                 <div className="info-line">
-                  <Link view="recover-password"><Tr id={'LOGIN_PAGE.RECOVER_PASS_LINK'} /></Link>
+                  <Link route="recover-password"><Tr id={'LOGIN_PAGE.RECOVER_PASS_LINK'} /></Link>
                 </div>
               </div>
             </div>
@@ -42,7 +42,7 @@ export default class ActivationPage extends React.Component {
           {!success &&
             <div className="form-btns">
               <Button variant="raised"  color="primary"
-                onClick={() => store.goTo('register')}
+                onClick={() => store.router.goTo('register')}
                 ><Tr id={'REGISTER'} /></Button>
             </div>
           }

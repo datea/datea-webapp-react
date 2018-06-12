@@ -1,4 +1,5 @@
 import {observable, action, reaction} from 'mobx';
+import {routerStateToUrl} from 'mobx-state-router';
 import config from '../../config';
 
 export default class BackButtonStore {
@@ -11,13 +12,7 @@ export default class BackButtonStore {
 
     setTimeout(() => {
       this.listenToRoute = reaction(
-        () => {
-          if (this.main.router.currentView) {
-            return this.main.router.currentView.replaceUrlParams(this.main.router.params, this.main.router.queryParams);
-          } else {
-            return false;
-          }
-        },
+        () => routerStateToUrl(this.main.router, this.main.router.routerState),
         () => this.updateBackButtonConfig(),
         {fireImmediately : true, delay: 1}
       );
@@ -25,12 +20,12 @@ export default class BackButtonStore {
   }
 
   @action updateBackButtonConfig = () => {
-    const currentView = this.main.router.currentView;
-    if (!currentView) return;
+    const route = this.main.router.getCurrentRoute();
+    if (!route) return;
 
-    let config = currentView.backButtonConfig;
+    let config = route.backButtonConfig;
     if (typeof(config) == 'function') {
-      config = config(currentView, this.main.router.params, this.main, this.main.router.queryParams);
+      config = config(this.main.router.routerState, this.main);
     }
 
     this.showBackButton = (!!config && config.showBackButton) || false;
@@ -41,9 +36,9 @@ export default class BackButtonStore {
     if (this.backAction) {
       if (this.backAction.callback) {
         this.backAction.callback();
-      } else if (this.backAction.view) {
-        const {view, params, queryParams} = this.backAction;
-        this.main.goTo(view, params, queryParams);
+      } else if (this.backAction.routerState) {
+        const {routerState} = this.backAction;
+        this.main.router.goTo(routerState);
       }
     }
   }

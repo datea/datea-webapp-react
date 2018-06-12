@@ -1,16 +1,18 @@
 require('dotenv').config();
+console.log(process.env.SERVER_API_URL_DEV);
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack           = require('webpack');
 var path              = require('path');
 var fs                = require('fs');
 var SvgStore          = require('webpack-svgstore-plugin');
-var nodeExternals   = require('webpack-node-externals');
-var loaderRules       = require('./webpack-loader-rules');
+var nodeExternals     = require('webpack-node-externals');
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
+var loaderRules       = require('./webpack-loader-rules-server');
 
 var config = {
   mode: 'development',
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [nodeExternals({whitelist: ['react-select', 'react-select/dist/react-select.css']})],
   devServer: {
     host: '0.0.0.0',
     historyApiFallback: true,
@@ -19,10 +21,6 @@ var config = {
     port: 9000
   },
   entry: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:9000',
-    'webpack/hot/only-dev-server',
-    'babel-polyfill',
     path.resolve(__dirname, './src/server/index.js')
   ],
   output: {
@@ -37,20 +35,21 @@ var config = {
     new webpack.LoaderOptionsPlugin({ debug: true}),
     new webpack.DefinePlugin({
       __DEV__: 'true',
-      API_URL: JSON.stringify(process.env.API_URL_DEV || 'http://localhost:8000/api/v2'),
+      API_URL: JSON.stringify(process.env.SERVER_API_URL_DEV || 'http://localhost:8000/api/v2'),
       MEDIA_URL : JSON.stringify(process.env.MEDIA_URL_DEV || 'http://localhost:8000'),
-      WEB_URL: JSON.stringify(process.env.WEB_URL_DEV || 'http://localhost:9000')
+      WEB_URL: JSON.stringify(process.env.WEB_URL_DEV || 'http://localhost:9000'),
+      ENV_TYPE : JSON.stringify('server')
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // BETTER CONSOLE OUTPUT FOR ERRORS
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/index-dev.html'),
-      inject: 'body' // Inject all scripts into the body
-    }),
     new SvgStore({
       svgoOptions: {
         plugins: [{ removeTitle: true }]
       }
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
     })
   ],
   devtool: 'eval-source-map'

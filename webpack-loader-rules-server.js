@@ -25,7 +25,6 @@ var rules = [
           'transform-es2017-object-entries',
           'transform-es2015-destructuring',
           'transform-class-properties',
-          'fast-async',
           'transform-export-extensions',
           ["module-resolver", {
             "alias": {

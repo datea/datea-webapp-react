@@ -73,7 +73,7 @@ export default class FollowButton extends Component {
     if (user.isSignedIn) {
       this.state.followObj ? this.follow(false) : this.follow(true);
     } else {
-      this.props.store.goTo('login');
+      this.props.store.router.goTo('login');
     }
   }
 

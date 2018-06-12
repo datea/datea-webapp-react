@@ -38,14 +38,14 @@ export default class LoginForm extends React.Component {
       } else {
         const {store} = this.props;
         if (!store.user.isNew) {
-          const {view, params, queryParams} = store.user.lastLoggedOutView;
-          if (view && view.name != 'welcome') {
-            store.goTo(view, params, queryParams);
+          const lastRoute = store.user.lastLoggedOutRoute;
+          if (lastRoute) {
+            store.router.goTo(lastRoute);
           } else {
-            store.goTo('home');
+            store.router.goTo('home');
           }
         }else{
-          store.goTo('settings' ,{page: 'welcome'});
+          store.router.goTo('settings' ,{page: 'welcome'});
         }
       }
     })

@@ -8,13 +8,13 @@ import UserAvatar from '../user-avatar';
 const AuthorHeader = ({user, subTitle, className}) =>
   <div className={cn('author-header', className)}>
     <div className="avatar-holder">
-      <Link view="profile" params={{username: user.username}}>
+      <Link route="profile" params={{username: user.username}}>
         <UserAvatar src={user.image} size={44} />
       </Link>
     </div>
     <div className="author-info">
       <div className="uname">
-        <Link view="profile" params={{username: user.username}}>{user.username}</Link>
+        <Link route="profile" params={{username: user.username}}>{user.username}</Link>
       </div>
       {!!subTitle && <div className="sub-title">{subTitle}</div>}
     </div>

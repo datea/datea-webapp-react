@@ -3,8 +3,11 @@ const webpack = require('webpack');
 const path = require('path');
 const requireFromString = require('require-from-string');
 const MemoryFS = require('memory-fs');
-const serverConfig = require('../../webpack.config.server.js');
+const promiseFinally = require('promise.prototype.finally');
+const serverConfig = require('../../webpack.config.server.dev.js');
 const fs = new MemoryFS();
+
+promiseFinally.shim();
 
 const outputErrors = (err, stats) => {
     if (err) {
@@ -29,7 +32,7 @@ serverCompiler.outputFileSystem = fs;
 serverCompiler.run((err, stats) => {
     outputErrors(err, stats);
     const contents = fs.readFileSync(path.resolve(serverConfig.output.path, serverConfig.output.filename), 'utf8');
-    const func = requireFromString(contents, serverConfig.output.filename);
+    const func = requireFromString(contents, serverConfig.output.filename).default;
     const server = micro(func);
     server.listen(3000);
     console.log('Server listening on port 3000!');

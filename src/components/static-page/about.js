@@ -22,7 +22,7 @@ const AboutContent = () =>
         por parte del estado. Datea permite a sus usuarios convertirse en "dateros", y aportar información
         útil para su comunidad o alguna iniciativa específica.</p>
 
-      <p><strong>No eres dater@? <Link view="register">Regístrate!</Link></strong></p>
+      <p><strong>No eres dater@? <Link route="register">Regístrate!</Link></strong></p>
 
       <p>Datea ha sido apoyado por:</p>
       <p>

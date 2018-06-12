@@ -45,7 +45,7 @@ export default class AccountSettings extends React.Component {
         actions  = [
           <Button variant="raised" color="primary"
             key="next"
-            onClick={() => store.goTo('home')}>
+            onClick={() => store.router.goTo('home')}>
             {t('SETTINGS_PAGE.NEXT')}
           </Button>
         ];
@@ -58,7 +58,7 @@ export default class AccountSettings extends React.Component {
         <div className="msg-wrapper">
           {hasClose &&
             <IconButton className="close-icon"
-              onClick={() => this.props.store.goTo('settings')}
+              onClick={() => this.props.store.router.goTo('settings')}
               style={{position:'absolute', right:-15, top:-15}}>
               <IconClose />
             </IconButton>}
@@ -71,7 +71,7 @@ export default class AccountSettings extends React.Component {
   }
 
   onTabChange = (ev, val) => {
-    this.props.store.goTo('settings', {page: TABS[val]});
+    this.props.store.router.goTo('settings', {page: TABS[val]});
   }
 
   render() {

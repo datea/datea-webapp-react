@@ -1,7 +1,7 @@
 const micro = require('micro');
 const path = require('path');
 const promiseFinally = require('promise.prototype.finally');
-const serverFunc = require('../../dist/server').default;
+const serverFunc = require('./server').default;
 
 promiseFinally.shim();
 

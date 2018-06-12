@@ -6,6 +6,7 @@ var nodeExternals = require('webpack-node-externals');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var loaderRules = require('./webpack-loader-rules-server');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
+var CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     mode: 'production',
@@ -37,7 +38,21 @@ module.exports = {
       new MiniCssExtractPlugin({
         filename: "[name].css",
         chunkFilename: "[id].css"
-      })
+      }),
+      new CopyWebpackPlugin([
+        {
+          from : path.resolve(__dirname, './src/server/run-server.js'),
+          to : path.resolve(__dirname, './dist')
+        },
+        {
+          from : path.resolve(__dirname, './package.json'),
+          to: path.resolve(__dirname, './dist')
+        },
+        {
+          from : path.resolve(__dirname, './yarn.lock'),
+          to: path.resolve(__dirname, './dist')
+        }
+      ])
       //new webpack.optimize.UglifyJsPlugin({sourceMap: true})
     ],
     optimization: {

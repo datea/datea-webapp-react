@@ -34,7 +34,7 @@ export default class RecoverPasswordConfirmPage extends React.Component {
     document.querySelector('.password-field input').blur();
     document.querySelector('.password-confirm-field input').blur();
   }
-  startOver = () => this.props.store.goTo('recover-password');
+  startOver = () => this.props.store.router.goTo('recoverPass');
 
   submit = () => {
     this.setState({error: false});
