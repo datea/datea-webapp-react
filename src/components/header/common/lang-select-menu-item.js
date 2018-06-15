@@ -18,7 +18,9 @@ export default class LangSelectMenuItem extends React.Component {
     super(props, context);
   }
 
-  onLocaleChange = (event, index, value) => this.props.store.user.setLocale(value);
+  onLocaleChange = (ev) => {
+    this.props.store.user.setLocale(ev.target.value);
+  }
 
   render() {
     const {user, ui} = this.props.store;

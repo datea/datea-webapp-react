@@ -23,7 +23,7 @@ export default class MenuBtn extends React.Component {
     };
     return (
       <IconButton
-        className="main-menu"
+        className="main-menu landing-menu-button"
         {...otherProps}
         style={menuBtnStyle}>
         <MenuIcon style={menuIconStyle} />

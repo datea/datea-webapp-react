@@ -62,7 +62,6 @@ const Views = [
       }
     },
     onExit: (fromState, toState, {rootStore}) => {
-      console.log('ON EXIT HOME');
       !!rootStore.homeView && !!rootStore.homeView.dispose && rootStore.homeView.dispose();
       rootStore.homeView = null;
       return Promise.resolve();

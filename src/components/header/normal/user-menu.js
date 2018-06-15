@@ -31,7 +31,7 @@ export default class UserMenu extends React.Component {
   goTo = (...args) => this.props.store.router.goTo(...args);
   goToSettings = () => {
     this.closeDrawer();
-    this.props.store.goTo('settings');
+    this.props.store.router.goTo('settings');
   }
   goToProfile = () => {
     this.closeDrawer();

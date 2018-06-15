@@ -18,7 +18,7 @@ export default class StaticPage extends Component {
 
   componentDidMount() {
     const {store} = this.props;
-    const page = store.router.params.pageId.toUpperCase();
+    const page = store.router.routerState.params.pageId.toUpperCase();
     const metaData = {
       title : {id : 'METADATA.INFO.'+page+'.TITLE'}
     };
@@ -30,7 +30,7 @@ export default class StaticPage extends Component {
   }
 
   render() {
-    const tab = this.props.store.router.params.pageId || 'about';
+    const tab = this.props.store.router.routerState.params.pageId || 'about';
     return (
       <div className="static-page-wrap">
         <Paper className="static-page-paper">
