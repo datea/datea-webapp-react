@@ -1,6 +1,7 @@
 .DS_STORE
 .env
 fabfile.py
+fabfile.pyc
 dist/
 node_modules/
 .tmp/
