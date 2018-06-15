@@ -7,6 +7,13 @@ const customUrls = {
   //localhost : 'admindatero'
 };
 
+const callEnterHooks = (fromState, toState, rootStore) => {
+  const {router} = rootStore;
+  const route = router.getRoute(toState.routeName);
+  route.beforeEnter && route.beforeEnter(fromState, toState, router);
+  route.onEnter && route.onEnter(fromState, toState, router);
+}
+
 const accountRedirectIfLoggedIn = (fromState, toState, {rootStore}) => {
   if (!rootStore.user.isSignedIn) {
     if (['register', 'login'].includes(toState.routeName)) {
@@ -15,7 +22,9 @@ const accountRedirectIfLoggedIn = (fromState, toState, {rootStore}) => {
     rootStore.ui.setLayout('normal');
     return Promise.resolve();
   } else {
-    return Promise.reject(new RouterState('home'));
+    const newToState = new RouterState('home');
+    callEnterHooks(fromState, newToState, rootStore);
+    return Promise.reject(newToState)
   }
 };
 
@@ -35,11 +44,16 @@ const Views = [
     name : 'home',
     pattern : '/',
     beforeEnter : (fromState, toState, {rootStore}) => {
+      let newToState;
       if (customUrls[rootStore.getHostName()]) {
-        return Promise.reject(new RouterState('profile', {username: customUrls[rootStore.getHostName()]}));
+        newToState = new RouterState('profile', {username: customUrls[rootStore.getHostName()]});
+        callEnterHooks(fromState, newToState, rootStore);
+        return Promise.reject(newToState);
       } else {
         if (!rootStore.user.isSignedIn) {
-          return Promise.reject(new RouterState('welcome'));
+          newToState = new RouterState('welcome');
+          callEnterHooks(fromState, newToState, rootStore);
+          return Promise.reject(newToState);
         } else {
           rootStore.ui.setLayout('normal');
           rootStore.createHomeViewStore();
@@ -48,6 +62,7 @@ const Views = [
       }
     },
     onExit: (fromState, toState, {rootStore}) => {
+      console.log('ON EXIT HOME');
       !!rootStore.homeView && !!rootStore.homeView.dispose && rootStore.homeView.dispose();
       rootStore.homeView = null;
       return Promise.resolve();
@@ -63,11 +78,16 @@ const Views = [
     name : 'welcome',
     pattern : '/welcome',
     beforeEnter: (fromState, toState, {rootStore}) => {
+      let newToState;
       if (customUrls[rootStore.getHostName()]) {
-        return Promise.reject( new RouterState('profile', {username: customUrls[rootStore.getHostName()]}));
+        newToState = new RouterState('profile', {username: customUrls[rootStore.getHostName()]});
+        callEnterHooks(fromState, newToState, rootStore);
+        return Promise.reject(newToState);
       } else {
         if (rootStore.user.isSignedIn) {
-          return Promise.reject(new RouterState('home'));
+          newToState = new RouterState('home');
+          callEnterHooks(fromState, newToState, rootStore);
+          return Promise.reject(newToState);
         } else {
           rootStore.ui.setLayout('normal');
           return Promise.resolve();
@@ -120,13 +140,21 @@ const Views = [
     name: 'login',
     pattern: '/login',
     beforeEnter : accountRedirectIfLoggedIn,
+    onEnter: (fromState, toState, {rootStore}) => {
+      rootStore.createLoginStore();
+      rootStore.ui.setLayout('normal');
+      return Promise.resolve();
+    },
+    onExit : (fromState, toState, {rootStore}) => {
+      rootStore.disposeLoginStore();
+      return Promise.resolve();
+    },
     backButtonConfig : {
       routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.LOGIN.TITLE'},
-      description : {id : 'METADATA.LOGIN.DESCRIPTION'}
     }
   },
 
@@ -140,7 +168,6 @@ const Views = [
     },
     metaData : {
       title : {id : 'METADATA.REGISTER.TITLE'},
-      description : {id : 'METADATA.REGISTER.DESCRIPTION'}
     }
   },
 
@@ -148,13 +175,21 @@ const Views = [
     name : 'registerFormPage',
     pattern : '/register-form',
     beforeEnter : accountRedirectIfLoggedIn,
+    onEnter: (fromState, toState, {rootStore}) => {
+      rootStore.createRegisterStore();
+      rootStore.ui.setLayout('normal');
+      return Promise.resolve();
+    },
+    onExit : (fromState, toState, {rootStore}) => {
+      rootStore.disposeRegisterStore();
+      return Promise.resolve();
+    },
     backButtonConfig : {
       routerState : new RouterState('register'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.REGISTER_FORM_PAGE.TITLE'},
-      description : {id : 'METADATA.REGISTER_FORM_PAGE.DESCRIPTION'}
     }
   },
 
@@ -162,13 +197,21 @@ const Views = [
     name : 'activate',
     pattern: '/activation/:outcome',
     beforeEnter: accountRedirectIfLoggedIn,
+    onEnter: (fromState, toState, {rootStore}) => {
+      rootStore.createLoginStore();
+      rootStore.ui.setLayout('normal');
+      return Promise.resolve();
+    },
+    onExit : (fromState, toState, {rootStore}) => {
+      rootStore.disposeLoginStore();
+      return Promise.resolve();
+    },
     backButtonConfig : {
       routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.ACTIVATE.TITLE'},
-      description : {id : 'METADATA.ACTIVATE.DESCRIPTION'}
     }
   },
 
@@ -176,48 +219,70 @@ const Views = [
     name : 'recoverPass',
     pattern: '/recover-password',
     beforeEnter: accountRedirectIfLoggedIn,
+    onEnter : (fromState, toState, {rootStore}) => {
+      rootStore.createRecoverPassStore();
+      rootStore.ui.setLayout('normal');
+      return Promise.resolve();
+    },
+    onExit : (fromState, toState, {rootStore}) => {
+      rootStore.disposeRecoverPassStore();
+      rootStore.recoverPassView = null;
+    },
     backButtonConfig : {
       routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.RECOVER_PASS.TITLE'},
-      description : {id : 'METADATA.RECOVER_PASS.DESCRIPTION'}
     }
   },
 
   {
     name: 'recoverPassConfirm',
     pattern: '/recover-password/confirm/:uid/:token',
-    onEnter: accountRedirectIfLoggedIn,
+    beforeEnter: accountRedirectIfLoggedIn,
+    onEnter: (fromState, toState, {rootStore}) => {
+      rootStore.createLoginStore();
+      rootStore.createRecoverPassConfirmStore();
+      rootStore.ui.setLayout('normal');
+      return Promise.resolve();
+    },
+    onExit : (fromState, toState, {rootStore}) => {
+      rootStore.disposeLoginStore();
+      return Promise.resolve();
+    },
     backButtonConfig : {
       routerState : new RouterState('welcome'),
       showBackButton : true,
     },
     metaData : {
       title : {id : 'METADATA.RECOVER_PASS_CONFIRM.TITLE'},
-      description : {id : 'METADATA.RECOVER_PASS_CONFIRM.DESCRIPTION'}
     }
   },
 
   {
     name: 'settings',
     pattern: '/settings/:page?',
-    beforeEnter: (fromState, toState, {rootStore}) => {
+    onEnter: (fromState, toState, {rootStore}) => {
       if (!rootStore.user.isSignedIn) {
-        return Promise.reject(new RouterState('login'))
+        const newToState = new RouterState('login');
+        callEnterHooks(fromState, newToState, rootStore);
+        return Promise.reject(newToState);
       } else {
+        rootStore.createSettingsStore();
         rootStore.ui.setLayout('normal');
         return Promise.resolve();
       }
     },
-    backButtonConfig : {
-      routerState : new RouterState('profile'),
-      showBackButton : true,
+    onExit: (fromState, toState, {rootStore}) => {
+      rootStore.disposeSettingsStore();
     },
+    backButtonConfig : (routeState, rootStore) => ({
+      routerState : new RouterState('profile', {username: rootStore.user.data.username}),
+      showBackButton : true,
+    }),
     metaData : {
       title : {id : 'METADATA.SETTINGS.TITLE'},
-      description : {id : 'METADATA.SETTINGS.DESCRIPTION'}
     }
   },
 

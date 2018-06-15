@@ -16,7 +16,7 @@ module.exports = {
       'server': path.resolve(__dirname, './src/server/index.js')
     },
     output: {
-      path: path.resolve(__dirname, './dist'),
+      path: path.resolve(__dirname, './dist/server'),
       filename: 'server.js',
       publicPath: '/',
       library: 'app',
@@ -42,15 +42,15 @@ module.exports = {
       new CopyWebpackPlugin([
         {
           from : path.resolve(__dirname, './src/server/run-server.js'),
-          to : path.resolve(__dirname, './dist')
+          to : path.resolve(__dirname, './dist/server')
         },
         {
           from : path.resolve(__dirname, './package.json'),
-          to: path.resolve(__dirname, './dist')
+          to: path.resolve(__dirname, './dist/server')
         },
         {
           from : path.resolve(__dirname, './yarn.lock'),
-          to: path.resolve(__dirname, './dist')
+          to: path.resolve(__dirname, './dist/server')
         }
       ])
       //new webpack.optimize.UglifyJsPlugin({sourceMap: true})

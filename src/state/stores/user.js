@@ -209,7 +209,7 @@ export default class UserStore {
   @action save(params) {
     return new Promise((resolve, reject) => {
       this.main.ui.setLoading(true);
-      fetch.patch(urlJoin(config.api.url, 'user', this.data.id), params)
+      fetch.patch(urlJoin(config.api.url, 'user', String(this.data.id)), params)
       .then(res => runInAction(() => {
         this.main.ui.setLoading(false);
         this.data = res.body;

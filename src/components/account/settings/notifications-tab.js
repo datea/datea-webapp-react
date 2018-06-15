@@ -1,113 +1,91 @@
 import React from 'react';
 import Button from 'material-ui/Button';
-import Formsy from 'formsy-react';
-import FormsyCheckbox from 'formsy-material-ui/lib/FormsyCheckbox';
+import Switch from 'material-ui/Switch';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import {observer, inject} from 'mobx-react';
-import {t, translatable} from '../../../i18n';
+import {Tr} from '../../../i18n';
 
-@inject('store')
-@translatable
-@observer
-export default class ProfileForm extends React.Component {
+const NotificationsTab = ({store}) => {
+  const form = store.settingsView;
+  return (
+    <div className="settings-tab-content notifications-tab">
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      errorMsg  : false
-    }
-  }
+      {form.error.has('main') &&
+        <div className="error-msg"><Tr id={form.error.get('main')} /></div>
+      }
 
-  resetError = () => this.setState({errorMsg: false});
+      <div className="form">
 
-  submit = () => {
-    let model = this.refs.notifySettingsForm.getModel();
-    const {user} = this.props.store;
-    model.notify_settings.id = user.data.notify_settings.id;
-    user.save(model);
-  }
+        <div className="info-row left"><Tr id="SETTINGS_PAGE.NOTIFY.DESC" /></div>
 
-  render() {
-    const {user} = this.props.store;
-    return (
-      <div className="settings-tab-content notifications-tab">
-
-        {this.state.errorMsg &&
-          <div className="error-msg" dangerouslySetInnerHTML={{__html: this.state.errorMsg}}></div>}
-
-        <Formsy ref="notifySettingsForm"
-          onChange={this.resetError}
-          onValidSubmit={this.submit}
-          >
-
-            <div className="info-row left">{t('SETTINGS_PAGE.NOTIFY.DESC')}</div>
-
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <FormsyCheckbox
-                    name="notify_settings.interaction"
-                    value={user.data.notify_settings.interaction}
-                    className="form-checkbox"
-                    />
-                }
-                label={t('SETTINGS_PAGE.NOTIFY.MY_CONTENT')}
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                color="default"
+                checked={form.user.notify_settings.interaction}
+                onChange={ev => form.setNotify('interaction', ev.target.checked)}
               />
+            }
+            label={<Tr id="SETTINGS_PAGE.NOTIFY.MY_CONTENT" />}
+          />
 
-              <FormControlLabel
-                control={
-                  <FormsyCheckbox
-                    name="notify_settings.conversations"
-                    value={user.data.notify_settings.conversations}
-                    className="form-checkbox"
-                    />
-                }
-                label={t('SETTINGS_PAGE.NOTIFY.THREADS')}
+          <FormControlLabel
+            control={
+              <Switch
+                color="default"
+                checked={form.user.notify_settings.conversations}
+                onChange={ev => form.setNotify('conversations', ev.target.checked)}
               />
+            }
+            label={<Tr id="SETTINGS_PAGE.NOTIFY.THREADS" />}
+          />
 
-              <FormControlLabel
-                control={
-                  <FormsyCheckbox
-                    name="notify_settings.tags_dateos"
-                    value={user.data.notify_settings.tags_dateos}
-                    className="form-checkbox"
-                    />
-                }
-                label={t('SETTINGS_PAGE.NOTIFY.DATEOS_IN_TAGS')}
+          <FormControlLabel
+            control={
+              <Switch
+                color="default"
+                checked={form.user.notify_settings.tags_dateos}
+                onChange={ev => form.setNotify('tags_dateos', ev.target.checked)}
               />
+            }
+            label={<Tr id="SETTINGS_PAGE.NOTIFY.DATEOS_IN_TAGS" />}
+          />
 
-              <FormControlLabel
-                control={
-                  <FormsyCheckbox
-                    name="notify_settings.tags_reports"
-                    value={user.data.notify_settings.tags_reports}
-                    className="form-checkbox"
-                    />
-                }
-                label={t('SETTINGS_PAGE.NOTIFY.CAMPAIGN_MSG')}
+          <FormControlLabel
+            control={
+              <Switch
+                color="default"
+                checked={form.user.notify_settings.tags_reports}
+                onChange={ev => form.setNotify('tags_reports', ev.target.checked)}
               />
+            }
+            label={<Tr id="SETTINGS_PAGE.NOTIFY.CAMPAIGN_MSG" />}
+          />
 
-              <FormControlLabel
-                control={
-                  <FormsyCheckbox
-                    name="notify_settings.site_news"
-                    value={user.data.notify_settings.site_news}
-                    className="form-checkbox"
-                    />
-                }
-                label={t('SETTINGS_PAGE.NOTIFY.NEWSLETTER')}
+          <FormControlLabel
+            control={
+              <Switch
+                color="default"
+                checked={form.user.notify_settings.site_news}
+                onChange={ev => form.setNotify('site_news', ev.target.checked)}
               />
+            }
+            label={<Tr id="SETTINGS_PAGE.NOTIFY.NEWSLETTER" />}
+          />
+        </FormGroup>
 
-            </FormGroup>
-
-            <div className="form-btns">
-              <Button variant="raised"
-                color="primary"
-                type="submit"
-              >{t('SAVE')}</Button>
-            </div>
-          </Formsy>
+        <div className="form-btns">
+          <Button variant="raised"
+            onClick={form.submit}
+            color="primary"
+            type="submit">
+            <Tr id="SAVE" />
+          </Button>
+        </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
+
+export default inject('store')(observer(NotificationsTab))

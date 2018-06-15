@@ -14,6 +14,11 @@ import CampaignFormStore from './stores/campaign-form';
 import ProfileViewStore from './stores/profile-view';
 import DateoStore from './stores/dateo';
 import DateoFormStore from './stores/dateo-form';
+import RegisterViewStore from './stores/account/register-view';
+import LoginViewStore from './stores/account/login-view';
+import RecoverPassViewStore from './stores/account/recover-pass-view';
+import RecoverPassConfirmViewStore from './stores/account/recover-pass-confirm-view';
+import SettingsViewStore from './stores/account/settings-view';
 
 export default class DateaStore {
 
@@ -167,6 +172,49 @@ export default class DateaStore {
   createCampaignFormStore = (id) => {
     this.campaignForm = new CampaignFormStore(this, id);
   }
+
+  /************** ACCOUNT *********************/
+  createRegisterStore = () => {
+    this.registerView = new RegisterViewStore(this);
+  }
+  disposeRegisterStore = () => {
+    !!this.registerView.dispose && this.registerView.dispose();
+    this.registerView = null;
+  }
+  createLoginStore = () => {
+    this.loginView = new LoginViewStore(this);
+  }
+  disposeLoginStore = () => {
+    !!this.loginView.dispose && this.loginView.dispose();
+    this.loginView = null;
+  }
+  createRecoverPassStore = () => {
+    console.log('create recover pass view');
+    this.recoverPassView = new RecoverPassViewStore(this);
+  }
+  disposeRecoverPassStore = () => {
+    !!this.recoverPassView.dispose && this.recoverPassView.dispose();
+    this.recoverPassView = null;
+  }
+  createRecoverPassConfirmStore = () => {
+    this.recoverPassConfirmView = new RecoverPassConfirmViewStore(this);
+  }
+  disposeRecoverPassConfirmStore = () => {
+    !!this.recoverPassConfirmView.dispose && this.recoverPassConfirmView.dispose();
+    this.recoverPassConfirmView = null;
+  }
+  createSettingsStore = () => {
+    try {
+      this.settingsView = new SettingsViewStore(this);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  disposeSettingsStore = () => {
+    !!this.settingsView.dispose && this.settingsView.dispose();
+    this.settingsView= null;
+  }
+
 
   /************** PROFILE **********************/
   createProfileStore = (username) => {

@@ -15,7 +15,7 @@ import DIcon from '../../../icons';
 export default class ActivationPage extends React.Component {
 
   render() {
-    const success = this.props.store.router.params && this.props.store.router.params.outcome == 'success';
+    const success = this.props.store.router.routerState && this.props.store.router.routerState.params.outcome == 'success';
     const icon    = success ? 'daterito1' : 'daterito6';
     const msg     = success ? 'COMPLETE' : 'ERROR';
     const {store} = this.props;

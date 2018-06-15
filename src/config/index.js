@@ -15,6 +15,7 @@ const config = {
   facebookAppId: '222271061161837',
 
   validation : {
+    debounceMs : 1500,
     username : {
       minLength : 2,
       maxLength : 30,

@@ -11,7 +11,7 @@ module.exports = {
       'datea-web': ['babel-polyfill', path.resolve(__dirname, './src/client/index.js')],
     },
     output: {
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, './dist/client'),
         filename: '[name].[hash].js',
         publicPath: '/'
     },
@@ -39,5 +39,6 @@ module.exports = {
       minimize: true
     },
     module: {rules: loaderRules},
-    bail: true
+    bail: true,
+    devtool: false
 };
