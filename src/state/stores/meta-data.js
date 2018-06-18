@@ -9,7 +9,7 @@ import defaultImage from '../../img/logo-large.png';
 const defaultData = {
   title : {id : 'METADATA.DEFAULT.TITLE'},
   description: {id: 'METADATA.DEFAULT.DESCRIPTION'},
-  imgUrl : urlJoin(config.app.url, defaultImage)
+  imgUrl : urlJoin(config.app.url, defaultImage),
 };
 
 export default class MetaDataStore {
@@ -17,7 +17,8 @@ export default class MetaDataStore {
   @observable title = t(defaultData.title.id);
   @observable description = t(defaultData.description.id);
   @observable imgUrl = defaultData.imgUrl;
-  @observable url = defaultData.url;
+  @observable url = '';
+  @observable hashtags = [];
 
   currentData = {};
 
@@ -29,6 +30,7 @@ export default class MetaDataStore {
         this.set();
       }
     )
+    console.log(defaultData.imgUrl);
   }
 
   @action set(data = {}) {
@@ -37,6 +39,7 @@ export default class MetaDataStore {
     } else {
       data = this.currentData;
     }
+
     const rState = this.main.router.routerState;
     if (!data.url && (!rState.routeName || rState.routeName == '__initial__')) return;
 
@@ -46,10 +49,17 @@ export default class MetaDataStore {
       url = url + (url.indexOf('?') != -1 ? '&' : '?')+'lang='+this.main.user.locale;
     }
     let title = (!!data.title ? t(data.title.id, data.title.params ) : t(defaultData.title.id));
-    this.title = title + t('METADATA.TITLE_SUFFIX');
+    this.title = t('METADATA.TITLE_PREFIX') + ' ' + title;
     this.description = !!data.description ? t(data.description.id, data.description.params) : t(defaultData.description.id);
     this.imgUrl = data.imgUrl ? getImgSrc(data.imgUrl) : defaultData.imgUrl;
+    console.log('this.imgUrl', this.imgUrl);
     this.url = url;
+
+    if (data.hashtags && data.hashtags.length) {
+      this.hashtags.replace(data.hashtags)
+    } else {
+      this.hashtags.clear();
+    }
 
     this.main.setServerSideReady();
   }

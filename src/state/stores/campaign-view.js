@@ -221,7 +221,8 @@ export default class Campaign {
             shortDesc : campaign.short_description
           },
         },
-        imgUrl : !!campaign.image ? campaign.image.image : false
+        imgUrl : !!campaign.image ? campaign.image.image : false,
+        hashtags : [campaign.main_tag.tag]
       });
     } else {
       this.main.dateo.setMetaData(parseInt(dateoId), routerStateToUrl(this.main.router, this.main.router.routerState));

@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 
 const HeadMeta = ({store}) => {
   const {metaData} = store;
+  console.log('metaData.imgUrl', metaData.imgUrl);
   return (
     <Helmet defaultTitle="Todos somos dateros" >
 
@@ -18,14 +19,14 @@ const HeadMeta = ({store}) => {
       	<meta property="twitter:site" content="@somosdateros" />
       	<meta property="twitter:title" content={metaData.title} />
       	<meta property="twitter:description" content={metaData.description} />
-      	<meta property="twitter:image" content={metaData.imageUrl} />
+      	<meta property="twitter:image" content={metaData.imgUrl} />
 
       	{/* OG TAGS */}
       	<meta property="og:type" content="website" />
       	<meta property="og:title" content={metaData.title} />
       	<meta property="og:description" content={metaData.description} />
       	<meta property="og:url" content={metaData.url} />
-      	<meta property="og:image" content={metaData.imageUrl} />
+      	<meta property="og:image" content={metaData.imgUrl} />
       	<meta property="og:locale" content={store.user.locale} />
       	<meta property="og:site_name" content="Datea" />
     </Helmet>

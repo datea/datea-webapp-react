@@ -4,6 +4,7 @@ var path = require('path');
 var SvgStore = require('webpack-svgstore-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var loaderRules = require('./webpack-loader-rules');
+var CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     mode: 'production',
@@ -33,7 +34,12 @@ module.exports = {
           plugins: [{ removeTitle: true }]
         }
       }),
-      //new webpack.optimize.UglifyJsPlugin({sourceMap: true})
+      new CopyWebpackPlugin([
+        {
+          from : path.resolve(__dirname, './src/favicon.ico'),
+          to : path.resolve(__dirname, './dist/client/')
+        }
+      ]),
     ],
     optimization: {
       minimize: true

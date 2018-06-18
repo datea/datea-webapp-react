@@ -48,10 +48,10 @@ export class Tr extends React.Component {
 
   static propTypes = {
       id  : PropTypes.string.isRequired,
-      vars : PropTypes.object
+      params : PropTypes.object
   };
 
   render() {
-    return t(this.props.id, this.props.vars);
+    return t(this.props.id, this.props.params);
   }
 }

@@ -68,7 +68,7 @@ var rules = [
       {
         loader : 'url-loader',
         options: {
-          limit: 8192,
+          limit: 5120,
           hash : 'sha512',
           digest : 'hex',
           name : '[hash].[ext]'

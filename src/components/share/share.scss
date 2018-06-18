@@ -1,0 +1,24 @@
+
+.share-btn {
+
+  display: inline-flex;
+  position: relative;
+
+  .btn-label {
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    font-size: 12px;
+  }
+}
+
+.SocialMediaShareButton  {
+  margin: 15px 10px;
+  &:first-child {
+    margin-left: 15px;
+  }
+  &:last-child {
+    margin-right: 15px;
+  }
+  display: inline-flex;
+}
