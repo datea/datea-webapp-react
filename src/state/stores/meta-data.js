@@ -4,12 +4,11 @@ import urlJoin from 'url-join';
 import {getImgSrc} from '../../utils';
 import {t} from '../../i18n';
 import config from '../../config';
-import defaultImage from '../../img/logo-large.png';
 
 const defaultData = {
   title : {id : 'METADATA.DEFAULT.TITLE'},
   description: {id: 'METADATA.DEFAULT.DESCRIPTION'},
-  imgUrl : urlJoin(config.app.url, defaultImage),
+  imgUrl : urlJoin(config.app.url, 'img/logo-large.png'),
 };
 
 export default class MetaDataStore {

@@ -38,6 +38,10 @@ module.exports = {
         {
           from : path.resolve(__dirname, './src/favicon.ico'),
           to : path.resolve(__dirname, './dist/client/')
+        },
+        {
+          from : path.resolve(__dirname, './src/image/logo-large.png'),
+          to : path.resolve(__dirname, './dist/client/img/logo-large.png')
         }
       ]),
     ],

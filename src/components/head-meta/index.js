@@ -4,7 +4,6 @@ import Helmet from 'react-helmet';
 
 const HeadMeta = ({store}) => {
   const {metaData} = store;
-  console.log('metaData.imgUrl', metaData.imgUrl);
   return (
     <Helmet defaultTitle="Todos somos dateros" >
 
