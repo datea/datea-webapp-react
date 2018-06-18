@@ -40,8 +40,8 @@ module.exports = {
           to : path.resolve(__dirname, './dist/client/')
         },
         {
-          from : path.resolve(__dirname, './src/image/logo-large.png'),
-          to : path.resolve(__dirname, './dist/client/img/logo-large.png')
+          from : path.resolve(__dirname, './src/img/logo-large-whitebg.png'),
+          to : path.resolve(__dirname, './dist/client/img/logo-large-whitebg.png')
         }
       ]),
     ],

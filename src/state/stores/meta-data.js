@@ -8,7 +8,7 @@ import config from '../../config';
 const defaultData = {
   title : {id : 'METADATA.DEFAULT.TITLE'},
   description: {id: 'METADATA.DEFAULT.DESCRIPTION'},
-  imgUrl : urlJoin(config.app.url, 'img/logo-large.png'),
+  imgUrl : urlJoin(config.app.url, 'img/logo-large-whitebg.png'),
 };
 
 export default class MetaDataStore {
