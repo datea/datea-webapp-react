@@ -61,7 +61,15 @@
 
     .actions {
       color: white;
-      .follow-btn {
+      display: flex;
+      padding: 12px 0 5px;
+      .action-btn {
+        flex-basis: 75px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        text-align: left;
+      }
+      .follow-btn, .share-btn {
         color: white;
         fill: white;
       }

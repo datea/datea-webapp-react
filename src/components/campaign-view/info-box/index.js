@@ -7,6 +7,7 @@ import {observer} from 'mobx-react';
 import {getImgSrc} from '../../../utils';
 import {Tr} from '../../../i18n';
 import FollowButton from '../../follow';
+import ShareButton from '../../share';
 import DatearBtn from '../../datear-btn';
 
 const InfoBox = ({campaign, onMoreInfo, isMobile, showEdit, onEditClick}) =>
@@ -31,7 +32,12 @@ const InfoBox = ({campaign, onMoreInfo, isMobile, showEdit, onEditClick}) =>
         <Tr id="MORE_INFO" />
       </div>
       <div className="actions">
-        <FollowButton followKey={`tag.${campaign.main_tag.id}`} />
+        <div class="action-btn">
+          <FollowButton followKey={`tag.${campaign.main_tag.id}`} />
+        </div>
+        <div class="action-btn">
+          <ShareButton />
+        </div>
       </div>
     </div>
   </div>

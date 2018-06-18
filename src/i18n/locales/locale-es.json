@@ -143,12 +143,12 @@
 	},
 
 	"SHARE" : {
-		"SHARE" : "¡comparte!",
+		"SHARE" : "compartir",
 		"SHARE_ON" : "compartir en"
 	},
 
   "METADATA" : {
-    "TITLE_SUFFIX" : " - Datea.pe",
+    "TITLE_PREFIX" : "Datea | ",
     "DEFAULT" : {
       "TITLE" : "Todos Somos Dateros",
       "DESCRIPTION" : "Datea es una Plataforma de mapeo colaborativo. Crea mapas y galerias de imágenes, dateando con tu comunidad."
@@ -192,8 +192,8 @@
       "TITLE" : "Iniciar sesión"
     },
     "CAMPAIGN" : {
-      "TITLE" : "%{mainTag} - %{name}",
-      "DESCRIPTION" : "%{shortDesc}. Mapeo creado por %{username}"
+      "TITLE" : "#%{mainTag} - %{name}",
+      "DESCRIPTION" : "#%{mainTag} %{shortDesc}. Mapeo creado por %{username}"
     },
     "DATEO" : {
       "TITLE" : "%{username}: %{extract}",
