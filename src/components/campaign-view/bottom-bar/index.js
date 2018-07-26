@@ -5,8 +5,8 @@ import cn from 'classnames';
 import {when} from 'mobx';
 import {observer, inject} from 'mobx-react';
 import {toJS} from 'mobx';
-import ButtonBase from 'material-ui/ButtonBase';
-import DeleteIcon from 'material-ui-icons/Delete';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ColorSample from '../../color-sample';
 import {Tr} from '../../../i18n';
 

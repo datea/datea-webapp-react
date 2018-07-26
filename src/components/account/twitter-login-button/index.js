@@ -4,7 +4,7 @@ import cn from 'classnames';
 import TwitterLogin from 'react-twitter-auth/lib/react-twitter-auth-component';
 import DIcon from '../../../icons';
 import {observer, inject} from 'mobx-react';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import urlJoin from 'url-join';
 import {t, translatable} from '../../../i18n';
 import config from '../../../config';

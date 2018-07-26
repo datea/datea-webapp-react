@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import config from '../../config';
 import {getImgSrc} from '../../utils';
-import AttachmentIcon from 'material-ui-icons/Attachment';
+import AttachmentIcon from '@material-ui/icons/Attachment';
 
 const FileView = ({model}) => {
   const filename = _.last(model.file.split('/'));

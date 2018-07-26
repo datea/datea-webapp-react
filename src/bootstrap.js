@@ -1,5 +1,5 @@
-import SvgIcon from 'material-ui/SvgIcon';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
-// Tells `material-ui-icons` to use `material-ui/SvgIcon` module
-// instead of `material-ui/SvgIcon`.
+// Tells `material-ui-icons` to use `@material-ui/core/SvgIcon` module
+// instead of `@material-ui/core/SvgIcon`.
 global.__MUI_SvgIcon__ = SvgIcon;

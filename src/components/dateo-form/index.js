@@ -1,12 +1,12 @@
 import './dateo-form.scss';
 import React from 'react';
 import cn from 'classnames';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import {observer, inject} from 'mobx-react';
-import EditIcon from 'material-ui-icons/Edit';
-import ChevronUpIcon from 'material-ui-icons/KeyboardArrowUp';
-import DoneIcon from 'material-ui-icons/Done';
-import ButtonBase from 'material-ui/ButtonBase';
+import EditIcon from '@material-ui/icons/Edit';
+import ChevronUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import DoneIcon from '@material-ui/icons/Done';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import {t, translatable} from '../../i18n';
 import MainDateoForm from './main-form';
 import MappingLayout from '../mapping-layout';

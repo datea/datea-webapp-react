@@ -2,7 +2,7 @@ import './campaign-avatar.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import Avatar from 'material-ui/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 import DIcon from '../../icons';
 import {getImgSrc} from '../../utils';
 

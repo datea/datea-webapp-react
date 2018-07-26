@@ -3,8 +3,8 @@ import Author from './author';
 import Tags from './tags';
 import FileView from '../file-view';
 import {observer, inject} from 'mobx-react';
-import IconButton from 'material-ui/IconButton';
-import EditIcon from 'material-ui-icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import ImageGrid from '../image-grid';
 import {renderContentWithUrls} from './utils';
 

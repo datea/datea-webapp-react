@@ -1,7 +1,7 @@
 import React from 'react';
 import {toJS} from 'mobx';
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import ImageField from '../../image-field';
 import {observer, inject} from 'mobx-react';
 import {Tr} from '../../../i18n';

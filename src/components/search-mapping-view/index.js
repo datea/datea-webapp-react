@@ -3,7 +3,7 @@ import React from 'react';
 import {observer, inject} from 'mobx-react';
 import InfiniteScroll from 'react-infinite-scroller';
 import InfiniteLoaderIcon from '../infinite-loader-icon';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import MappingColumnLayout from '../mapping-column-layout';
 import DIcon from '../../icons';
 import {Tr} from '../../i18n';

@@ -1,9 +1,9 @@
 import './header-normal.scss';
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import DateaAppBar from '../../app-bar';
-import Typography from 'material-ui/Typography';
+import Typography from '@material-ui/core/Typography';
 import cn from 'classnames';
 import AppBarLogo from '../common/app-bar-logo';
 import MenuBtn from '../common/menu-button';

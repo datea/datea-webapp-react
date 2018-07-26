@@ -8,9 +8,9 @@ import {FacebookShareButton, TwitterShareButton,
         EmailShareButton,
         FacebookIcon, TwitterIcon, TelegramIcon,
         WhatsappIcon, EmailIcon} from 'react-share';
-import IconButton from 'material-ui/IconButton';
-import ShareIcon from 'material-ui-icons/Share';
-import Popover from 'material-ui/Popover';
+import IconButton from '@material-ui/core/IconButton';
+import ShareIcon from '@material-ui/icons/Share';
+import Popover from '@material-ui/core/Popover';
 import {Tr, t} from '../../i18n';
 
 const ICON_SIZE = 44;

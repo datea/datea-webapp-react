@@ -1,9 +1,10 @@
 import './map-mode-selector.scss';
 import React, {Component} from 'react';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import PolylineIcon from '../../mui-custom-icons/VectorPolyline';
-import LocationIcon from 'material-ui-icons/LocationOn';
-import IconButton from 'material-ui/IconButton';
+import LocationIcon from '@material-ui/icons/LocationOn';
+import IconButton from '@material-ui/core/IconButton';
 import {inject, observer} from 'mobx-react';
 
 @inject('store')

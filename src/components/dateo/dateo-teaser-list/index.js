@@ -1,7 +1,7 @@
 import './dateo-teaser-list.scss';
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import {Tr} from '../../../i18n';
 import DateoTeaser from '../teaser-view';
 

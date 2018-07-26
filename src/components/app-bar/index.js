@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import {observer, inject} from 'mobx-react';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import {colors} from '../../theme/vars';
 
 const DateaAppBar = ({store, className, children, colorName, position, ...props}) =>

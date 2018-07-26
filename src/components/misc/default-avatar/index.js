@@ -1,6 +1,6 @@
 import './default-avatar.scss';
 import React from 'react';
-import PersonIcon from 'material-ui-icons/Person';
+import PersonIcon from '@material-ui/icons/Person';
 
 const DefaultAvatar = ({size}) =>
   <div className="default-avatar" style={{width: size, height: size}}>

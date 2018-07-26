@@ -2,8 +2,9 @@ import './mapping-card.scss';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {inject} from 'mobx-react';
-import Typography from 'material-ui/Typography';
-import Card, {CardActions, CardHeader, CardContent, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import DIcon from '../../icons';
 import {getImgSrc} from '../../utils';
 

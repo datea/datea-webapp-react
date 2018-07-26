@@ -1,7 +1,7 @@
 import './login-page.scss';
 import React from 'react';
-import Paper from 'material-ui/Paper';
-import Button from 'material-ui/Button';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import LoginForm from '../login-form';

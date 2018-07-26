@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import {inject, observer} from 'mobx-react';
-import BackArrowIcon from 'material-ui-icons/ArrowBack';
-import ButtonBase from 'material-ui/ButtonBase';
+import BackArrowIcon from '@material-ui/icons/ArrowBack';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import DatearBtn from '../../datear-btn';
 import {Tr} from '../../../i18n';
 

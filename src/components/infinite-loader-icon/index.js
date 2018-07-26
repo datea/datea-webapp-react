@@ -1,6 +1,6 @@
 import './infinite-loader-icon.scss';
 import React from 'react';
-import { CircularProgress } from 'material-ui/Progress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const InfiniteLoaderIcon = () =>
   <div className="infinite-loader-icon" key={0}>

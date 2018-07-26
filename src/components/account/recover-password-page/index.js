@@ -1,9 +1,9 @@
 import React from 'react';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import {Tr, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 import DIcon from '../../../icons';
 import './recover-password.scss';
 

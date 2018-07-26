@@ -1,8 +1,8 @@
 import './datear-btn.scss';
 import React from 'react';
 import {observer, inject} from 'mobx-react';
-import Button from 'material-ui/Button';
-import LocationIcon from 'material-ui-icons/AddLocation';
+import Button from '@material-ui/core/Button';
+import LocationIcon from '@material-ui/icons/AddLocation';
 import {Tr} from '../../i18n';
 
 const DatearBtn = ({store}) =>

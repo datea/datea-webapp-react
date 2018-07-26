@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import TextField from 'material-ui/TextField';
-import { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction} from 'material-ui/List';
+import TextField from '@material-ui/core/TextField';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import {observer} from 'mobx-react';
-import AttachFile from 'material-ui-icons/AttachFile';
-import IconButton from 'material-ui/IconButton';
-import DeleteIcon from 'material-ui-icons/Delete';
+import AttachFile from '@material-ui/icons/AttachFile';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {getImgSrc} from '../../../utils';
 import {t,translatable} from '../../../i18n';
 

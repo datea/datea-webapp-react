@@ -1,5 +1,5 @@
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import DIcon from '../../../icons';
 import {observer, inject} from 'mobx-react';
 

@@ -1,7 +1,7 @@
 import './register-page.scss';
 import React from 'react';
 import {observer, inject} from 'mobx-react';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import Link from '../../link';
 import {t, translatable} from '../../../i18n';
 import TwitterLoginButton from '../twitter-login-button';

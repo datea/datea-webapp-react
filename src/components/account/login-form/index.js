@@ -1,8 +1,8 @@
 import './login-form.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import {observer, inject} from 'mobx-react';
 import {Tr} from '../../../i18n';
 

@@ -1,14 +1,15 @@
 import './settings.scss';
 import React from 'react';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import IconClose from 'material-ui-icons/Close';
-import Tabs, { Tab } from 'material-ui/Tabs';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import IconClose from '@material-ui/icons/Close';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
 import AccountFormContainer from '../account-form-container';
 import DIcon from '../../../icons';
-import SettingsIcon from 'material-ui-icons/Settings';
+import SettingsIcon from '@material-ui/icons/SettingsSharp';
 import config from '../../../config';
 import {colors} from '../../../theme/vars';
 

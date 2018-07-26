@@ -1,8 +1,8 @@
 import './info-box.scss';
 import React, {Component} from 'react';
 import cn from 'classnames';
-import IconButton from 'material-ui/IconButton';
-import SettingsIcon from 'material-ui-icons/Settings';
+import IconButton from '@material-ui/core/IconButton';
+import SettingsIcon from '@material-ui/icons/SettingsSharp';
 import {observer} from 'mobx-react';
 import {getImgSrc} from '../../../utils';
 import {Tr} from '../../../i18n';

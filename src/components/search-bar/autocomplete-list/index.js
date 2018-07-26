@@ -1,8 +1,12 @@
 import './autocomplete-list.scss';
 import React, {Component} from 'react';
-import { ListItemText, ListSubheader, ListItemAvatar, ListItemIcon} from 'material-ui/List';
-import {MenuItem, MenuList} from 'material-ui/Menu';
-import Divider from 'material-ui/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Divider from '@material-ui/core/Divider';
 import {observer, inject} from 'mobx-react';
 import cn from 'classnames';
 import UserAvatar from '../../user-avatar';

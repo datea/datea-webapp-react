@@ -5,9 +5,9 @@ import cn from 'classnames';
 import {observer, inject, PropTypes as MobxPropTypes} from 'mobx-react';
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import ChevronRightIcon from 'material-ui-icons/ChevronRight';
-import IconButton from 'material-ui/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import IconButton from '@material-ui/core/IconButton';
 import {DateoDetail} from '../dateo';
 
 const VirtualizeSwipeableViews = virtualize(SwipeableViews);

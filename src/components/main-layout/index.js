@@ -2,7 +2,7 @@ import './main-layout.scss';
 import React from 'react';
 import {observer, inject} from 'mobx-react';
 import cn from 'classnames';
-import {CircularProgress} from 'material-ui/Progress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Footer from '../footer';
 import Header from '../header';
 

@@ -1,14 +1,17 @@
 import React from 'react';
-import Drawer from 'material-ui/Drawer';
-import {MenuItem, MenuList} from 'material-ui/Menu';
-import {ListItemIcon, ListItemText, ListSubheader} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import Divider from '@material-ui/core/Divider';
 import {t, translatable} from '../../../i18n';
 import {observer, inject} from 'mobx-react';
-import HomeIcon from 'material-ui-icons/Home';
-import SearchIcon from 'material-ui-icons/Search';
-import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
-import HelpOutlineIcon from 'material-ui-icons/HelpOutline';
+import HomeIcon from '@material-ui/icons/Home';
+import SearchIcon from '@material-ui/icons/Search';
+import InfoOutlineIcon from '@material-ui/icons/InfoOutlined';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutlined';
 import LangSelectMenuItem from '../common/lang-select-menu-item';
 
 const langs = {

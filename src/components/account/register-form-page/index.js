@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import {observer, inject} from 'mobx-react';
 import {Tr, translatable} from '../../../i18n';
 import DateroIcon from '../../../theme/datero-caminando';

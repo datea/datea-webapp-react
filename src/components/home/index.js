@@ -6,7 +6,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import DIcon from '../../icons';
 import InfiniteLoaderIcon from '../infinite-loader-icon';
 import MappingColumnLayout from '../mapping-column-layout';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import Link from '../link';
 import {Tr} from '../../i18n';
 

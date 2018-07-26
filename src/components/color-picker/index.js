@@ -2,8 +2,8 @@ import './color-picker.scss';
 import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import Popover from 'material-ui/Popover';
-import ButtonBase from 'material-ui/ButtonBase';
+import Popover from '@material-ui/core/Popover';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import {SwatchesPicker} from 'react-color';
 import {colors} from '../../config/colors';
 

@@ -3,7 +3,8 @@ import React, {Component} from 'react';
 import {observer, inject} from 'mobx-react';
 import cn from 'classnames';
 import scroll from 'scroll';
-import Tabs, { Tab } from 'material-ui/Tabs';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import AutocompleteList from '../autocomplete-list';
 import {Tr} from '../../../i18n';
 

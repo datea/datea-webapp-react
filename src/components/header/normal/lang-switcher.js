@@ -1,7 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import Menu, {MenuItem, MenuList} from 'material-ui/Menu';
-import Button from 'material-ui/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Button from '@material-ui/core/Button';
 import {observer, inject} from 'mobx-react';
 import {translatable} from '../../../i18n';
 

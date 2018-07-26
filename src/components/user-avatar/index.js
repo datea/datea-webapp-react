@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DefaultAvatar from '../misc/default-avatar';
-import Avatar from 'material-ui/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 import {getImgSrc} from '../../utils';
 
 const UserAvatar = ({src, size}) =>

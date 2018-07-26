@@ -3,7 +3,7 @@ import Author from './author';
 import Tags from './tags';
 import FileView from '../file-view';
 import ImageGrid from '../image-grid';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import {Tr} from '../../i18n';
 import {renderContentWithUrls} from './utils';
 

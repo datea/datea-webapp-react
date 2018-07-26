@@ -1,7 +1,7 @@
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
-import ArrowBack from 'material-ui-icons/ArrowBack';
-import ChevronLeft from 'material-ui-icons/ChevronLeft';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import {inject, observer} from 'mobx-react';
 import DIcon from '../../../icons';
 

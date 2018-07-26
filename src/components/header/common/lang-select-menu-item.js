@@ -1,9 +1,10 @@
 import React from 'react';
-import {MenuItem} from 'material-ui/Menu';
-import {ListItemText, ListItemIcon} from 'material-ui/List';
-import Select from 'material-ui/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Select from '@material-ui/core/Select';
 import {observer, inject} from 'mobx-react';
-import FlagIcon from 'material-ui-icons/Flag';
+import FlagIcon from '@material-ui/icons/Flag';
 
 const langs = {
   'es' : 'Español',

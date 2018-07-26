@@ -1,5 +1,5 @@
 import React from 'react';
-import SvgIcon from 'material-ui/SvgIcon';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
 const DateaLogoIcon = (props) => (
   <SvgIcon {...props} viewBox="-136.6 137.6 127.3 127.4">

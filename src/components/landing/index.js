@@ -1,7 +1,7 @@
 import React from 'react';
 import DIcon from '../../icons';
 import {Tr} from '../../i18n';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import MappingColumnLayout from '../mapping-column-layout';
 import {observer, inject} from 'mobx-react';
 

@@ -1,16 +1,18 @@
 import React from 'react';
 import config from '../../../config';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import {observer, inject} from 'mobx-react';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import {t, translatable} from '../../../i18n';
-import Drawer from 'material-ui/Drawer';
-import {MenuItem, MenuList} from 'material-ui/Menu';
-import {ListItemIcon, ListItemText} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import DirectionsRunIcon from 'material-ui-icons/DirectionsRun';
-import PersonIcon from 'material-ui-icons/Person';
-import SettingsIcon from 'material-ui-icons/Settings';
+import Drawer from '@material-ui/core/Drawer';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import PersonIcon from '@material-ui/icons/Person';
+import SettingsIcon from '@material-ui/icons/SettingsSharp';
 import UserAvatar from '../../user-avatar';
 
 

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import {observer, inject} from 'mobx-react';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import DIcon from '../../../icons';
 import {t, translatable} from '../../../i18n';
 import config from '../../../config';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 @inject('store')
 export default class FacebookLoginButton extends Component {

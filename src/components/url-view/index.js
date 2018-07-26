@@ -3,7 +3,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import LinkIcon from 'material-ui-icons/Link';
+import LinkIcon from '@material-ui/icons/Link';
 import {inject} from 'mobx-react';
 import Api from '../../state/rest-api';
 

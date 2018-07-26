@@ -2,7 +2,7 @@ import './campaign-content-bar-root.scss';
 import React, {Component} from 'react';
 import cn from 'classnames';
 import {observer, inject} from 'mobx-react';
-import ButtonBase from 'material-ui/ButtonBase';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import DatearBtn from '../../datear-btn';
 import {Tr} from '../../../i18n';
 

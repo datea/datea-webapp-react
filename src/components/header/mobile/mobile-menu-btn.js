@@ -1,9 +1,9 @@
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import {observer, inject} from 'mobx-react';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import {t, translatable} from '../../../i18n';
-import MoreIcon from 'material-ui-icons/MoreVert';
+import MoreIcon from '@material-ui/icons/MoreVert';
 
 @inject('store')
 @translatable

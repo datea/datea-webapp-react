@@ -1,7 +1,8 @@
 import React from 'react';
-import Button from 'material-ui/Button';
-import Switch from 'material-ui/Switch';
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import Button from '@material-ui/core/Button';
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import {observer, inject} from 'mobx-react';
 import {Tr} from '../../../i18n';
 

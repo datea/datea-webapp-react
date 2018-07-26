@@ -2,10 +2,10 @@ import './dropzone-button.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import Button from 'material-ui/Button';
-import AddPhotoIcon from 'material-ui-icons/PhotoCamera';
-import AttachFile from 'material-ui-icons/AttachFile';
-import {CircularProgress} from 'material-ui/Progress';
+import Button from '@material-ui/core/Button';
+import AddPhotoIcon from '@material-ui/icons/PhotoCamera';
+import AttachFile from '@material-ui/icons/AttachFile';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {colors} from '../../../theme/vars';
 
 

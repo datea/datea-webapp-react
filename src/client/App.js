@@ -1,8 +1,8 @@
 import '../scss/app-main.scss';
 import 'typeface-roboto';
 import React from 'react';
-import CssBaseline from 'material-ui/CssBaseline';
-import {MuiThemeProvider} from 'material-ui/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import {MuiThemeProvider} from '@material-ui/core/styles';
 import '../bootstrap.js';
 import {Provider} from 'mobx-react';
 import history from '../state/history';
