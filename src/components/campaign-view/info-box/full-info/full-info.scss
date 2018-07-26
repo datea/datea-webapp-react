@@ -1,0 +1,27 @@
+
+.campaign-info.full-info {
+  background-color: white;
+
+  .full-info-img {
+    max-height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 15px;
+  }
+
+  .campaign-title {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+
+  .info-field-title {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    color: lighten(black, 30%);
+    font-weight: 500;
+  }
+  .info-field-content {
+
+  }
+}

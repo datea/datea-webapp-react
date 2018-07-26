@@ -8,7 +8,6 @@ dateo:
 - detectar urls
 
 mapeo:
-- info window
 - dateo stats con opción de cargar mas
 - visualización de imágenes
 - visualización de charts
