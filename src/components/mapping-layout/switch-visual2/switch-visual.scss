@@ -1,0 +1,31 @@
+@import '../../../scss/vars';
+
+.visual-switch {
+  background-color: white !important;
+  border-radius: 0;
+  .switch-btn {
+    min-width: 24px;
+    padding: 0;
+    width: 56px;
+    height: 44px;
+    border-radius: 0;
+    background-color: $greyLightBg;
+    &:hover {
+      background-color: $greyLightBg;
+      .switch-icon {
+        fill : darken(#aaa, 15%);
+      }
+    }
+    &.active {
+      background-color: lighten(#5E6E66, 10%) !important;
+      .switch-icon {
+        fill: white;
+      }
+    }
+  }
+  .switch-icon {
+    width: 30px;
+    height: 30px;
+    fill: #aaa;
+  }
+}

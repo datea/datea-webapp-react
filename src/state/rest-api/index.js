@@ -76,9 +76,7 @@ class Api {
   };
 
   /* URL INFO */
-  urlInfo = {
-    get : (url) => this.get(url('url_info'), {url})
-  };
+  urlInfo = (u) => this.get(url('url_info'), {url: u});
 
   /* GOOGLE PLACES */
   autocompletePlace = (query, latLng, radius = 50000) => {

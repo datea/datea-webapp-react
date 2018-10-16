@@ -22,6 +22,13 @@ $bottomBarHeight: 44px;
       flex-shrink: 1;
       flex-basis: 65%;
       order: 2;
+      .switch-visual-btn, .visual-switch {
+        position: absolute;
+        z-index: 10;
+        top: 0px;
+        right: 0px;
+        z-index: 500;
+      }
     }
 
     .content-area {
@@ -98,6 +105,15 @@ $bottomBarHeight: 44px;
       }
     }
 
+    &.content-bar-hidden {
+      .content-area {
+        display: none;
+      }
+      .visual-area {
+        flex-basis: 100%;
+      }
+    }
+
     @media (max-width: $md-break) {
       .visual-area {
         flex-basis: 55%;
@@ -106,6 +122,14 @@ $bottomBarHeight: 44px;
         flex-basis: 45%;
         .content-bar {
           width: 45%;
+        }
+      }
+      &.content-bar-hidden {
+        .content-area {
+          display: none;
+        }
+        .visual-area {
+          flex-basis: 100%;
         }
       }
     }
@@ -125,6 +149,12 @@ $bottomBarHeight: 44px;
       bottom: 70%;
       z-index: 1;
       //transition: bottom $transitionDuration ease;
+      .switch-visual-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 500;
+      }
     }
 
     .content-area {

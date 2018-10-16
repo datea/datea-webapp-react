@@ -37,7 +37,7 @@ export default class CampaignForm extends Component {
     const {store} = this.props;
     const {ui, router, campaignForm : form} = store;
 
-    const isNew = router.params.id == 'new';
+    const isNew = router.routerState.params.id == 'new';
 
     return (
       <div className={cn('campaign-form', ui.isMobile && 'mobile')}>

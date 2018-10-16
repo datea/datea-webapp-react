@@ -1,6 +1,7 @@
 import React from 'react';
 import Lightbox from 'react-image-lightbox';
 import {observer, inject} from 'mobx-react';
+import 'react-image-lightbox/style.css';
 
 const SlideShow = ({store}) => {
   const {ui} = store;

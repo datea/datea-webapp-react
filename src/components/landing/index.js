@@ -2,7 +2,7 @@ import React from 'react';
 import DIcon from '../../icons';
 import {Tr} from '../../i18n';
 import Button from '@material-ui/core/Button';
-import MappingColumnLayout from '../mapping-column-layout';
+import MappingColumnLayout from '../mapping-card-grid';
 import {observer, inject} from 'mobx-react';
 
 import './landing.scss';

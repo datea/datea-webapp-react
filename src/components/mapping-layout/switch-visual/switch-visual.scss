@@ -1,0 +1,28 @@
+@import '../../../scss/vars';
+
+.switch-visual-btn {
+  position: relative;
+  background-color: white !important;
+  border: 2px solid rgba(0,0,0,0.2) !important;
+  box-shadow: none !important;
+  svg.drop {
+    position: absolute;
+    right: 3px;
+    bottom: 0;
+    width: 22px;
+    height: 22px;
+  }
+  .d-icon {
+    width: 32px;
+    height: 32px;
+  }
+  svg {
+    fill: #aaa;
+  }
+}
+
+.switch-visual-menu {
+  .switch-visual-menu-item {
+
+  }
+}

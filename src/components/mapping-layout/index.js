@@ -12,6 +12,9 @@ export default class MappingLayout extends Component {
     showBarOnContentTopScrolled: PropTypes.bool,
     contentPane : PropTypes.node,
     contentTopPane : PropTypes.node,
+    bottomBar : PropTypes.node,
+    hideContentBar: PropTypes.bool,
+    hiddenContentOpenButton: PropTypes.node,
     mode : PropTypes.oneOf(['visual','content', 'visualFullscreen']),
     barSticky: PropTypes.bool,
     barStickyOnContentTopScrolled: PropTypes.bool,
@@ -88,9 +91,12 @@ export default class MappingLayout extends Component {
       contentPane,
       onOpenVisualClick,
       barOnlyForVisuals,
+      hideContentBar,
+      hiddenContentOpenButton,
       barSticky,
       barStickyOnContentTopScrolled,
       barMode,
+      topBar,
       bottomBar,
       className,
       actions
@@ -107,6 +113,7 @@ export default class MappingLayout extends Component {
         !!contentBar && !barSticky && barOnlyForVisuals && 'bar-only-for-visuals',
         inTransition && `in-transition in-transition-to-${mode}`,
         !!bottomBar && !isMobile && 'with-bottom-bar',
+        hideContentBar && 'content-bar-hidden',
         className
         )}>
         <div className="visual-area" ref={r => {this.visualAreaRef = r}}>
@@ -139,6 +146,11 @@ export default class MappingLayout extends Component {
           }
           <div className="content-container">{contentPane}</div>
         </div>
+        {!!hiddenContentOpenButton &&
+          <div className="hidden-content-open-btn">
+            {hiddenContentOpenButton}
+          </div>
+        }
         {!isMobile && bottomBar &&
           <div className="bottom-bar">
             {bottomBar}

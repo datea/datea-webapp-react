@@ -146,7 +146,7 @@ export default class SearchBarStore {
         narrowOn = '#'+this.main.tagView.data.tag.tag;
         break;
       case 'profileDateos':
-        narrowOn = '@'+this.main.router.params.username;
+        narrowOn = '@'+this.main.router.routerState.params.username;
         break;
       default:
         return;

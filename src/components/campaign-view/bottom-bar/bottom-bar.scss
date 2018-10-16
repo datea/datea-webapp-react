@@ -7,41 +7,50 @@ $barHeight: 44px;
   max-height: $barHeight;
   transition: max-height 0.25s ease;
   overflow: hidden;
-  padding: 0 5px;
+  padding: 0;
+  padding-left: 5px;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
 
-  .ht-btn {
-    height: $barHeight - 10px;
-    line-height: $barHeight - 12px;
-    display: inline-flex;
-    padding: 0 6px 0 6px;
-    margin: 5px;
-    border-radius: 5px;
+  .legends {
+    .ht-btn {
+      height: $barHeight - 10px;
+      line-height: $barHeight - 12px;
+      display: inline-flex;
+      padding: 0 6px 0 6px;
+      margin: 2px;
+      border-radius: 5px;
 
-    .color-sample {
-      margin-right: 5px;
+      .color-sample {
+        margin-right: 5px;
+      }
+
+      &.active {
+        background-color: white;
+        border: 1px solid #ccc;
+      }
     }
-
-    &.active {
-      background-color: white;
-      border: 1px solid #ccc;
+    .clear-btn {
+      margin: 5px;
+      margin-left: 10px;
+      color: #444;
+      height: $barHeight - 10px;
+      line-height: $barHeight - 14px;
+      svg {
+        margin-right: 3px;
+        width: 20px;
+        height: 20px;
+        fill: #999;
+      }
     }
   }
-  .clear-btn {
-    margin: 5px;
-    margin-left: 10px;
-    color: #444;
-    height: $barHeight - 10px;
-    line-height: $barHeight - 14px;
-    svg {
-      margin-right: 3px;
-      width: 20px;
-      height: 20px;
-      fill: #999;
-    }
+
+  .mode-switch {
+    float: right;
+    width: 112px;
+    height: 44px;
   }
 
   &.show-full {

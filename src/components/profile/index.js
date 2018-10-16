@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import {inject, observer} from 'mobx-react';
 import Button from '@material-ui/core/Button';
-import MappingColumnLayout from '../mapping-column-layout';
+import MappingColumnLayout from '../mapping-card-grid';
 import {Tr} from '../../i18n';
 import ProfileHead from './profile-head';
 

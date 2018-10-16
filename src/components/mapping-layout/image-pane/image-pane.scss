@@ -1,0 +1,41 @@
+.visual-pane-image-grid {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left : 0;
+  overflow-y: auto;
+  margin-bottom : inherit;
+
+  > div {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .visual-pane-image {
+    //width : 25%;
+    flex-basis: 25%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding-top: 25%;
+    border: 1px solid white;
+    background-size: cover;
+    @media (max-width: 550px) {
+      flex-basis : 33.333%;
+      padding-top: 33.333%;
+    }
+    @media (min-width: 551px) and (max-width: 840px) {
+      flex-basis : 25%;
+      padding-top: 25%;
+    }
+    @media (min-width: 841px) and (max-width: 1100px) {
+      flex-basis : 20%;
+      padding-top: 20%;
+    }
+    @media (min-width: 1100px) and (max-width: 1400px) {
+      flex-basis : 16.66666%;
+      padding-top: 16.66666%;
+    }
+  }
+}

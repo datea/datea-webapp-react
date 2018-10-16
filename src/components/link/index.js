@@ -15,7 +15,7 @@ const DateaLink = ({store, route, params, queryParams, children, ...otherProps})
   if (routeExists) {
     return <Link routerStore={store.router} toState={toState} {...otherProps}>{children}</Link>;
   } else {
-    return <span className="dummy-route">{children}</span>
+    return <span className="dummy-route" {...otherProps}>{children}</span>
   }
 }
 

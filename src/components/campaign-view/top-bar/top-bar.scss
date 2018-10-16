@@ -1,0 +1,16 @@
+.campaign-top-bar {
+  background-color: #5E6E66;
+  height: 48px;
+  max-height: 48px;
+  overflow: hidden;
+  color : white;
+  padding: 0 5px;
+  display: block;
+  width: 100%;
+
+  .campaign-ht {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 5px;
+  }
+}

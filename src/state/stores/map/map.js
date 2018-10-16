@@ -52,16 +52,20 @@ export default class MapeoStore {
     !!this.disposeDateoAutorun && this.disposeDateoAutorun();
 
     this.disposeDateoAutorun = autorun(() => {
-      const mapping = this.getMapping();
-      const {dateos} = this.main.dateo;
-
-      if (!this.mapMounted || !mapping || !mapping.id) return;
-
-      this.updateMarkers(dateos);
-      this.updateGeometryCollections(dateos);
-      //this.fitBoundsToLayers();
-      this.layersLoaded = true;
+      this.updateFeatures();
     });
+  }
+
+  updateFeatures = () => {
+    const mapping = this.getMapping();
+    const {dateos} = this.main.dateo;
+
+    if (!this.mapMounted || !mapping || !mapping.id) return;
+
+    this.updateMarkers(dateos);
+    this.updateGeometryCollections(dateos);
+    this.fitBoundsToLayers();
+    this.layersLoaded = true;
   }
 
   updateMarkers(dateos) {
@@ -75,7 +79,7 @@ export default class MapeoStore {
         this.markerLayer.clearLayers();
         this.geometryCollections.clear();
       } else {
-        const removeMarkers = removeIds.map(id => this.geometryCollections.get(id)).filter(m => !!m);
+        const removeMarkers = removeIds.map(id => this.markers.get(id)).filter(m => !!m);
         this.markerLayer.removeLayers(removeMarkers);
         removeIds.forEach(id => this.markers.delete(id));
       }
@@ -186,7 +190,6 @@ export default class MapeoStore {
       }
     }
     this.mapState.center = center;
-
     when(() => this.DOMElementAvailable, () => {
       this.lmap = L.map(this.domElement, this.mapState);
       var tileUrl = config.mapOpts.tileUrl.replace('${token}', config.keys.mapbox);

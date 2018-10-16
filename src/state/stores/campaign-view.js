@@ -24,6 +24,8 @@ export default class Campaign {
     showDateoDetail : false,
   };
   @observable layoutMode = 'content';
+  @observable visualViewMode = 'map';
+
   prevLayoutMode = 'content';
 
   @computed get contentViewMode() {
@@ -38,7 +40,7 @@ export default class Campaign {
 
   constructor(main) {
     this.main = main;
-    this.map = new MapStore(this.main, 'campaign', this.onMarkerClick);
+    //this.map = new MapStore(this.main, 'campaign', this.onMarkerClick);
   }
 
   @action loadView = (user, slug, showLoading = true) => {
@@ -49,8 +51,9 @@ export default class Campaign {
         this.data.campaign = this.hydrateCampaign(res.objects[0]);
         this.setMetaData(this.main.router.routerState.queryParams.dateo);
         this.initReactions();
-        const {boundary: geometry, center, zoom} = this.data.campaign;
-        this.map.createMap({center, zoom, geometry});
+        if (this.visualViewMode == 'map') {
+          this.createMap();
+        }
       }else{
         this.main.ui.show404();
       }
@@ -65,7 +68,7 @@ export default class Campaign {
         const {datear, dateo, slideshow, lang,...params} = this.main.router.routerState.queryParams;
         return qs.stringify(params || {});
       },
-      () => this.queryDateos(),
+      (params) => this.queryDateos(),
       {fireImmediately: true}
     );
 
@@ -100,6 +103,12 @@ export default class Campaign {
   disposeReactions = () =>  {
     !!this.disposeDateoQueryReaction && this.disposeDateoQueryReaction();
     !!this.disposeDetailViewReaction && this.disposeDetailViewReaction();
+  }
+
+  createMap = () => {
+    this.map = new MapStore(this.main, 'campaign', this.onMarkerClick);
+    const {boundary: geometry, center, zoom} = this.data.campaign;
+    this.map.createMap({center, zoom, geometry});
   }
 
   getCurrentDateoQueryParams = () => {
@@ -194,6 +203,16 @@ export default class Campaign {
     this.prevLayoutMode = layout;
   }
 
+  @action setVisualMode = (val) => {
+    this.visualViewMode = val;
+    if (this.visualViewMode == 'map') {
+      this.createMap();
+      this.updateFeatures();
+    } else {
+      this.map.dispose();
+    }
+  }
+
   @action showOverview = () => {
     this.main.closeDateo();
     this.map.fitBoundsToLayers();
@@ -230,7 +249,6 @@ export default class Campaign {
   }
 
   dispose = () => {
-    console.log('dispose campiagnview');
     this.disposeReactions();
     this.map.dispose();
     this.main.dateo.clearDateos();
