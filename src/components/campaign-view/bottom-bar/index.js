@@ -96,9 +96,10 @@ export default class CampaignLegendBar extends Component {
 
     return (
       <div className={cn('campaign-legend-bar', isHover && 'show-full')}>
+        {/*
         <div className="mode-switch">
           <SwitchVisual value={campaignView.visualViewMode} onChange={campaignView.setVisualMode} />
-        </div>
+        </div>*/}
         <div className="legends" ref={r => {this.intentRef = r}}>
           {[...campaign.subtags.values()].map(tag =>
             <ButtonBase
